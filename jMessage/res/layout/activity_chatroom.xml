@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_roomID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="指定聊天室的roomID"
+        android:inputType="number" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_chatroom_get_start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:hint="start" />
+
+        <EditText
+            android:id="@+id/et_chatroom_get_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:hint="count" />
+
+        <Button
+            android:id="@+id/bt_get_room_by_appkey"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="分页获取应用下所有聊天室信息" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_get_room_by_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取当前用户所在聊天室信息" />
+
+    <Button
+        android:id="@+id/bt_get_room_by_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取指定roomID聊天室信息" />
+
+    <Button
+        android:id="@+id/bt_enter_chatroom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="进入聊天室" />
+
+    <Button
+        android:id="@+id/bt_leave_chatroom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="退出聊天室" />
+
+    <EditText
+        android:id="@+id/et_chatroom_inputtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="待发送文字（这里以发送文字消息为例）" />
+
+    <Button
+        android:id="@+id/bt_chatroom_sendtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送聊天室消息" />
+
+    <ScrollView
+        android:id="@+id/sv_chatroom_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_chatroom_display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+</LinearLayout>

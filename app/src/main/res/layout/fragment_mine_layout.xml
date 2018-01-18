@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/top_search_back"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rect_white"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/margin_small"
+        android:paddingLeft="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingTop="@dimen/margin_small"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="元宝科技"
+                android:textColor="@color/text_stay"
+                android:textSize="@dimen/text_normal" />
+
+            <com.example.ysl.mywps.ui.view.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="&#xe62c;"
+                android:textColor="@color/arrow"
+                android:textSize="40sp" />
+
+        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="张耀"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/text_large" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/top_search_back"
+            android:layout_marginTop="@dimen/margin_small"
+            ></RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/margin_small"
+            android:paddingLeft="@dimen/margin_small"
+            android:paddingBottom="@dimen/margin_small"
+            android:paddingTop="@dimen/margin_small"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="我的名片"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:textColor="@color/text_gray"
+                android:textSize="@dimen/text_small" />
+
+            <com.example.ysl.mywps.ui.view.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="&#xe69a;"
+                android:textColor="@color/arrow"
+                android:textSize="@dimen/icon_normal" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:background="@color/white_back"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/margin_small">
+
+        <RelativeLayout
+            android:id="@+id/mine_rl_shou"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/rect_orange"
+            android:paddingBottom="@dimen/padding_small"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingRight="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_small">
+
+            <com.example.ysl.mywps.ui.view.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="&#xe601;"
+                android:textColor="@color/white_back"
+                android:textSize="@dimen/icon_normal" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_toRightOf="@+id/mine_rl_shou"
+            android:text="收藏"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/text_large" />
+
+        <com.example.ysl.mywps.ui.view.IconTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="&#xe679;"
+            android:textColor="@color/arrow"
+            android:textSize="@dimen/icon_normal" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_back"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/margin_small">
+
+        <RelativeLayout
+            android:id="@+id/mine_rl_dai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/rect_orange"
+            android:paddingBottom="@dimen/padding_small"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingRight="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_small">
+
+            <com.example.ysl.mywps.ui.view.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="&#xe63f;"
+                android:textColor="@color/white_back"
+                android:textSize="@dimen/icon_normal" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_toRightOf="@+id/mine_rl_dai"
+            android:text="代办"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/text_large" />
+
+        <com.example.ysl.mywps.ui.view.IconTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="&#xe679;"
+            android:textColor="@color/arrow"
+            android:textSize="@dimen/icon_normal" />
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_back"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/margin_small">
+
+        <RelativeLayout
+            android:id="@+id/mine_rl_hong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/rect_red"
+            android:paddingBottom="@dimen/padding_small"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingRight="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_small">
+
+            <com.example.ysl.mywps.ui.view.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="&#xe61b;"
+                android:textColor="@color/white_back"
+                android:textSize="@dimen/icon_normal" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_toRightOf="@+id/mine_rl_hong"
+            android:text="红包"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/text_large" />
+
+        <com.example.ysl.mywps.ui.view.IconTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="&#xe679;"
+            android:textColor="@color/arrow"
+            android:textSize="@dimen/icon_normal" />
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_back"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/margin_small">
+
+        <RelativeLayout
+            android:id="@+id/mine_rl_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/rect_green"
+            android:paddingBottom="@dimen/padding_small"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingRight="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_small">
+
+            <com.example.ysl.mywps.ui.view.IconTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="&#xe634;"
+                android:textColor="@color/white_back"
+                android:textSize="@dimen/icon_normal" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_toRightOf="@+id/mine_rl_setting"
+            android:text="设置"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/text_large" />
+
+        <com.example.ysl.mywps.ui.view.IconTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="&#xe679;"
+            android:textColor="@color/arrow"
+            android:textSize="@dimen/icon_normal" />
+
+    </RelativeLayout>
+
+</LinearLayout>
