@@ -28,6 +28,14 @@ import butterknife.ButterKnife;
 //import okhttp3.OkHttpClient;
 //import okhttp3.Request;
 //import okhttp3.RequestBody;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,6 +60,8 @@ public class LoginActivity extends BaseActivity {
 
     private MyclickListener clik = new MyclickListener();
     private SharedPreferences preferences;
+    private Observable<String> observable;
+    private Observer<String> observer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +85,7 @@ public class LoginActivity extends BaseActivity {
 
     public void login() {
 
+
         LoginInteface loginInteface = HttpUtl.getRetrofit("http://oa.wgxmcb.top/index.php/User/Login/user_login/").create(LoginInteface.class);
         Logger.i("username  " + name + "password " + password + " regid" + identity);
         Call<String> call = loginInteface.login(name, password, identity);
@@ -88,10 +99,50 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onFailure(Call<String> call, Throwable throwable) {
 
-                Logger.i(" " + call + " \n " + throwable.toString());
+                Logger.i(" \n " + throwable.getMessage());
 
             }
         });
+
+    }
+
+
+    private void doLogin() {
+
+       observable = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Exception {
+
+
+
+
+            }
+        });
+
+       observer = new Observer<String>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable disposable) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull String s) {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable throwable) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
 
     }
 
@@ -148,7 +199,7 @@ public class LoginActivity extends BaseActivity {
                     }
                     saveLogin();
                     login();
-                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     break;
 

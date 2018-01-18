@@ -1,6 +1,7 @@
 package com.example.ysl.mywps.utils;
 
 
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -11,13 +12,19 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class HttpUtl {
 
+
+    private static  Retrofit retrofit;
+
+
     public static Retrofit getRetrofit(String httpurl) {
 
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .baseUrl(httpurl)
-                .build();
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .baseUrl(httpurl)
+                    .build();
+        }
         return retrofit;
     }
 
