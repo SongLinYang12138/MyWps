@@ -177,9 +177,18 @@ public class WritingPadView extends View {
         if (cacheCanvas != null) {
             isTouched = false;
             //更新画板信息
+            mGesturePaint.setAntiAlias(true);
+            //设置签名笔画样式
+            mGesturePaint.setStyle(Paint.Style.STROKE);
+            //设置笔画宽度
+            mGesturePaint.setStrokeWidth(mPaintWidth);
+            //设置签名颜色
             mGesturePaint.setColor(mPenColor);
-            cacheCanvas.drawColor(mBackColor, PorterDuff.Mode.CLEAR);
-            mGesturePaint.setColor(mPenColor);
+
+            cachebBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+            cacheCanvas = new Canvas(cachebBitmap);
+            cacheCanvas.drawColor(mBackColor);
+
             invalidate();
         }
     }

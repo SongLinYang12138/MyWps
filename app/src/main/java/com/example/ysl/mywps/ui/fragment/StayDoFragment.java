@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.ysl.mywps.R;
+import com.example.ysl.mywps.bean.DocumentListBean;
 import com.example.ysl.mywps.ui.activity.WpcDetailActivity;
 import com.example.ysl.mywps.ui.adapter.StayDoAdapter;
 
@@ -15,6 +16,14 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2018/1/14 0014.
@@ -26,6 +35,7 @@ public class StayDoFragment extends BaseFragment {
     ListView listView;
     private StayDoAdapter adapter;
     private ArrayList<String> list = new ArrayList<>();
+    private ArrayList<DocumentListBean> documents = new ArrayList<>();
 
     @Override
     public View setView(LayoutInflater inflater, ViewGroup container) {
@@ -53,11 +63,32 @@ public class StayDoFragment extends BaseFragment {
     public void afterView(View view) {
 
 
-
     }
 
     @Override
     public void setKindFlag(int kindFlag) {
+
+
+    }
+//    User/Oa/doc_list
+    private void netWork() {
+
+        Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<String> observableEmitter) throws Exception {
+
+            }
+        });
+
+        Consumer<String> observer = new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+
+            }
+        };
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
 
     }
 }

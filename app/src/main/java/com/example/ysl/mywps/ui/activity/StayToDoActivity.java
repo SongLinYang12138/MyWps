@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -40,7 +41,8 @@ public class StayToDoActivity extends AppCompatActivity {
     private HasDoFragment doFragment;
     private Fragment currentFragment;
     private MyclickListener click = new MyclickListener();
-
+    private int currentIndex = 0;
+    private float x1, x2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,38 @@ public class StayToDoActivity extends AppCompatActivity {
         tvHave.setOnClickListener(click);
         showFragment(1);
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+
+        if (MotionEvent.ACTION_DOWN == event.getAction()) {
+            x1 = event.getX();
+        }
+        if (MotionEvent.ACTION_UP == event.getAction()) {
+            x2 = event.getX();
+            float value = x2 - x1;
+            if (Math.abs(value) > 100) {
+
+//                direction 0 right 1 left
+                //菜单朝左滑动
+                if (value < 0) {
+
+                    if (currentIndex != 1) {
+                        showFragment(1);
+                    }
+                } else {
+//                    菜单向右移
+                    if (currentIndex != 2) {
+                        showFragment(2);
+                    }
+                }
+            }
+        }
+        return false;
+
+    }
+
 
     private void showFragment(int position) {
         beginTransaction = fragmentManager.beginTransaction();

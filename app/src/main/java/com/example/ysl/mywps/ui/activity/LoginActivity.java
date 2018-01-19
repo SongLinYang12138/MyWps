@@ -9,18 +9,13 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.example.ysl.mywps.R;
-import com.example.ysl.mywps.bean.LoginBean;
-import com.example.ysl.mywps.bean.PostQueryInfo;
-import com.example.ysl.mywps.retofiInftace.LoginInteface;
 import com.example.ysl.mywps.utils.CommonUtil;
-import com.example.ysl.mywps.utils.HttpUtl;
+import com.example.ysl.mywps.net.HttpUtl;
 import com.example.ysl.mywps.utils.NoDoubleClickListener;
-import com.google.gson.jpush.JsonObject;
 import com.orhanobut.logger.Logger;
 
+import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,10 +26,9 @@ import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,8 +54,7 @@ public class LoginActivity extends BaseActivity {
 
     private MyclickListener clik = new MyclickListener();
     private SharedPreferences preferences;
-    private Observable<String> observable;
-    private Observer<String> observer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,68 +76,30 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    public void login() {
+    public void login(final ObservableEmitter<String> emitter) {
 
-
-        LoginInteface loginInteface = HttpUtl.getRetrofit("http://oa.wgxmcb.top/index.php/User/Login/user_login/").create(LoginInteface.class);
-        Logger.i("username  " + name + "password " + password + " regid" + identity);
-        Call<String> call = loginInteface.login(name, password, identity);
+        Call<String> call = HttpUtl.login("User/Login/user_login/", name, password, identity);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
 
-                Logger.i(" " + response.body().toString());
+//                Logger.i(" " + response.body().toString());
+                emitter.onNext(response.body().toString());
+                call.cancel();
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable throwable) {
 
-                Logger.i(" \n " + throwable.getMessage());
-
+//                Logger.i(" \n " + throwable.getMessage());
+                emitter.onNext(throwable.getMessage());
+                call.cancel();
             }
         });
 
-    }
-
-
-    private void doLogin() {
-
-       observable = Observable.create(new ObservableOnSubscribe<String>() {
-            @Override
-            public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Exception {
-
-
-
-
-            }
-        });
-
-       observer = new Observer<String>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable disposable) {
-
-            }
-
-            @Override
-            public void onNext(@NonNull String s) {
-
-            }
-
-            @Override
-            public void onError(@NonNull Throwable throwable) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
 
     }
+
 
     private void saveLogin() {
 
@@ -162,6 +117,7 @@ public class LoginActivity extends BaseActivity {
         String name = preferences.getString("name", "");
         String passowrd = preferences.getString("password", "");
         identity = preferences.getString("identity", "");
+        String token = preferences.getString("token", "");
         if (CommonUtil.isEmpty(identity)) {
             havIdentity = false;
         } else {
@@ -173,7 +129,66 @@ public class LoginActivity extends BaseActivity {
         if (CommonUtil.isNotEmpty(passowrd)) {
             etPassword.setText(passowrd);
         }
+        if (CommonUtil.isNotEmpty(token)) {
+            loginSuccess();
+        }
 
+    }
+
+
+    private void doLogin() {
+
+        Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Exception {
+
+                login(emitter);
+            }
+        });
+
+        Consumer<String> consumer = new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+
+                Logger.i("accept  " + s);
+                JSONObject object = null;
+                try {
+                    object = new JSONObject(s);
+                    int code = object.getInt("code");
+                    CommonUtil.showLong(getApplicationContext(), object.getString("msg"));
+
+                    JSONObject object1 = object.getJSONObject("data");
+
+                    if (code == 0) {
+                        String token = object1.getString("token");
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("token", token);
+                        editor.commit();
+                        loginSuccess();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    CommonUtil.showLong(getApplicationContext(), s);
+                }
+
+
+            }
+
+        };
+
+
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(consumer);
+
+    }
+
+
+    private void loginSuccess() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private class MyclickListener extends NoDoubleClickListener {
@@ -198,9 +213,7 @@ public class LoginActivity extends BaseActivity {
                         return;
                     }
                     saveLogin();
-                    login();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    doLogin();
                     break;
 
 
