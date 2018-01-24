@@ -73,6 +73,9 @@ public class CommitActivity extends BaseActivity {
         ivBack.setOnClickListener(click);
         rlCommit.setOnClickListener(click);
         setTitleContent(View.GONE);
+        if(CommonUtil.isEmpty(proce_id)){
+            proce_id = "28";
+        }
     }
 
     @Override
