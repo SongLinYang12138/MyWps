@@ -51,6 +51,7 @@ import com.example.ysl.mywps.utils.WpsUtils;
 import com.lx.fit7.Fit7Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.orhanobut.logger.Logger;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -105,6 +106,9 @@ public class WpcDetailActivity extends BaseActivity {
     RelativeLayout rlLoading;
     @BindView(R.id.wpcdetail_rl_content)
     RelativeLayout rlContent;
+    @BindView(R.id.av_loading)
+    AVLoadingIndicatorView loading;
+
 
     private MyclickListener click = new MyclickListener();
     private WpsBroadCast reciver = new WpsBroadCast();
@@ -147,8 +151,8 @@ public class WpcDetailActivity extends BaseActivity {
         ivSend.setOnClickListener(click);
         llSend.setOnClickListener(click);
 
-//        rlLoading.setVisibility(View.GONE);
-//        progressBar.setVisibility(View.GONE);
+        rlLoading.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
         ivIcon.setVisibility(View.GONE);
         this.registerReceiver(reciver, new IntentFilter("com.example.ysl.mywps.sign"));
 
@@ -217,6 +221,7 @@ public class WpcDetailActivity extends BaseActivity {
 //        }
         rlLoading.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
+        loading.setVisibility(View.VISIBLE);
 
         Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
@@ -270,7 +275,7 @@ public class WpcDetailActivity extends BaseActivity {
         Consumer<String> observer = new Consumer<String>() {
             @Override
             public void accept(String s) throws Exception {
-
+                loading.setVisibility(View.GONE);
                 if (s.equals("Y")) {
                     openWps(downloadWpsPath);
                     ToastUtils.showShort(getApplicationContext(), "文件下载成功");
@@ -313,7 +318,7 @@ public class WpcDetailActivity extends BaseActivity {
                 | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         Uri uri = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uri = Fit7Utils.getUriForFile(this,file);
+            uri = Fit7Utils.getUriForFile(this, file);
         } else {
             uri = Uri.fromFile(file);
         }

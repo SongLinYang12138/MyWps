@@ -36,6 +36,16 @@ public class DocumentListBean implements Parcelable {
 //            "nickname": "不知道啊",     //当前流程所属用户昵称
 //            "realname": null
 //    },
+//    {"code":0,"msg":"公文列表获取成功",
+// "data":{"total":1,"list":[
+// {"id":"1","uid":"2","title":"1231","dept":"123123","des":"123123",
+// "doc_name":"1_测试中文.docx","doc_url":"http:\/\/p2c152618.bkt.clouddn.com\/1_测试中文.docx",
+// "doc_imgs":[{"page":1,"img":"http:\/\/p2c152618.bkt.clouddn.com\/1_1_测试中文.docx_1.png"},
+// {"page":2,"img":"http:\/\/p2c152618.bkt.clouddn.com\/1_1_测试中文.docx_2.png"},
+// {"page":3,"img":"http:\/\/p2c152618.bkt.clouddn.com\/1_1_测试中文.docx_3.png"}],
+// "status":"2","ctime":"2018-01-16 16:47:17",
+// "proce_id":"34","now_uid":"209","from_uid":"216","n_time":"2018-01-24 16:46:08","is_writable":0,
+// "username":"18511234650","nickname":"吃啥好呢1222","realname":null}]
 
     private String id;
     private String uid;
@@ -65,39 +75,6 @@ public class DocumentListBean implements Parcelable {
         return proce_id;
     }
 
-    public void setProce_id(String proce_id) {
-        this.proce_id = proce_id;
-    }
-
-    protected DocumentListBean(Parcel in) {
-        id = in.readString();
-        uid = in.readString();
-        title = in.readString();
-        dept = in.readString();
-        des = in.readString();
-        doc_name = in.readString();
-        doc_url = in.readString();
-        doc_imgs = in.createTypedArrayList(DocumentImageBean.CREATOR);
-        status = in.readString();
-        ctime = in.readString();
-        now_uid = in.readString();
-        from_uid = in.readString();
-        new_time = in.readString();
-        username = in.readString();
-        nickname = in.readString();
-    }
-
-    public static final Creator<DocumentListBean> CREATOR = new Creator<DocumentListBean>() {
-        @Override
-        public DocumentListBean createFromParcel(Parcel in) {
-            return new DocumentListBean(in);
-        }
-
-        @Override
-        public DocumentListBean[] newArray(int size) {
-            return new DocumentListBean[size];
-        }
-    };
 
     public ArrayList<DocumentImageBean> getDoc_imgs() {
         return doc_imgs;
@@ -236,20 +213,6 @@ public class DocumentListBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(uid);
-        dest.writeString(title);
-        dest.writeString(dept);
-        dest.writeString(des);
-        dest.writeString(doc_name);
-        dest.writeString(doc_url);
-        dest.writeTypedList(doc_imgs);
-        dest.writeString(status);
-        dest.writeString(ctime);
-        dest.writeString(now_uid);
-        dest.writeString(from_uid);
-        dest.writeString(new_time);
-        dest.writeString(username);
-        dest.writeString(nickname);
+
     }
 }

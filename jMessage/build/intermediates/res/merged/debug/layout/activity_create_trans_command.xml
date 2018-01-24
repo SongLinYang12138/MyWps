@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/et_target_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="username"/>
+
+    <EditText
+        android:id="@+id/et_target_appKey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="appkey"/>
+
+    <EditText
+        android:id="@+id/et_target_gid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="gid"/>
+
+    <EditText
+        android:id="@+id/et_cmd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="cmd"/>
+
+    <Button
+        android:id="@+id/bt_send_trans_command"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送"/>
+
+</LinearLayout>
