@@ -23,6 +23,7 @@ public abstract class MyBaseAdapter extends BaseAdapter{
     }
 
 
+
     @Override
     public int getCount() {
         return list.size();
@@ -43,5 +44,5 @@ public abstract class MyBaseAdapter extends BaseAdapter{
         return myView(i,view,viewGroup);
     }
 
-    public abstract View myView(int i,View view ,ViewGroup viewGroup);
+    public abstract View myView(int postition,View view ,ViewGroup viewGroup);
 }

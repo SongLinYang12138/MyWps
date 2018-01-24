@@ -32,7 +32,7 @@ public class ContactMyAdapter extends MyBaseAdapter {
 
     private class ViewHolder {
         TextView tvCapital;
-        TextView tvName;
+        TextView tvName, tvPhone, tvDepart;
         LinearLayout llCapital;
 
     }
@@ -44,9 +44,11 @@ public class ContactMyAdapter extends MyBaseAdapter {
 
         if (view == null) {
             holder = new ViewHolder();
-            view = LayoutInflater.from(context).inflate(R.layout.listview_item_contact_layout, viewGroup,false);
+            view = LayoutInflater.from(context).inflate(R.layout.listview_item_contact_layout, viewGroup, false);
             holder.tvCapital = (TextView) view.findViewById(R.id.contact_tv_capital);
             holder.tvName = (TextView) view.findViewById(R.id.contact_tv_name);
+            holder.tvDepart = (TextView) view.findViewById(R.id.contact_tv_num);
+            holder.tvPhone = (TextView) view.findViewById(R.id.contact_tv_phone);
             holder.llCapital = (LinearLayout) view.findViewById(R.id.contact_ll_capital);
             view.setTag(holder);
         } else {
@@ -57,13 +59,14 @@ public class ContactMyAdapter extends MyBaseAdapter {
         if (exitContact.contains(info.getCapital())) {
 
             holder.llCapital.setVisibility(View.GONE);
-        }else {
+        } else {
             exitContact.add(info.getCapital());
             holder.llCapital.setVisibility(View.VISIBLE);
             holder.tvCapital.setText(info.getCapital());
         }
-        holder.tvName.setText(info.getName());
-
+        holder.tvName.setText(info.getUsername());
+        holder.tvDepart.setText(info.getDept_name());
+        holder.tvPhone.setText(info.getMobile());
         return view;
     }
 }

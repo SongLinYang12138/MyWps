@@ -23,10 +23,11 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity {
     private LinearLayout llRoot;
 
-    TextView tvBack;
-    TextView tvTitle;
-    TextView tvRight;
-    LinearLayout llBack;
+    private TextView tvBack;
+    private TextView tvTitle;
+    private TextView tvRight;
+    private LinearLayout llBack;
+    private RelativeLayout rlCotent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
         findView();
-
+        initData();
+        initView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -54,6 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         tvRight = (TextView) findViewById(R.id.title_tv_right);
         llRoot = (LinearLayout) findViewById(R.id.ll_basetitle_root);
         llBack = (LinearLayout) findViewById(R.id.title_ll_back);
+        rlCotent = (RelativeLayout) findViewById(R.id.tittle_rl_content);
 
         llBack.setVisibility(View.INVISIBLE);
         tvTitle.setVisibility(View.INVISIBLE);
@@ -70,6 +73,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (CommonUtil.isNotEmpty(back)) tvBack.setText(back);
         if (click != null) llBack.setOnClickListener(click);
 
+    }
+
+    public void setTitleContent(int visible) {
+        rlCotent.setVisibility(visible);
     }
 
     public void setTitleText(String text) {
@@ -121,8 +128,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         lp.addRule(RelativeLayout.BELOW, R.id.ll_basetitle_root);
         if (null != llRoot)
             llRoot.addView(view, lp);
-        initData();
-        initView();
+
     }
 
 

@@ -7,6 +7,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
+import cn.jpush.android.api.JPushInterface;
+
 
 /**
  * Created by Administrator on 2017/12/23 0023.
@@ -28,5 +30,9 @@ public class MyApplication extends Application {
                 .diskCacheFileCount(100)
                 .build();
         ImageLoader.getInstance().init(config);
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
+int myALias = 3;
+        JPushInterface.getAlias(this,myALias);
     }
 }

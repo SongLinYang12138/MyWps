@@ -64,7 +64,7 @@ public class WritingPadView extends View {
     /**
      * 前景色
      */
-    private int mPenColor = getResources().getColor(R.color.rect_orange);
+    private int mPenColor = Color.BLACK;
     /**
      * 背景色（指最终签名结果文件的背景颜色，默认为透明色）
      */
@@ -177,18 +177,9 @@ public class WritingPadView extends View {
         if (cacheCanvas != null) {
             isTouched = false;
             //更新画板信息
-            mGesturePaint.setAntiAlias(true);
-            //设置签名笔画样式
-            mGesturePaint.setStyle(Paint.Style.STROKE);
-            //设置笔画宽度
-            mGesturePaint.setStrokeWidth(mPaintWidth);
-            //设置签名颜色
             mGesturePaint.setColor(mPenColor);
-
-            cachebBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-            cacheCanvas = new Canvas(cachebBitmap);
-            cacheCanvas.drawColor(mBackColor);
-
+            cacheCanvas.drawColor(mBackColor, PorterDuff.Mode.CLEAR);
+            mGesturePaint.setColor(mPenColor);
             invalidate();
         }
     }

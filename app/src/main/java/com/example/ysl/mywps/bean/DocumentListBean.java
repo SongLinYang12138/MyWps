@@ -1,16 +1,17 @@
 package com.example.ysl.mywps.bean;
 
-import com.google.gson.Gson;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.ArrayList;
 
 /**
  * Created by ysl on 2018/1/18.
  */
 
-public class DocumentListBean {
+public class DocumentListBean implements Parcelable {
 
 
 //    {
@@ -43,7 +44,7 @@ public class DocumentListBean {
     private String des;
     private String doc_name;
     private String doc_url;
-    private DocumentImageBean doc_imgs;
+    private ArrayList<DocumentImageBean> doc_imgs;
     private String status;
     private String ctime;
     private String now_uid;
@@ -52,7 +53,59 @@ public class DocumentListBean {
     private String username;
     private String nickname;
     private Object realname;
+    private String proce_id;
+//"status":"1","ctime":"2018-01-16 16:47:17","now_uid":"2","from_uid":"2",
+// "n_time":"2018-01-16 16:47:19","is_writable":0,"username":"18688654475","nickname":"系统消息","realname":null},
 
+    public DocumentListBean() {
+
+    }
+
+    public String getProce_id() {
+        return proce_id;
+    }
+
+    public void setProce_id(String proce_id) {
+        this.proce_id = proce_id;
+    }
+
+    protected DocumentListBean(Parcel in) {
+        id = in.readString();
+        uid = in.readString();
+        title = in.readString();
+        dept = in.readString();
+        des = in.readString();
+        doc_name = in.readString();
+        doc_url = in.readString();
+        doc_imgs = in.createTypedArrayList(DocumentImageBean.CREATOR);
+        status = in.readString();
+        ctime = in.readString();
+        now_uid = in.readString();
+        from_uid = in.readString();
+        new_time = in.readString();
+        username = in.readString();
+        nickname = in.readString();
+    }
+
+    public static final Creator<DocumentListBean> CREATOR = new Creator<DocumentListBean>() {
+        @Override
+        public DocumentListBean createFromParcel(Parcel in) {
+            return new DocumentListBean(in);
+        }
+
+        @Override
+        public DocumentListBean[] newArray(int size) {
+            return new DocumentListBean[size];
+        }
+    };
+
+    public ArrayList<DocumentImageBean> getDoc_imgs() {
+        return doc_imgs;
+    }
+
+    public void setDoc_imgs(ArrayList<DocumentImageBean> doc_imgs) {
+        this.doc_imgs = doc_imgs;
+    }
 
     public String getId() {
         return id;
@@ -173,5 +226,30 @@ public class DocumentListBean {
 
     public void setRealname(Object realname) {
         this.realname = realname;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(uid);
+        dest.writeString(title);
+        dest.writeString(dept);
+        dest.writeString(des);
+        dest.writeString(doc_name);
+        dest.writeString(doc_url);
+        dest.writeTypedList(doc_imgs);
+        dest.writeString(status);
+        dest.writeString(ctime);
+        dest.writeString(now_uid);
+        dest.writeString(from_uid);
+        dest.writeString(new_time);
+        dest.writeString(username);
+        dest.writeString(nickname);
     }
 }

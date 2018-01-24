@@ -8,6 +8,7 @@
     android:fitsSystemWindows="true">
 
     <RelativeLayout
+        android:id="@+id/tittle_rl_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tool_bar"

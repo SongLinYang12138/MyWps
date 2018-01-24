@@ -9,10 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/myprogress"
-        android:progress="20"
         android:max="100"
         />
     <RelativeLayout
+        android:id="@+id/wpcdetail_rl_loading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/padding_small"
@@ -30,24 +30,34 @@
             />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/wpcdetail_rl_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="7"
         >
-        <ImageView
+
+        <ListView
+            android:id="@+id/wpcdetail_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@mipmap/wpcdetail"
-            />
+            android:background="@color/stay_back"
+            android:dividerHeight="0dp"
+            android:divider="@android:color/transparent"
+            >
+
+
+        </ListView>
+
 
         <com.example.ysl.mywps.ui.view.MoviewImage
             android:id="@+id/wpcdetail_iv_icon"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@mipmap/filetype"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:background="@drawable/dash1dp"
             android:padding="5dp"
+            android:alpha="0.2"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_alignParentBottom="true"
             />
     </RelativeLayout>

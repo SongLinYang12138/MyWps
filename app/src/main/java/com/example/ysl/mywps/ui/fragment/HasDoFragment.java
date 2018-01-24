@@ -26,7 +26,7 @@ public class HasDoFragment extends BaseFragment {
     ListView listView;
 
     private ArrayList<String> list = new ArrayList<>();
-    private StayDoAdapter adapter;
+//    private StayDoAdapter adapter;
 
     @Override
     public View setView(LayoutInflater inflater, ViewGroup container) {
@@ -38,8 +38,8 @@ public class HasDoFragment extends BaseFragment {
         for (int i = 0; i < 3; ++i) {
             list.add(" " + i);
         }
-        adapter = new StayDoAdapter(getActivity(), list);
-        listView.setAdapter(adapter);
+//        adapter = new StayDoAdapter(getActivity(), list);
+//        listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

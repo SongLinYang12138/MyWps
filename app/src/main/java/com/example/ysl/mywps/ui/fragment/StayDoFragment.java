@@ -1,6 +1,7 @@
 package com.example.ysl.mywps.ui.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,20 @@ import android.widget.ListView;
 
 import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.bean.DocumentListBean;
+import com.example.ysl.mywps.net.HttpUtl;
 import com.example.ysl.mywps.ui.activity.WpcDetailActivity;
 import com.example.ysl.mywps.ui.adapter.StayDoAdapter;
+import com.example.ysl.mywps.utils.CommonSetting;
+import com.example.ysl.mywps.utils.CommonUtil;
+import com.example.ysl.mywps.utils.SharedPreferenceUtils;
+import com.google.gson.Gson;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.orhanobut.logger.Logger;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -19,11 +32,12 @@ import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Administrator on 2018/1/14 0014.
@@ -31,11 +45,16 @@ import io.reactivex.schedulers.Schedulers;
 
 public class StayDoFragment extends BaseFragment {
 
+    private static final int PAGE_SIZE = 20;
+
+
     @BindView(R.id.stay_to_listview)
-    ListView listView;
+    PullToRefreshListView listView;
     private StayDoAdapter adapter;
     private ArrayList<String> list = new ArrayList<>();
+    private int pageNUmber = 1;
     private ArrayList<DocumentListBean> documents = new ArrayList<>();
+    private boolean isLoadMore = false;
 
     @Override
     public View setView(LayoutInflater inflater, ViewGroup container) {
@@ -45,7 +64,7 @@ public class StayDoFragment extends BaseFragment {
         for (int i = 0; i < 3; ++i) {
             list.add(" " + i);
         }
-        adapter = new StayDoAdapter(getActivity(), list);
+        adapter = new StayDoAdapter(getActivity(), documents);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -53,42 +72,118 @@ public class StayDoFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(getActivity(), WpcDetailActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("documentben", documents.get((int)id));
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
+
+        documents.clear();
+        isLoadMore = false;
+        netWork();
         return view;
     }
 
-    @Override
-    public void afterView(View view) {
-
-
-    }
-
-    @Override
-    public void setKindFlag(int kindFlag) {
-
-
-    }
-//    User/Oa/doc_list
     private void netWork() {
+
+        if (isLoadMore) {
+            documents.clear();
+        }
 
         Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
-            public void subscribe(@NonNull ObservableEmitter<String> observableEmitter) throws Exception {
+            public void subscribe(final ObservableEmitter<String> emitter) throws Exception {
+                String token = SharedPreferenceUtils.loginValue(getActivity(), "token");
+                Logger.i("token  " + token + "  " + CommonSetting.HTTP_TOKEN);
+                Call<String> call = HttpUtl.documentList("User/Oa/doc_list/", token, pageNUmber + "", PAGE_SIZE + "");
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+
+                        String data = response.body();
+                        Logger.i("stay " + data);
+                        try {
+                            JSONObject jsonObject = new JSONObject(data);
+                            int code = jsonObject.getInt("code");
+                            String msg = jsonObject.getString("msg");
+                            if (code != 0) {
+                                emitter.onNext(msg);
+                            }
+//                            String datas = jsonObject.getString("data");
+                            JSONObject childeObject = jsonObject.getJSONObject("data");
+                            int total = childeObject.getInt("total");
+                            JSONArray array = childeObject.getJSONArray("list");
+
+                            Gson gson = new Gson();
+                            for (int i = 0; i < array.length(); ++i) {
+                                JSONObject child = array.getJSONObject(i);
+                                DocumentListBean document = gson.fromJson(child.toString(), DocumentListBean.class);
+                                documents.add(document);
+                            }
+                            emitter.onNext("Y");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        emitter.onNext(t.getMessage());
+                    }
+                });
 
             }
         });
 
         Consumer<String> observer = new Consumer<String>() {
             @Override
-            public void accept(String s) throws Exception {
+            public void accept(String s) {
+
+                if (s.equals("Y")) {
+
+                    adapter.updateList(documents);
+
+                } else {
+                    CommonUtil.showShort(getActivity(), s);
+                }
+//                Logger.i("等待事项  " + s);
+
 
             }
+
         };
+
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
+
+
+    }
+
+    @Override
+    public void afterView(View view) {
+        listView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+
+        listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                Logger.i("Stay downto");
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                Logger.i("staqqy  upto");
+            }
+        });
+    }
+
+    @Override
+    public void setKindFlag(int kindFlag) {
 
     }
 }

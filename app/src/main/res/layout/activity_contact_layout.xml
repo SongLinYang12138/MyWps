@@ -10,7 +10,7 @@
         android:id="@+id/contact_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/text_gray"
+        android:divider="@color/stay_back"
         android:dividerHeight="1dp"></ListView>
 
 </LinearLayout>

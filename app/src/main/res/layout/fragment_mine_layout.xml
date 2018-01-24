@@ -2,26 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/top_search_back"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white_back"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:background="@drawable/rect_white"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/margin_small"
-        android:paddingLeft="@dimen/margin_small"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
         android:paddingRight="@dimen/margin_small"
-        android:paddingTop="@dimen/margin_small">
+        android:paddingLeft="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingTop="@dimen/margin_small"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,36 +40,36 @@
                 android:textSize="40sp" />
 
         </RelativeLayout>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:text="张耀"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:textColor="@color/text_black"
             android:textSize="@dimen/text_large" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:background="@color/top_search_back"
             android:layout_marginTop="@dimen/margin_small"
-            android:background="@color/top_search_back"></RelativeLayout>
+            ></RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/margin_small"
-            android:paddingLeft="@dimen/margin_small"
             android:paddingRight="@dimen/margin_small"
-            android:paddingTop="@dimen/margin_small">
-
+            android:paddingLeft="@dimen/margin_small"
+            android:paddingBottom="@dimen/margin_small"
+            android:paddingTop="@dimen/margin_small"
+            >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:text="我的名片"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:textColor="@color/text_gray"
                 android:textSize="@dimen/text_small" />
 
@@ -86,7 +87,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/padding_large"
+        android:layout_marginBottom="@dimen/padding_large"
         android:background="@color/white_back"
         android:paddingBottom="@dimen/margin_small"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -136,8 +138,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/arrow" />
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white_back"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small"
         android:paddingBottom="@dimen/margin_small"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -183,11 +191,17 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/arrow" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white_back"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
         android:paddingBottom="@dimen/margin_small"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -233,12 +247,17 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/arrow" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:background="@color/white_back"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small"
         android:paddingBottom="@dimen/margin_small"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -283,31 +302,40 @@
             android:textSize="@dimen/icon_normal" />
 
     </RelativeLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0.1dp"
+        android:background="@color/arrow" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        >
 
         <RelativeLayout
-            android:id="@+id/mine_rl_bottom"
+            android:id="@+id/mine_rl_loginout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_small"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:background="@drawable/rect_red"
-            android:paddingBottom="@dimen/padding_small"
-            android:paddingTop="@dimen/padding_small">
-
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text="退出登录 "
                 android:layout_centerInParent="true"
-                android:text="退出登陆"
                 android:textColor="@color/white_back"
-                android:textSize="@dimen/text_normal" />
-        </RelativeLayout>
+                android:textSize="@dimen/text_large" />
 
+
+        </RelativeLayout>
     </RelativeLayout>
+
 </LinearLayout>

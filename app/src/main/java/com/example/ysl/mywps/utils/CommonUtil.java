@@ -24,11 +24,19 @@ public class CommonUtil {
     public static String myPath;
 
     public static void showShort(Context context, String msg) {
+
+
+        if(isEmpty(msg)){
+            return;
+        }
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
     public static void showLong(Context context, String msg) {
 
+        if(isEmpty(msg)){
+            return;
+        }
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 

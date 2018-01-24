@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white_back"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -13,14 +14,15 @@
 
         <ImageView
             android:id="@+id/commit_iv_delete"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@mipmap/delete" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:paddingBottom="@dimen/padding_small"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/padding_small">
@@ -76,36 +78,37 @@
         android:paddingTop="@dimen/padding_small">
 
         <EditText
+            android:id="@+id/commit_et_opinion"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:background="@drawable/rect_white"
-            android:hint="请填写审核意见"
             android:gravity="top"
-            android:paddingTop="@dimen/text_small"
+            android:hint="请填写审核意见"
             android:paddingLeft="@dimen/padding_small"
+            android:paddingTop="@dimen/text_small"
             android:textSize="@dimen/text_small" />
 
     </RelativeLayout>
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-    android:layout_marginRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/padding_small"
-    android:paddingBottom="@dimen/padding_small"
-    android:layout_marginTop="@dimen/activity_horizontal_margin"
-     android:background="@drawable/rect_red"
-    >
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/commit_rl_upload"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_normal"
-        android:textColor="@color/white_back"
-        android:text="提交"
-        android:layout_centerInParent="true"
-        />
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:background="@drawable/rect_red"
+        android:paddingBottom="@dimen/padding_small"
+        android:paddingTop="@dimen/padding_small">
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="提交"
+            android:textColor="@color/white_back"
+            android:textSize="@dimen/text_normal" />
+
+    </RelativeLayout>
 
 </LinearLayout>

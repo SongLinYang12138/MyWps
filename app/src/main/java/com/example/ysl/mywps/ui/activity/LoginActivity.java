@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.example.ysl.mywps.R;
+import com.example.ysl.mywps.utils.CommonSetting;
 import com.example.ysl.mywps.utils.CommonUtil;
 import com.example.ysl.mywps.net.HttpUtl;
 import com.example.ysl.mywps.utils.NoDoubleClickListener;
@@ -19,15 +20,10 @@ import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-//import okhttp3.FormBody;
-//import okhttp3.OkHttpClient;
-//import okhttp3.Request;
-//import okhttp3.RequestBody;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
@@ -55,7 +51,6 @@ public class LoginActivity extends BaseActivity {
     private MyclickListener clik = new MyclickListener();
     private SharedPreferences preferences;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,30 +68,6 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
-    }
-
-    public void login(final ObservableEmitter<String> emitter) {
-
-        Call<String> call = HttpUtl.login("User/Login/user_login/", name, password, identity);
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-
-//                Logger.i(" " + response.body().toString());
-                emitter.onNext(response.body().toString());
-                call.cancel();
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable throwable) {
-
-//                Logger.i(" \n " + throwable.getMessage());
-                emitter.onNext(throwable.getMessage());
-                call.cancel();
-            }
-        });
-
 
     }
 
@@ -118,6 +89,10 @@ public class LoginActivity extends BaseActivity {
         String passowrd = preferences.getString("password", "");
         identity = preferences.getString("identity", "");
         String token = preferences.getString("token", "");
+        CommonSetting.HTTP_TOKEN = token;
+        if (CommonUtil.isNotEmpty(token)) {
+            loginSuccess();
+        }
         if (CommonUtil.isEmpty(identity)) {
             havIdentity = false;
         } else {
@@ -129,67 +104,94 @@ public class LoginActivity extends BaseActivity {
         if (CommonUtil.isNotEmpty(passowrd)) {
             etPassword.setText(passowrd);
         }
-        if (CommonUtil.isNotEmpty(token)) {
-            loginSuccess();
-        }
 
     }
 
+
+    public void login(final ObservableEmitter<String> emitter) {
+
+        Call<String> call = HttpUtl.login("User/Login/user_login/", name, password, identity);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+                emitter.onNext(response.body().toString());
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable throwable) {
+                emitter.onNext(throwable.getMessage());
+
+            }
+        });
+
+    }
 
     private void doLogin() {
 
         Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
-            public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Exception {
+            public void subscribe(ObservableEmitter<String> e) throws Exception {
 
-                login(emitter);
+                login(e);
             }
         });
 
-        Consumer<String> consumer = new Consumer<String>() {
+        Consumer<String> observer = new Consumer<String>() {
             @Override
             public void accept(String s) {
-
-                Logger.i("accept  " + s);
-                JSONObject object = null;
+//
+//                {
+//                    "code": 0,
+//                        "msg": "登录成功",
+//                        -"data": {
+//                    "token": "94721ad0fb81a31b4fad59808097f290d521fd2a"
+//                }
+//                }
+                Logger.i("登录  " + s);
                 try {
-                    object = new JSONObject(s);
+                    JSONObject object = new JSONObject(s);
+
                     int code = object.getInt("code");
-                    CommonUtil.showLong(getApplicationContext(), object.getString("msg"));
+                    String msg = object.getString("msg");
 
-                    JSONObject object1 = object.getJSONObject("data");
+                    CommonUtil.showShort(getApplicationContext(), msg);
+                    JSONObject childObject = object.getJSONObject("data");
+                    if (childObject.has("token")) {
 
-                    if (code == 0) {
-                        String token = object1.getString("token");
+
+                        String token = childObject.getString("token");
+
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("token", token);
                         editor.commit();
                         loginSuccess();
                     }
 
+
                 } catch (JSONException e) {
                     e.printStackTrace();
+
                     CommonUtil.showLong(getApplicationContext(), s);
                 }
 
 
             }
-
         };
-
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(consumer);
+                .subscribe(observer);
 
     }
-
 
     private void loginSuccess() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
+
 
     private class MyclickListener extends NoDoubleClickListener {
 

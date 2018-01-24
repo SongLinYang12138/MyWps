@@ -1,11 +1,12 @@
 package com.example.ysl.mywps.ui.activity;
 
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -41,8 +42,8 @@ public class StayToDoActivity extends AppCompatActivity {
     private HasDoFragment doFragment;
     private Fragment currentFragment;
     private MyclickListener click = new MyclickListener();
-    private int currentIndex = 0;
-    private float x1, x2;
+    private ColorStateList normal,selected;
+    private Drawable selctedBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class StayToDoActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_stay_to_do_layout);
         ButterKnife.bind(this);
+
 
         initData();
         llBack.setOnClickListener(new View.OnClickListener() {
@@ -62,43 +64,16 @@ public class StayToDoActivity extends AppCompatActivity {
 
     private void initData() {
 
+        normal = getResources().getColorStateList(R.color.white_back);
+        selected = getResources().getColorStateList(R.color.text_black);
+        selctedBack = getResources().getDrawable(R.drawable.rect_white);
+
+
         fragmentManager = getSupportFragmentManager();
         tvStay.setOnClickListener(click);
         tvHave.setOnClickListener(click);
         showFragment(1);
     }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-
-        if (MotionEvent.ACTION_DOWN == event.getAction()) {
-            x1 = event.getX();
-        }
-        if (MotionEvent.ACTION_UP == event.getAction()) {
-            x2 = event.getX();
-            float value = x2 - x1;
-            if (Math.abs(value) > 100) {
-
-//                direction 0 right 1 left
-                //菜单朝左滑动
-                if (value < 0) {
-
-                    if (currentIndex != 1) {
-                        showFragment(1);
-                    }
-                } else {
-//                    菜单向右移
-                    if (currentIndex != 2) {
-                        showFragment(2);
-                    }
-                }
-            }
-        }
-        return false;
-
-    }
-
 
     private void showFragment(int position) {
         beginTransaction = fragmentManager.beginTransaction();
@@ -106,6 +81,11 @@ public class StayToDoActivity extends AppCompatActivity {
         switch (position) {
 
             case 1:
+
+                tvStay.setTextColor(selected);
+                tvHave.setTextColor(normal);
+                tvStay.setBackground(selctedBack);
+                tvHave.setBackgroundResource(R.color.tool_bar);
 
                 if (stayFragment == null) {
 
@@ -119,6 +99,12 @@ public class StayToDoActivity extends AppCompatActivity {
                 currentFragment = stayFragment;
                 break;
             case 2:
+
+                tvStay.setTextColor(normal);
+                tvHave.setTextColor(selected);
+                tvStay.setBackgroundResource(R.color.tool_bar);
+                tvHave.setBackground(selctedBack);
+
 
                 if (doFragment == null) {
 
