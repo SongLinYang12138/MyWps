@@ -31,6 +31,7 @@ import com.example.ysl.mywps.ui.fragment.MineFragment;
 import com.example.ysl.mywps.ui.fragment.WorkFragment;
 import com.example.ysl.mywps.utils.CommonUtil;
 import com.example.ysl.mywps.utils.NoDoubleClickListener;
+import com.orhanobut.logger.Logger;
 
 import org.w3c.dom.Text;
 
@@ -40,6 +41,8 @@ import java.io.IOException;
 import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.JPushMessage;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -86,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
     private MyclickListener myclickListener;
     private float x1, x2;
     private int currentIndex = 0;
-//    公文流转  内部公文 代办事项   流程 调专业版
+
+    //    公文流转  内部公文 代办事项   流程 调专业版
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,8 +119,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     private void setTextBack(int index) {
 
         switch (index) {
@@ -127,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 tvWork.setTextColor(colorNomal);
                 tvMine.setTextColor(colorNomal);
 
-              ibMessage.setBackground(getResources().getDrawable(R.mipmap.icon_message_selected));
+                ibMessage.setBackground(getResources().getDrawable(R.mipmap.icon_message_selected));
                 ibWork.setBackground(getResources().getDrawable(R.mipmap.icon_work_normal));
                 ibContact.setBackground(getResources().getDrawable(R.mipmap.icon_contact_normal));
                 ibMine.setBackground(getResources().getDrawable(R.mipmap.icon_mine_normal));
@@ -224,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
                     messageFragment = new MessageFragment();
                     transaction.add(R.id.main_rl_container, messageFragment);
                 } else {
-                    if (messageFragment.isHidden()) transaction.show(messageFragment);
+                    transaction.show(messageFragment);
 
                 }
                 currentFrament = messageFragment;
@@ -237,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
                     transaction.add(R.id.main_rl_container, workFragment);
                 } else {
 
-                    if (workFragment.isHidden()) transaction.show(workFragment);
+                    transaction.show(workFragment);
 
                 }
                 currentFrament = workFragment;
@@ -251,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                     transaction.add(R.id.main_rl_container, contactFragment);
                 } else {
 
-                    if (contactFragment.isHidden()) transaction.show(contactFragment);
+                    transaction.show(contactFragment);
 
                 }
                 currentFrament = contactFragment;
@@ -264,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
                     transaction.add(R.id.main_rl_container, mineFragment);
                 } else {
 
-                    if (mineFragment.isHidden()) transaction.show(mineFragment);
+                    transaction.show(mineFragment);
 
                 }
                 currentFrament = mineFragment;
@@ -287,22 +289,19 @@ public class MainActivity extends AppCompatActivity {
 
             int id = v.getId();
 
-            if(id == R.id.main_ll_message || id == R.id.main_ib_message){
+            if (id == R.id.main_ll_message || id == R.id.main_ib_message) {
 
                 showMessage(1);
-            }else if(id == R.id.main_ll_work || id == R.id.main_ib_work){
+            } else if (id == R.id.main_ll_work || id == R.id.main_ib_work) {
 
                 showMessage(2);
-            }else if(id == R.id.main_ll_contact || id == R.id.main_ib_contact){
+            } else if (id == R.id.main_ll_contact || id == R.id.main_ib_contact) {
 
                 showMessage(3);
-            }else if(id == R.id.main_ll_mine || id == R.id.main_ib_mine){
+            } else if (id == R.id.main_ll_mine || id == R.id.main_ib_mine) {
 
                 showMessage(4);
             }
-
-
-
 
 
         }

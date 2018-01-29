@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -73,6 +74,7 @@ public class LoginActivity extends BaseActivity {
 
 
     private void saveLogin() {
+
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("name", name);
@@ -204,8 +206,10 @@ public class LoginActivity extends BaseActivity {
 
                     name = etPhone.getText().toString();
                     password = etPassword.getText().toString();
-                    if (!havIdentity) identity = CommonUtil.getAndroidId(LoginActivity.this);
-
+                    havIdentity = false;
+                    if (!havIdentity)
+                        identity = JPushInterface.getRegistrationID(LoginActivity.this);
+                    Logger.i("identity  " + identity);
                     if (CommonUtil.isEmpty(name)) {
                         CommonUtil.showShort(LoginActivity.this, "请填写手机号");
                         return;

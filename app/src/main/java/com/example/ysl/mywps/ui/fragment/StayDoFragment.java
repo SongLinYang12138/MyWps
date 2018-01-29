@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.orhanobut.logger.Logger;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,6 +51,9 @@ public class StayDoFragment extends BaseFragment {
 
     @BindView(R.id.stay_to_listview)
     PullToRefreshListView listView;
+    @BindView(R.id.av_loading)
+    AVLoadingIndicatorView loading;
+
     private StayDoAdapter adapter;
     private ArrayList<String> list = new ArrayList<>();
     private int pageNUmber = 1;
@@ -61,9 +65,7 @@ public class StayDoFragment extends BaseFragment {
 
         View view = inflater.inflate(R.layout.frament_stay_to_do_layout, container, false);
         ButterKnife.bind(this, view);
-        for (int i = 0; i < 3; ++i) {
-            list.add(" " + i);
-        }
+
         adapter = new StayDoAdapter(getActivity(), documents);
         listView.setAdapter(adapter);
 
@@ -74,7 +76,7 @@ public class StayDoFragment extends BaseFragment {
                 Intent intent = new Intent(getActivity(), WpcDetailActivity.class);
 
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("documentben", documents.get((int)id));
+                bundle.putParcelable("documentben", documents.get((int) id));
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -83,6 +85,7 @@ public class StayDoFragment extends BaseFragment {
         documents.clear();
         isLoadMore = false;
         netWork();
+        pageNUmber = 1;
         return view;
     }
 
@@ -91,7 +94,7 @@ public class StayDoFragment extends BaseFragment {
         if (isLoadMore) {
             documents.clear();
         }
-
+     if(!isLoadMore)   loading.setVisibility(View.VISIBLE);
         Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(final ObservableEmitter<String> emitter) throws Exception {
@@ -110,11 +113,15 @@ public class StayDoFragment extends BaseFragment {
                             String msg = jsonObject.getString("msg");
                             if (code != 0) {
                                 emitter.onNext(msg);
+                                isLoadMore = true;
+                            }else {
+                                isLoadMore = false;
                             }
 //                            String datas = jsonObject.getString("data");
                             JSONObject childeObject = jsonObject.getJSONObject("data");
                             int total = childeObject.getInt("total");
                             JSONArray array = childeObject.getJSONArray("list");
+
 
                             Gson gson = new Gson();
                             for (int i = 0; i < array.length(); ++i) {
@@ -125,10 +132,9 @@ public class StayDoFragment extends BaseFragment {
                             emitter.onNext("Y");
 
                         } catch (JSONException e) {
+                            isLoadMore = false;
                             e.printStackTrace();
                         }
-
-
                     }
 
                     @Override
@@ -143,6 +149,8 @@ public class StayDoFragment extends BaseFragment {
         Consumer<String> observer = new Consumer<String>() {
             @Override
             public void accept(String s) {
+                finishLoad();
+                loading.setVisibility(View.GONE);
 
                 if (s.equals("Y")) {
 
@@ -167,7 +175,7 @@ public class StayDoFragment extends BaseFragment {
 
     @Override
     public void afterView(View view) {
-        listView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        listView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
 
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
@@ -178,8 +186,24 @@ public class StayDoFragment extends BaseFragment {
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
                 Logger.i("staqqy  upto");
+                if (isLoadMore) {
+                    ++pageNUmber;
+                    netWork();
+                } else {
+                    finishLoad();
+                }
             }
         });
+    }
+
+    private void finishLoad() {
+        listView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                listView.onRefreshComplete();
+
+            }
+        }, 1000);
     }
 
     @Override

@@ -11,6 +11,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     >
     <TextView
+        android:id="@+id/flow_tv_date"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:text="8月24日14:24"
@@ -29,15 +30,18 @@
         android:layout_height="30dp"
         android:background="@color/text_black"
         />
+
+
     <ImageView
+        android:id="@+id/flow_item_iv_circle"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:src="@mipmap/point"
-        android:layout_marginTop="-10dp"
+        android:background="@drawable/circle_gray"
+        android:layout_marginTop="-5dp"
         />
 
     <RelativeLayout
-        android:layout_marginTop="-5dp"
+        android:layout_marginTop="-1dp"
         android:layout_width="0.5dp"
         android:layout_height="80dp"
         android:background="@color/text_black"
@@ -71,6 +75,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/flow_tv_leader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="领导-0"
@@ -81,16 +86,23 @@
 
 
             <TextView
+                android:id="@+id/flow_tv_stage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="拟文阶段"
                 android:textColor="@color/rect_red"
                 android:textSize="@dimen/text_large"
+                android:paddingTop="@dimen/padding_small"
+                android:paddingBottom="@dimen/padding_small"
+                android:paddingLeft="@dimen/paddingVertical"
+                android:paddingRight="@dimen/paddingVertical"
+                android:background="@drawable/red_rect"
                 android:layout_alignParentRight="true"
                 />
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/flow_tv_opinion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"

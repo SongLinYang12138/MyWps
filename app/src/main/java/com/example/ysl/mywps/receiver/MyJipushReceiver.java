@@ -14,6 +14,7 @@ import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by ysl on 2018/1/23.
+ * 获取极光通知
  */
 
 public class MyJipushReceiver extends BroadcastReceiver {

@@ -36,13 +36,19 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
         findView();
-        initData();
-        initView();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
+        initView();
     }
 
     public abstract void initView();

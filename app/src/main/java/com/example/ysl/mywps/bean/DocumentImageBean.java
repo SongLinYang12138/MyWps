@@ -77,6 +77,10 @@ public class DocumentImageBean implements Parcelable {
 //
 // {"id":"2","uid":"2","title":"1231","dept":"123123","des":"123123","doc_name":"2_测试中文.docx","doc_url":"http:\/\/p2c152618.bkt.clouddn.com\/2_测试中文.docx",
 //
-//                "doc_imgs":[{"page":1,"img":"http:\/\/p2c152618.bkt.clouddn.com\/2_测试中文.docx_1.png"},{"page":2,"img":"http:\/\/p2c152618.bkt.clouddn.com\/2_测试中文.docx_2.png"},{"page":3,"img":"http:\/\/p2c152618.bkt.clouddn.com\/2_测试中文.docx_3.png"}],"status":"1","ctime":"2018-01-16 16:55:52","now_uid":"2","from_uid":"2","n_time":"2018-01-16 17:32:34","is_writable":0,"username":"18688654475","nickname":"系统消息","realname":null}]}}
+//                "doc_imgs":[{"page":1,"img":"http:\/\/p2c152618.bkt.clouddn.com\/2_测试中文.docx_1.png"},
+// {"page":2,"img":"http:\/\/p2c152618.bkt.clouddn.com\/2_测试中文.docx_2.png"},
+// {"page":3,"img":"http:\/\/p2c152618.bkt.clouddn.com\/2_测试中文.docx_3.png"}],
+// "status":"1","ctime":"2018-01-16 16:55:52","now_uid":"2","from_uid":"2",
+// "n_time":"2018-01-16 17:32:34","is_writable":0,"username":"18688654475","nickname":"系统消息","realname":null}]}}
 
 }

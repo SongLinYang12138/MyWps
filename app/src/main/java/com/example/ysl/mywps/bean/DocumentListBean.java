@@ -3,15 +3,13 @@ package com.example.ysl.mywps.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.ArrayList;
 
 /**
  * Created by ysl on 2018/1/18.
  */
 
-public class DocumentListBean implements Parcelable {
+public class DocumentListBean implements Parcelable{
 
 
 //    {
@@ -36,17 +34,36 @@ public class DocumentListBean implements Parcelable {
 //            "nickname": "不知道啊",     //当前流程所属用户昵称
 //            "realname": null
 //    },
-//    {"code":0,"msg":"公文列表获取成功",
-// "data":{"total":1,"list":[
-// {"id":"1","uid":"2","title":"1231","dept":"123123","des":"123123",
-// "doc_name":"1_测试中文.docx","doc_url":"http:\/\/p2c152618.bkt.clouddn.com\/1_测试中文.docx",
-// "doc_imgs":[{"page":1,"img":"http:\/\/p2c152618.bkt.clouddn.com\/1_1_测试中文.docx_1.png"},
-// {"page":2,"img":"http:\/\/p2c152618.bkt.clouddn.com\/1_1_测试中文.docx_2.png"},
-// {"page":3,"img":"http:\/\/p2c152618.bkt.clouddn.com\/1_1_测试中文.docx_3.png"}],
-// "status":"2","ctime":"2018-01-16 16:47:17",
-// "proce_id":"34","now_uid":"209","from_uid":"216","n_time":"2018-01-24 16:46:08","is_writable":0,
-// "username":"18511234650","nickname":"吃啥好呢1222","realname":null}]
 
+
+
+
+
+    /**
+     * id : 3
+     * uid : 1
+     * title : 公文1
+     * dept : zhengxie
+     * des : 公文一发布
+     * doc_name : 3_公文1.doc
+     * doc_url : http://p2c152618.bkt.clouddn.com/3_公文1.doc?v=1517039892
+     * status : 1
+     * ctime : 2018-01-25 22:30:01
+     * proce_id : 83
+     * now_uid : 1
+     * from_uid : 1
+     * n_time : 2018-01-25 22:30:01
+     * opinion : null
+     * is_writable : 0
+     * c_username : admin
+     * c_nickname : admin
+     * c_realname : null
+     * now_username : admin
+     * now_nickname : admin
+     * now_realname : null
+     * dept_name : 政协
+     */
+    private ArrayList<DocumentImageBean> doc_imgs;
     private String id;
     private String uid;
     private String title;
@@ -54,27 +71,60 @@ public class DocumentListBean implements Parcelable {
     private String des;
     private String doc_name;
     private String doc_url;
-    private ArrayList<DocumentImageBean> doc_imgs;
     private String status;
     private String ctime;
+    private String proce_id;
     private String now_uid;
     private String from_uid;
-    private String new_time;
-    private String username;
-    private String nickname;
-    private Object realname;
-    private String proce_id;
-//"status":"1","ctime":"2018-01-16 16:47:17","now_uid":"2","from_uid":"2",
-// "n_time":"2018-01-16 16:47:19","is_writable":0,"username":"18688654475","nickname":"系统消息","realname":null},
+    private String n_time;
+    private Object opinion;
+    private int is_writable;
+    private String c_username;
+    private String c_nickname;
+    private Object c_realname;
+    private String now_username;
+    private String now_nickname;
+    private Object now_realname;
+    private String dept_name;
 
-    public DocumentListBean() {
+    public DocumentListBean(){
 
     }
 
-    public String getProce_id() {
-        return proce_id;
+    public DocumentListBean(Parcel in) {
+        doc_imgs = in.createTypedArrayList(DocumentImageBean.CREATOR);
+        id = in.readString();
+        uid = in.readString();
+        title = in.readString();
+        dept = in.readString();
+        des = in.readString();
+        doc_name = in.readString();
+        doc_url = in.readString();
+        status = in.readString();
+        ctime = in.readString();
+        proce_id = in.readString();
+        now_uid = in.readString();
+        from_uid = in.readString();
+        n_time = in.readString();
+        is_writable = in.readInt();
+        c_username = in.readString();
+        c_nickname = in.readString();
+        now_username = in.readString();
+        now_nickname = in.readString();
+        dept_name = in.readString();
     }
 
+    public static final Creator<DocumentListBean> CREATOR = new Creator<DocumentListBean>() {
+        @Override
+        public DocumentListBean createFromParcel(Parcel in) {
+            return new DocumentListBean(in);
+        }
+
+        @Override
+        public DocumentListBean[] newArray(int size) {
+            return new DocumentListBean[size];
+        }
+    };
 
     public ArrayList<DocumentImageBean> getDoc_imgs() {
         return doc_imgs;
@@ -140,7 +190,6 @@ public class DocumentListBean implements Parcelable {
         this.doc_url = doc_url;
     }
 
-
     public String getStatus() {
         return status;
     }
@@ -155,6 +204,14 @@ public class DocumentListBean implements Parcelable {
 
     public void setCtime(String ctime) {
         this.ctime = ctime;
+    }
+
+    public String getProce_id() {
+        return proce_id;
+    }
+
+    public void setProce_id(String proce_id) {
+        this.proce_id = proce_id;
     }
 
     public String getNow_uid() {
@@ -173,38 +230,85 @@ public class DocumentListBean implements Parcelable {
         this.from_uid = from_uid;
     }
 
-    public String getNew_time() {
-        return new_time;
+    public String getN_time() {
+        return n_time;
     }
 
-    public void setNew_time(String new_time) {
-        this.new_time = new_time;
+    public void setN_time(String n_time) {
+        this.n_time = n_time;
     }
 
-    public String getUsername() {
-        return username;
+    public Object getOpinion() {
+        return opinion;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setOpinion(Object opinion) {
+        this.opinion = opinion;
     }
 
-    public String getNickname() {
-        return nickname;
+    public int getIs_writable() {
+        return is_writable;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setIs_writable(int is_writable) {
+        this.is_writable = is_writable;
     }
 
-    public Object getRealname() {
-        return realname;
+    public String getC_username() {
+        return c_username;
     }
 
-    public void setRealname(Object realname) {
-        this.realname = realname;
+    public void setC_username(String c_username) {
+        this.c_username = c_username;
     }
 
+    public String getC_nickname() {
+        return c_nickname;
+    }
+
+    public void setC_nickname(String c_nickname) {
+        this.c_nickname = c_nickname;
+    }
+
+    public Object getC_realname() {
+        return c_realname;
+    }
+
+    public void setC_realname(Object c_realname) {
+        this.c_realname = c_realname;
+    }
+
+    public String getNow_username() {
+        return now_username;
+    }
+
+    public void setNow_username(String now_username) {
+        this.now_username = now_username;
+    }
+
+    public String getNow_nickname() {
+        return now_nickname;
+    }
+
+    public void setNow_nickname(String now_nickname) {
+        this.now_nickname = now_nickname;
+    }
+
+    public Object getNow_realname() {
+        return now_realname;
+    }
+
+    public void setNow_realname(Object now_realname) {
+        this.now_realname = now_realname;
+    }
+
+    public String getDept_name() {
+        return dept_name;
+    }
+
+    public void setDept_name(String dept_name) {
+        this.dept_name = dept_name;
+    }
 
     @Override
     public int describeContents() {
@@ -213,6 +317,25 @@ public class DocumentListBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeTypedList(doc_imgs);
+        dest.writeString(id);
+        dest.writeString(uid);
+        dest.writeString(title);
+        dest.writeString(dept);
+        dest.writeString(des);
+        dest.writeString(doc_name);
+        dest.writeString(doc_url);
+        dest.writeString(status);
+        dest.writeString(ctime);
+        dest.writeString(proce_id);
+        dest.writeString(now_uid);
+        dest.writeString(from_uid);
+        dest.writeString(n_time);
+        dest.writeInt(is_writable);
+        dest.writeString(c_username);
+        dest.writeString(c_nickname);
+        dest.writeString(now_username);
+        dest.writeString(now_nickname);
+        dest.writeString(dept_name);
     }
 }

@@ -1,6 +1,10 @@
 package com.example.ysl.mywps.net;
 
 
+import android.util.Log;
+
+import com.example.ysl.mywps.application.MyApplication;
+import com.example.ysl.mywps.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
@@ -36,7 +40,6 @@ public class HttpUtl {
 
         String httpUrl = HTTP_URL + url;
         NetApi login = getRetrofit(httpUrl).create(NetApi.class);
-        Logger.i("document " + httpUrl);
         return login.login(name, passowrd, idetitiy);
 
     }
@@ -75,9 +78,10 @@ public class HttpUtl {
 
         File file = new File(path);
         String httpUrl = HTTP_URL + url;
-        if (file.exists()) {
 
-            Logger.i("file exists");
+        if (!file.exists()) {
+            ToastUtils.showShort(MyApplication.getMyContext(), "文件不存在");
+            Logger.i("filenotexists");
         }
         RequestBody requestFile =
                 RequestBody.create(MediaType.parse("application/otcet-stream"), file);
@@ -91,27 +95,46 @@ public class HttpUtl {
     /**
      * 提交文件领导签署
      */
-    public static Call<String> commitSign(String url, String docId, String proceId, String token, String opinion, String docName, String path) {
+    public static Call<String> commitSign(String url, String docId, String token, String docName, String path, String leaderId) {
         File file = new File(path);
+
+        if (!file.exists()) {
+            ToastUtils.showShort(MyApplication.getMyContext(), "文件不存在");
+            Logger.i("filenotexists");
+        }
         String httpUrl = HTTP_URL + url;
         RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("name", docName, requestFile);
 
         NetApi netApi = getRetrofit(httpUrl).create(NetApi.class);
-        return netApi.commitSign(docId, proceId, token, opinion, body);
+        return netApi.commitSign(docId, token, body, leaderId);
     }
 
     /**
      * 签署完成返回公文给拟稿人
-     * */
+     */
     public static Call<String> signedCommit(String url, String proceId, String docId, String opinion, String signed, String docName, String path, String token) {
 
         File file = new File(path);
+
+        if (!file.exists()) {
+            ToastUtils.showShort(MyApplication.getMyContext(), "文件不存在");
+            Logger.i("filenotexists");
+        }
         String httpUrl = HTTP_URL + url;
         RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("name", docName, requestFile);
 
         NetApi netApi = getRetrofit(httpUrl).create(NetApi.class);
         return netApi.signedCommit(proceId, docId, opinion, signed, token, body);
+    }
+
+
+    public static Call<String> getFlow(String url, String docId, String token) {
+        String httpUrl = HTTP_URL + url;
+
+        NetApi netApi = getRetrofit(httpUrl).create(NetApi.class);
+        return netApi.getFlow(docId, token);
+
     }
 }

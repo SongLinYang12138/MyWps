@@ -62,8 +62,8 @@
 
             <com.example.ysl.mywps.ui.view.MoviewImage
                 android:id="@+id/wpcdetail_iv_icon"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="151dp"
+                android:layout_height="146dp"
                 android:background="@drawable/dash1dp"
                 android:padding="5dp"
                 android:alpha="0.2"

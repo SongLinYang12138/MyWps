@@ -1,12 +1,17 @@
 package com.example.ysl.mywps.ui.adapter;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.ysl.mywps.R;
+import com.example.ysl.mywps.bean.FlowBean;
 
 import java.util.ArrayList;
 
@@ -17,12 +22,17 @@ import java.util.ArrayList;
 public class FlowAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<String> list;
+    private ArrayList<FlowBean> list;
 
-    public FlowAdapter(Context context,ArrayList<String> list){
+    public FlowAdapter(Context context, ArrayList<FlowBean> list) {
 
         this.context = context;
         this.list = list;
+    }
+
+    public void updateAdapter(ArrayList<FlowBean> list) {
+        this.list = list;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -40,11 +50,41 @@ public class FlowAdapter extends BaseAdapter {
         return position;
     }
 
+
+    private class ViewHolder {
+        TextView tvDate, tvLeader, tvStage, tvOpinion;
+        ImageView ivCircle;
+
+    }
+
+    private ViewHolder holder;
+
     @Override
     public View getView(int position, View view, ViewGroup parent) {
 
-        view = LayoutInflater.from(context).inflate(R.layout.listview_item_flow_progress_layout,null);
 
+        if (view == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.listview_item_flow_progress_layout, null);
+            holder = new ViewHolder();
+            holder.tvDate = (TextView) view.findViewById(R.id.flow_tv_date);
+            holder.tvLeader = (TextView) view.findViewById(R.id.flow_tv_leader);
+            holder.tvStage = (TextView) view.findViewById(R.id.flow_tv_stage);
+            holder.tvOpinion = (TextView) view.findViewById(R.id.flow_tv_opinion);
+            holder.ivCircle = (ImageView) view.findViewById(R.id.flow_item_iv_circle);
+            view.setTag(holder);
+        } else {
+            holder = (ViewHolder) view.getTag();
+        }
+
+        FlowBean bean = list.get(position);
+
+        holder.tvStage.setText(bean.getStatus());
+        holder.tvDate.setText(bean.getCtime());
+        holder.tvLeader.setText(bean.getUsername());
+        holder.tvOpinion.setText(bean.getOpinion());
+        if (position == list.size() - 1) {
+           holder.ivCircle.setBackground(context.getResources().getDrawable(R.drawable.circle_red));
+        }
         return view;
     }
 }

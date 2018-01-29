@@ -1,6 +1,7 @@
 package com.example.ysl.mywps.application;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -17,10 +18,12 @@ import cn.jpush.android.api.JPushInterface;
 public class MyApplication extends Application {
 
     private ImageLoaderConfiguration config;
+    private static Context context;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        context = getApplicationContext();
         Logger.addLogAdapter(new AndroidLogAdapter());
         config = new ImageLoaderConfiguration.Builder(getBaseContext())
                 .threadPoolSize(1)
@@ -32,7 +35,12 @@ public class MyApplication extends Application {
         ImageLoader.getInstance().init(config);
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
-int myALias = 3;
-        JPushInterface.getAlias(this,myALias);
+        int myALias = 3;
+        JPushInterface.getAlias(this, myALias);
+    }
+
+
+    public static Context getMyContext() {
+        return context;
     }
 }

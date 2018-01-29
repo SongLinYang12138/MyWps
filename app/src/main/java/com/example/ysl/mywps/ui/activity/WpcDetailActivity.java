@@ -11,12 +11,14 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
@@ -37,6 +39,8 @@ import android.widget.Toast;
 import com.example.ysl.mywps.BuildConfig;
 import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.bean.DocumentListBean;
+import com.example.ysl.mywps.bean.ImagePathMessage;
+import com.example.ysl.mywps.bean.WpsdetailFinish;
 import com.example.ysl.mywps.interfaces.HttpFileCallBack;
 import com.example.ysl.mywps.net.HttpUtl;
 import com.example.ysl.mywps.ui.adapter.WpsDetailAdapter;
@@ -45,6 +49,7 @@ import com.example.ysl.mywps.ui.view.WritingPadView;
 import com.example.ysl.mywps.utils.CommonUtil;
 import com.example.ysl.mywps.utils.FileUtils;
 import com.example.ysl.mywps.utils.NoDoubleClickListener;
+import com.example.ysl.mywps.utils.SharedPreferenceUtils;
 import com.example.ysl.mywps.utils.ToastUtils;
 import com.example.ysl.mywps.utils.WpsModel;
 import com.example.ysl.mywps.utils.WpsUtils;
@@ -53,8 +58,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.orhanobut.logger.Logger;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -118,6 +129,11 @@ public class WpcDetailActivity extends BaseActivity {
     private float x1, x2;
     private String uploadImagePath = "";
     private String downloadWpsPath = "";
+    private String token = "";
+    private boolean haveSigned = false;
+    private String localImagePath = "";
+
+//    提交审核后是2 文档返回给拟稿人后是5  提交文件领导签署后是3 签署完成后 成功是4 失败是五，继续提交审核
 
     private Handler handler = new Handler() {
 
@@ -155,6 +171,7 @@ public class WpcDetailActivity extends BaseActivity {
         progressBar.setVisibility(View.GONE);
         ivIcon.setVisibility(View.GONE);
         this.registerReceiver(reciver, new IntentFilter("com.example.ysl.mywps.sign"));
+        token = SharedPreferenceUtils.loginValue(this, "token");
 
         screenH = CommonUtil.getScreenWH(this)[1];
         showLeftButton(true, "", new View.OnClickListener() {
@@ -168,9 +185,12 @@ public class WpcDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(WpcDetailActivity.this, FlowActivity.class);
+                intent.putExtra("docId", documentInfo.getId());
                 startActivity(intent);
             }
         });
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         writePermission();
         afterData();
     }
@@ -206,6 +226,7 @@ public class WpcDetailActivity extends BaseActivity {
                     ivIcon.autoMouse(event);
                     return true;
                 }
+
                 return false;
             }
         });
@@ -232,7 +253,7 @@ public class WpcDetailActivity extends BaseActivity {
                 String headUrl = url.substring(0, headIndex + 1);
                 String bodyUrl = url.substring(headIndex + 1);
 
-                Logger.i("head  " + headUrl + "  body " + bodyUrl + " \n" + url);
+
                 Call<ResponseBody> call = HttpUtl.donwoldWps(headUrl, bodyUrl);
                 call.enqueue(new Callback<ResponseBody>() {
 
@@ -300,8 +321,12 @@ public class WpcDetailActivity extends BaseActivity {
 
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
-        bundle.putString(WpsModel.OPEN_MODE, WpsModel.OpenMode.NORMAL); // 打开模式
+        if (documentInfo.getIs_writable() == 1)
+            bundle.putString(WpsModel.OPEN_MODE, WpsModel.OpenMode.NORMAL); // 正常模式
+        else
+            bundle.putString(WpsModel.OPEN_MODE, WpsModel.OpenMode.READ_ONLY); // 只读模式
         bundle.putBoolean(WpsModel.SEND_CLOSE_BROAD, true); // 关闭时是否发送广播
+        bundle.putBoolean(WpsModel.SEND_SAVE_BROAD, true);//文件保存是是否发送广播
         bundle.putString(WpsModel.THIRD_PACKAGE, getPackageName()); // 第三方应用的包名，用于对改应用合法性的验证
         bundle.putBoolean(WpsModel.CLEAR_TRACE, true);// 清除打开记录
         // bundle.putBoolean(CLEAR_FILE, true); //关闭后删除打开文件
@@ -348,36 +373,142 @@ public class WpcDetailActivity extends BaseActivity {
         if (adapter == null) {
             return;
         }
+        loading.setVisibility(View.VISIBLE);
         ivIcon.setDrawingCacheEnabled(true);
-        final Bitmap forBitmap = ivIcon.getDrawingCache();
+
         final Bitmap backBitmap = adapter.getImgBitmap();
-        final float left = Math.abs(ivIcon.getX() - 50);
-        final float top = Math.abs(ivIcon.getY() - 40);
+        final float left = Math.abs(ivIcon.getX() - 80);
+        final float top = Math.abs(ivIcon.getY() - 140);
+
+        if (backBitmap == null) {
+            ToastUtils.showShort(WpcDetailActivity.this, "列表中没有图片不能上传图片");
+            return;
+        }
         Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(ObservableEmitter<String> e) {
 
                 try {
+                    Bitmap forBitmap = null;
+                    FileInputStream fis = new FileInputStream(localImagePath);
+                    forBitmap = BitmapFactory.decodeStream(fis);
+                    Matrix matrix = new Matrix();
+                    matrix.setScale(0.3f, 0.3f);
+
+                    Logger.i("压缩前  " + forBitmap.getWidth() + "  " + forBitmap.getHeight());
+                    forBitmap = Bitmap.createBitmap(forBitmap, 0, 0, forBitmap.getWidth(),
+                            forBitmap.getHeight(), matrix, true);
+                    Logger.i("压缩后  " + forBitmap.getWidth() + "  " + forBitmap.getHeight());
+
+
                     Bitmap myBitmap = toConformBitmap(backBitmap, forBitmap, left, top);
                     String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath() + "/uploadSign.png";
                     saveDownload(path, myBitmap);
                     uploadImagePath = path;
+
+                    e.onNext("保存签收图片成功");
                     e.onNext("Y");
                 } catch (Exception ex) {
-                    e.onNext("N");
+                    ex.printStackTrace();
+                    e.onNext("保存签收图片失败");
                 }
             }
         });
         Consumer<String> oberver = new Consumer<String>() {
             @Override
             public void accept(String s) throws Exception {
-
+                loading.setVisibility(View.GONE);
+                if (s.equals("Y")) {
+                    signCompleted();
+                }
                 ToastUtils.showShort(WpcDetailActivity.this, s);
             }
         };
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(oberver);
+    }
+
+
+    /**
+     * 签署成功完成返回给拟稿人
+     */
+    private void signCompleted() {
+
+
+        loading.setVisibility(View.VISIBLE);
+        Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(@io.reactivex.annotations.NonNull final ObservableEmitter<String> emitter) throws Exception {
+//
+                Call<String> call = HttpUtl.signedCommit("User/Oa/back_signed_doc/", documentInfo.getProce_id(), documentInfo.getId(), "签署成功", "2", "uploadSign.png", uploadImagePath, token);
+
+
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+
+
+                        try {
+                            String msg = response.body();
+                            Logger.i("commit  " + msg);
+                            if (CommonUtil.isEmpty(msg)) {
+                                return;
+                            }
+                            Logger.i("commitSign  " + msg);
+                            JSONObject jsonObject = new JSONObject(msg);
+                            int code = jsonObject.getInt("code");
+                            String message = jsonObject.getString("msg");
+
+                            emitter.onNext(message);
+                            if (code == 0) {
+                                emitter.onNext("Y");
+                            } else {
+                                emitter.onNext("N");
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            emitter.onNext(e.getMessage());
+
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                        emitter.onNext(t.getMessage());
+
+
+                    }
+                });
+            }
+        });
+
+
+        Consumer<String> observer = new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+                loading.setVisibility(View.GONE);
+                if (s.equals("Y") || s.equals("N")) {
+
+
+                    if (s.equals("Y")) {
+                        onEvent(new WpsdetailFinish("结束"));
+                    }
+                } else {
+                    ToastUtils.showLong(getApplicationContext(), s);
+                }
+
+            }
+        };
+
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
     }
 
     /**
@@ -461,10 +592,12 @@ public class WpcDetailActivity extends BaseActivity {
         }
     }
 
-    PopupWindow popupWindow;
-    WritingPadView writingPadView;
-    TextView tvCancel;
-    TextView tvClear;
+    private PopupWindow popupWindow;
+    private WritingPadView writingPadView;
+    private TextView tvCancel;
+    private TextView tvClear;
+    private TextView tvHint;
+
     RelativeLayout rlSignConfirm;
 
     private void setSign() {
@@ -476,9 +609,19 @@ public class WpcDetailActivity extends BaseActivity {
             writingPadView = (WritingPadView) view.findViewById(R.id.sign_writing);
             tvCancel = (TextView) view.findViewById(R.id.sign_tv_cancel);
             tvClear = (TextView) view.findViewById(R.id.sign_tv_clear);
+            tvHint = (TextView) view.findViewById(R.id.sign_tv_hint);
             rlSignConfirm = (RelativeLayout) view.findViewById(R.id.sign_rl_confirm);
-            popupWindow = new PopupWindow(view, RelativeLayout.LayoutParams.MATCH_PARENT, screenH / 2, true);
+            popupWindow = new PopupWindow(view, RelativeLayout.LayoutParams.MATCH_PARENT, (int) (screenH * 0.7), true);
 
+            writingPadView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (tvHint != null && tvHint.getVisibility() == View.VISIBLE) {
+                        tvHint.setVisibility(View.GONE);
+                    }
+                    return false;
+                }
+            });
             // 菜单背景色。加了一点透明度
             ColorDrawable dw = new ColorDrawable(0xddffffff);
             popupWindow.setBackgroundDrawable(dw);
@@ -491,60 +634,66 @@ public class WpcDetailActivity extends BaseActivity {
             popupWindow.showAtLocation(LayoutInflater.from(this).inflate(R.layout.activity_wpc_details_layout, null),
                     Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
 
+
+            tvCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupWindow.dismiss();
+                }
+            });
+            tvClear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    writingPadView.clear();
+                }
+            });
+            rlSignConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Thread saveThread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "wpsSign";
+                            File file = new File(path);
+                            if (!file.exists()) file.mkdirs();
+                            path += File.separator + "qianming.png";
+                            try {
+                                writingPadView.save(path);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            Logger.i("原始   " + path);
+
+
+                            final String mypath = path;
+                            localImagePath = mypath;
+                            WpcDetailActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    ImageLoader.getInstance().displayImage("file://" + mypath, ivIcon);
+                                    popupWindow.dismiss();
+                                }
+                            });
+
+
+                        }
+                    });
+                    saveThread.setDaemon(true);
+                    saveThread.start();
+                }
+            });
+
+
         } else {
 
             popupWindow.showAtLocation(LayoutInflater.from(this).inflate(R.layout.activity_wpc_details_layout, null),
                     Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
 
         }
-
-        tvCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                writingPadView.clear();
-            }
-        });
-        tvClear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                writingPadView.clear();
-            }
-        });
-        rlSignConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(WpcDetailActivity.this, "正在保存", Toast.LENGTH_SHORT).show();
-                Thread saveThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "wpsSign";
-                        File file = new File(path);
-                        if (!file.exists()) file.mkdirs();
-                        path += File.separator + "qianming.png";
-                        try {
-                            writingPadView.save(path);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        Logger.i("原始   " + path);
-
-                        final String mypath = path;
-                        WpcDetailActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                ImageLoader.getInstance().displayImage("file://" + mypath, ivIcon);
-                                popupWindow.dismiss();
-                            }
-                        });
-                    }
-                });
-                saveThread.setDaemon(true);
-                saveThread.start();
-            }
-        });
 
 
     }
@@ -562,9 +711,22 @@ public class WpcDetailActivity extends BaseActivity {
 
     }
 
+    @Subscribe
+    public void onEvent(WpsdetailFinish finish) {
+        Logger.i("finishe " + finish.getMsg());
+
+        Intent intent = new Intent(this, StayToDoActivity.class);
+        startActivity(intent);
+        finish();
+
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         unregisterReceiver(reciver);
     }
 
@@ -588,26 +750,53 @@ public class WpcDetailActivity extends BaseActivity {
 
             } else if (id == R.id.wpcdetail_iv_message || id == R.id.wpcdetail_ll_message) {
 
-                saveImage();
+//                if (documentInfo.getStatus().equals("1")) {
+////               //                拟稿1-》审核2-》审核通过5-》签署3（不同意）-》审核通过4
 
-                Intent intent = new Intent(WpcDetailActivity.this, CommitActivity.class);
-                intent.putExtra("path", downloadWpsPath);
-                intent.putExtra("name", documentInfo.getDoc_name());
-                intent.putExtra("docId", documentInfo.getId());
-                intent.putExtra("proceId", documentInfo.getProce_id());
-                startActivity(intent);
+//
+//                    ToastUtils.showShort(WpcDetailActivity.this, "文档当前在拟稿状态");
+//                    return;
+//                }
+
+
+                if (documentInfo.getStatus().equals("3") || documentInfo.getStatus().equals("5") || documentInfo.getStatus().equals("2")) {
+
+                    Intent intent = new Intent(WpcDetailActivity.this, CommitActivity.class);
+                    intent.putExtra("wpspath", downloadWpsPath);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("documentInfo", documentInfo);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+
+                } else ToastUtils.showShort(WpcDetailActivity.this, "该文档目前不在审核或签署流程");
+
             } else if (id == R.id.wpcdetail_iv_sign || id == R.id.wpcdetail_ll_sign) {
-
+                haveSigned = true;
                 ivIcon.setVisibility(View.VISIBLE);
                 setSign();
             } else if (id == R.id.wpcdetail_iv_send || id == R.id.wpcdetail_ll_send) {
 
-                Intent intent = new Intent(WpcDetailActivity.this, ContactActivity.class);
-                intent.putExtra("docid", documentInfo.getId());
-                intent.putExtra("name", documentInfo.getDoc_name());
-                intent.putExtra("path", downloadWpsPath);
+                if (documentInfo.getStatus().equals("1") || documentInfo.getStatus().equals("5")) {
 
-                startActivity(intent);
+
+                    Intent intent = new Intent(WpcDetailActivity.this, ContactActivity.class);
+                    intent.putExtra("path", downloadWpsPath);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("documentInfo", documentInfo);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                } else if (documentInfo.getStatus().equals("3")) {
+                    if (!haveSigned || CommonUtil.isEmpty(localImagePath)) {
+                        ToastUtils.showShort(WpcDetailActivity.this, "请先签名图片");
+                        return;
+                    }
+
+                    saveImage();
+
+                } else {
+                    ToastUtils.showShort(WpcDetailActivity.this, "该文档目前在审核流程");
+                }
+
             }
         }
     }
