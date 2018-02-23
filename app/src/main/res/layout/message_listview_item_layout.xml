@@ -4,8 +4,6 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:paddingBottom="@dimen/margin_small"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/margin_small">
 
     <com.example.ysl.mywps.ui.view.IconTextView

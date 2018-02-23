@@ -23,6 +23,12 @@ public abstract class MyBaseAdapter extends BaseAdapter{
     }
 
 
+    public void update(ArrayList<?> list){
+
+        this.list = list;
+       notifyDataSetInvalidated();
+    }
+
 
     @Override
     public int getCount() {

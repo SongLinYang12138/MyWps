@@ -14,7 +14,7 @@
     <color name="message_back">#EB5342</color>
     <color name="text_gray">#8E8E93</color>
     <color name="text_stay">#4D5A68</color>
-    <color name="text_black">#555555</color>
+    <color name="text_black">#000000</color>
 
     <!--通讯录界面-->
     <color name="rect_orange"> #FF8133</color>
@@ -36,4 +36,5 @@
     <color name="button_back">#E62F2D</color>
     <!--主题背景  #ffffff-->
     <color name="mani_back">#ffffff</color>
+    <color name="black_panit">#e0000000</color>
 </resources>

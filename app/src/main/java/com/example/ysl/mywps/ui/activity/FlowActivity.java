@@ -8,6 +8,7 @@ import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.bean.FlowBean;
 import com.example.ysl.mywps.net.HttpUtl;
 import com.example.ysl.mywps.ui.adapter.FlowAdapter;
+import com.example.ysl.mywps.utils.CommonUtil;
 import com.example.ysl.mywps.utils.SharedPreferenceUtils;
 import com.example.ysl.mywps.utils.ToastUtils;
 import com.google.gson.Gson;
@@ -104,11 +105,16 @@ public class FlowActivity extends BaseActivity {
                         if (!response.isSuccessful()) {
                             emitter.onNext(response.message());
                             emitter.onNext("N");
-
+                            return;
                         }
 
                         String data = response.body();
                         Logger.i("流程  " + data);
+                        if(CommonUtil.isEmpty(data)){
+
+                            emitter.onNext("N");
+                            return;
+                        }
                         try {
                             JSONObject jsonObject = new JSONObject(data);
                             int code = jsonObject.getInt("code");
@@ -124,8 +130,19 @@ public class FlowActivity extends BaseActivity {
                             Gson gson = new Gson();
                             for (int i = 0; i < jsonArray.length(); ++i) {
                                 JSONObject childObject = jsonArray.getJSONObject(i);
-
                                 FlowBean bean = gson.fromJson(childObject.toString(), FlowBean.class);
+
+                                if (bean.getStatus().contains("阶段"))
+                                    bean.setStatus(bean.getStatus().replace("阶段", ""));
+                                try {
+                                    String[] split1 = bean.getCtime().split(" ");
+                                    String month = split1[0].substring(5, split1[0].length());
+                                    String time = split1[1].substring(0, 5);
+                                    bean.setMonth(month);
+                                    bean.setTime(time);
+                                }catch (NullPointerException e){
+                                 e.printStackTrace();
+                                }
                                 flows.add(bean);
                             }
 

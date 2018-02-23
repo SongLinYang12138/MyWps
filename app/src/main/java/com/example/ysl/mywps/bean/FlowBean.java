@@ -21,7 +21,25 @@ public class FlowBean {
     private String opinion_type;
     private String ctime;
     private String username;
-    private Object realname;
+    private String realname;
+    private String month;
+    private String time;
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public String getStatus() {
         return status;
@@ -63,11 +81,11 @@ public class FlowBean {
         this.username = username;
     }
 
-    public Object getRealname() {
+    public String getRealname() {
         return realname;
     }
 
-    public void setRealname(Object realname) {
+    public void setRealname(String realname) {
         this.realname = realname;
     }
 }

@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.ui.activity.DocumentFlowActivity;
 import com.example.ysl.mywps.ui.activity.DocumentTurnActivity;
+import com.example.ysl.mywps.ui.activity.MaterialActivity;
 import com.example.ysl.mywps.utils.NoDoubleClickListener;
 
 import butterknife.BindView;
@@ -23,8 +24,14 @@ public class WorkFragment extends BaseFragment {
 
     @BindView(R.id.work_ll_document_turn)
     LinearLayout llTurn;
-
+    @BindView(R.id.work_ll_material)
+    LinearLayout llMaterial;
     private MyclickListener myclickListener = new MyclickListener();
+
+    @Override
+    public void initData() {
+
+    }
 
     @Override
     public View setView(LayoutInflater inflater, ViewGroup container) {
@@ -41,6 +48,7 @@ public class WorkFragment extends BaseFragment {
     public void afterView(View view) {
 
         llTurn.setOnClickListener(myclickListener);
+        llMaterial.setOnClickListener(myclickListener);
 
     }
 
@@ -53,10 +61,25 @@ public class WorkFragment extends BaseFragment {
 
         @Override
         public void click(View v) {
+            Intent intent = null;
+            switch (v.getId()){
 
-            Intent intent = new Intent(getActivity(), DocumentTurnActivity.class);
+                case R.id.work_ll_document_turn:
+
+                   intent = new Intent(getActivity(), DocumentTurnActivity.class);
+
+
+                    break;
+
+                case R.id.work_ll_material:
+
+                     intent = new Intent(getActivity(), MaterialActivity.class);
+
+
+                    break;
+            }
+
             startActivity(intent);
-
         }
     }
 }

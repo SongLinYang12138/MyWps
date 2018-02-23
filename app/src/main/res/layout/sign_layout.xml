@@ -19,15 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:text="取消"
-            android:textColor="@color/text_black"
-            android:textSize="@dimen/text_normal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="签名"
-            android:textColor="@color/text_black"
+            android:textColor="@color/black_panit"
             android:textSize="@dimen/text_normal" />
 
 
@@ -37,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="清除"
-            android:textColor="@color/text_black"
+            android:textColor="@color/text_gray"
             android:textSize="@dimen/text_normal" />
     </RelativeLayout>
 

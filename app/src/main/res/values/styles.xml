@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/tool_bar</item>
         <item name="colorAccent">@color/tool_bar</item>
         <item name="windowNoTitle">true</item>
-
+<item name="android:windowSoftInputMode">stateAlwaysHidden|adjustNothing</item>
     </style>
 
  <style name="myprogress" parent="Widget.AppCompat.ProgressBar.Horizontal">
@@ -19,4 +19,13 @@
      <item name="android:maxHeight">4dip</item>
 
  </style>
+
+    <style name="Popupwindow">
+        <item name="android:windowEnterAnimation">@anim/windows_out</item>
+        <item name="android:windowExitAnimation">@anim/windows_back</item>
+    </style>
+    <style name="Popupwindow_top">
+        <item name="android:windowEnterAnimation">@anim/windows_back</item>
+        <item name="android:windowExitAnimation">@anim/windows_out</item>
+    </style>
 </resources>

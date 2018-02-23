@@ -9,10 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tool_bar"
-        android:paddingBottom="@dimen/margin_small"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_horizontal_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/margin_small">
+        android:visibility="gone"
+       >
 
         <com.example.ysl.mywps.ui.view.IconTextView
             android:layout_width="wrap_content"
@@ -28,7 +30,7 @@
             android:layout_centerHorizontal="true"
             android:text="通讯录"
             android:textColor="@color/white_back"
-            android:textSize="@dimen/icon_normal" />
+            android:textSize="@dimen/text_title" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -42,13 +44,28 @@
         android:paddingBottom="@dimen/margin_small"
         android:paddingTop="@dimen/margin_small">
 
-        <com.example.ysl.mywps.ui.view.IconTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="&#xe639; 搜索"
-            android:textColor="@color/text_black"
-            android:textSize="@dimen/icon_normal" />
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:layout_centerInParent="true"
+           android:gravity="center_vertical"
+           >
+           <com.example.ysl.mywps.ui.view.IconTextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+
+               android:text="&#xe639;"
+               android:textColor="@color/text_black"
+               android:textSize="@dimen/icon_normal" />
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="@dimen/text_large"
+               android:textColor="@color/text_black"
+               android:text="搜索"
+               />
+       </LinearLayout>
 
     </RelativeLayout>
 
@@ -118,13 +135,16 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:background="@color/white_back"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
         >
         <ListView
             android:id="@+id/contact_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@color/stay_back"
-            android:dividerHeight="1dp"
+            android:divider="@color/arrow"
+            android:scrollbars="none"
+            android:dividerHeight="0.5dp"
             ></ListView>
 
     </LinearLayout>

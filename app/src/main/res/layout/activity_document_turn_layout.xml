@@ -43,7 +43,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_large"
                         android:textColor="@color/text_black"
-                        android:text="內部公文"
+                        android:text="内部公文"
                         android:layout_alignParentLeft="true"
                         />
 
@@ -64,7 +64,7 @@
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
+              android:layout_height="0.3dp"
             android:background="@color/arrow"
             android:layout_marginTop="@dimen/paddingVertical"
             />
@@ -127,7 +127,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
+               android:layout_height="0.3dp"
             android:background="@color/arrow"
             android:layout_marginTop="@dimen/paddingVertical"
             />
@@ -192,10 +192,11 @@
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
+               android:layout_height="0.3dp"
             android:background="@color/arrow"
             android:layout_marginTop="@dimen/paddingVertical"
             />
     </LinearLayout>
+
 
 </LinearLayout>

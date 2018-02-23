@@ -12,7 +12,7 @@ public class ToastUtils {
     public static void showShort(Context context, String msg) {
 
 
-        if(CommonUtil.isEmpty(msg)){
+        if(CommonUtil.isEmpty(msg) || context == null){
             return;
         }
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
@@ -20,7 +20,7 @@ public class ToastUtils {
 
     public static void showLong(Context context, String msg) {
 
-        if(CommonUtil.isEmpty(msg)){
+        if(CommonUtil.isEmpty(msg) || context == null){
             return;
         }
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();

@@ -45,8 +45,7 @@ import retrofit2.Response;
 
 public class CommitActivity extends BaseActivity {
 
-    @BindView(R.id.commit_iv_delete)
-    ImageView ivBack;
+
     @BindView(R.id.commit_rl_upload)
     RelativeLayout rlCommit;
     @BindView(R.id.commit_et_opinion)
@@ -76,22 +75,21 @@ public class CommitActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_commit_layout);
-        showLeftButton(false, "", new View.OnClickListener() {
+        showLeftButton(true, "", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        setTitleText("提交");
+        setTitleText("审核意见");
 
         ButterKnife.bind(this);
 
         downloadPath = getIntent().getStringExtra("wpspath");
         token = SharedPreferenceUtils.loginValue(this, "token");
         documentInfo = getIntent().getExtras().getParcelable("documentInfo");
-        ivBack.setOnClickListener(click);
+
         rlCommit.setOnClickListener(click);
-        setTitleContent(View.GONE);
 
         loading.setVisibility(View.GONE);
         afterData();
@@ -105,16 +103,22 @@ public class CommitActivity extends BaseActivity {
         tvTtitle.setText("公文标题：  " + documentInfo.getTitle());
         tvPeople.setText("呈报人:   " + documentInfo.getNow_nickname());
         tvDept.setText("拟文单位:   " + documentInfo.getDept_name());
+        if(CommonUtil.isEmpty(documentInfo.getOpinion())){
+            tvOpinion.setVisibility(View.GONE);
+        }else 
         tvOpinion.setText("审核意见：  "+documentInfo.getOpinion());
 
         String myAccount = SharedPreferenceUtils.loginValue(this,"name");
-        if(myAccount.equals(documentInfo.getNow_username())){
+//        documentInfo.getStatus().equals("6") && documentInfo.getIs_forward().equals("1"
+        if(!documentInfo.getStatus().equals("6") && myAccount.equals(documentInfo.getNow_username())){
            etOpinion.setVisibility(View.VISIBLE);
+            rlCommit.setVisibility(View.VISIBLE);
+        }if(documentInfo.getStatus().equals("6") && documentInfo.getIs_forward().equals("1")){
+            etOpinion.setVisibility(View.VISIBLE);
             rlCommit.setVisibility(View.VISIBLE);
         }else {
             etOpinion.setVisibility(View.INVISIBLE);
             rlCommit.setVisibility(View.INVISIBLE);
-
         }
 
 
@@ -283,6 +287,78 @@ public class CommitActivity extends BaseActivity {
                 .subscribe(observer);
     }
 
+    /**
+     *反馈意见
+     */
+    private void feedBack(final String opinion){
+
+        loading.setVisibility(View.VISIBLE);
+        final Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(final ObservableEmitter<String> emitter) throws Exception {
+
+                Call<String> call = HttpUtl.feedBack("User/Oa/feedback/",documentInfo.getId(),opinion,token);
+
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        String msg = response.body();
+                        Logger.i("commit  " + msg);
+                        try {
+                          if(msg == null){
+                              emitter.onNext("N");
+                              return;
+                          }
+                            JSONObject jsonObject = new JSONObject(msg);
+
+                            int code = jsonObject.getInt("code");
+                            String message = jsonObject.getString("msg");
+
+                            emitter.onNext(message);
+                            if (code == 0) {
+                                emitter.onNext("Y");
+                            } else {
+                                emitter.onNext("N");
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            emitter.onNext(e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                        emitter.onNext(t.getMessage());
+                    }
+                });
+            }
+        });
+        Consumer<String> consumer = new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+                loading.setVisibility(View.GONE);
+                if (s.equals("Y") || s.equals("N")) {
+
+                    if (s.equals("Y")) {
+                        EventBus.getDefault().post(new WpsdetailFinish("commit 提交成功"));
+                        finish();
+                    }
+                } else {
+                    ToastUtils.showShort(CommitActivity.this, s);
+                }
+
+            }
+        };
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(consumer);
+
+
+    }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -296,10 +372,7 @@ public class CommitActivity extends BaseActivity {
 
             switch (v.getId()) {
 
-                case R.id.commit_iv_delete:
 
-                    finish();
-                    break;
                 case R.id.commit_rl_upload:
 
                     String opinion = etOpinion.getText().toString();
@@ -316,7 +389,9 @@ public class CommitActivity extends BaseActivity {
                         signCompleted(opinion, isSigned);
                     } else if (documentInfo.getStatus().equals("5")) {
                         uploadFile(opinion);
-                    } else {
+                    }else if(documentInfo.getStatus().equals("6")){
+                        feedBack(opinion);
+                    }else {
                         ToastUtils.showShort(CommitActivity.this, "该文档还在拟稿状态");
                     }
                     break;

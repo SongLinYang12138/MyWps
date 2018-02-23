@@ -23,6 +23,11 @@ public class ContactFragment extends BaseFragment {
     private ContactAdapter adapter;
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     public View setView(LayoutInflater inflater, ViewGroup container) {
 
         View view = inflater.inflate(R.layout.fragment_contact_layout, container, false);

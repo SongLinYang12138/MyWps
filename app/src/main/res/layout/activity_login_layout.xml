@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-   android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/padding_large"
-    android:background="@color/white_back"
-    >
+    android:background="@color/white_back">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_centerVertical="true"
+    android:layout_marginTop="30dp"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true">
 
@@ -52,24 +52,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="40dp"
         android:paddingBottom="@dimen/padding_small"
         android:paddingTop="@dimen/padding_small">
 
-        <EditText
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/login_et_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
+            android:gravity="center_horizontal"
             android:hint="请输入手机号"
-            android:textSize="@dimen/text_small"
+            android:textSize="@dimen/text_normal"
             android:inputType="phone"
             />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/padding_large"
-            android:background="@color/arrow"></RelativeLayout>
+
     </LinearLayout>
 
 
@@ -77,33 +75,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="20dp"
         android:paddingTop="@dimen/padding_small"
         android:paddingBottom="@dimen/padding_small"
         >
-        <EditText
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/login_et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
             android:hint="请输入密码"
-            android:textSize="@dimen/text_small"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/text_normal"
             android:inputType="textPassword"
             />
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/arrow"
-            android:layout_marginTop="@dimen/padding_large"
-            ></RelativeLayout>
+
     </LinearLayout>
 
-    <RelativeLayout
+    <com.gc.materialdesign.views.ButtonRectangle
         android:id="@+id/login_rl_confirm"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/padding_small"
-        android:paddingTop="@dimen/padding_small"
-        android:background="@drawable/rect_red"
+        android:layout_height="55dp"
+        android:background="@color/rect_red"
         android:layout_marginTop="40dp"
         >
 
@@ -112,10 +105,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="登录"
-            android:textSize="@dimen/text_normal"
+            android:textSize="@dimen/text_large"
             android:textColor="@color/white_back"
             android:layout_centerInParent="true"
             />
-    </RelativeLayout>
+    </com.gc.materialdesign.views.ButtonRectangle>
 </LinearLayout>
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/av_loading"
+        android:layout_width="@dimen/loading_size"
+        android:layout_height="@dimen/loading_size"
+        app:indicatorColor="@color/title"
+        android:layout_centerInParent="true"
+        app:indicatorName="LineSpinFadeLoaderIndicator" />
 </RelativeLayout>

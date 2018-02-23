@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Created by ysl on 2018/1/18.
  */
 
-public class DocumentListBean implements Parcelable{
+public class DocumentListBean implements Parcelable {
 
 
 //    {
@@ -62,6 +62,7 @@ public class DocumentListBean implements Parcelable{
      * now_nickname : admin
      * now_realname : null
      * dept_name : 政协
+     * is_forward:"" 1是被转发的 0不是
      */
     private ArrayList<DocumentImageBean> doc_imgs;
     private String id;
@@ -77,21 +78,32 @@ public class DocumentListBean implements Parcelable{
     private String now_uid;
     private String from_uid;
     private String n_time;
-    private Object opinion;
+    private String opinion;
     private int is_writable;
     private String c_username;
     private String c_nickname;
-    private Object c_realname;
+    private String  c_realname;
     private String now_username;
     private String now_nickname;
-    private Object now_realname;
+    private String  now_realname;
     private String dept_name;
+    private String is_forward;
+
+
+    public String getIs_forward() {
+        return is_forward;
+    }
+
+    public void setIs_forward(String is_forward) {
+        this.is_forward = is_forward;
+    }
 
     public DocumentListBean(){
 
     }
 
-    public DocumentListBean(Parcel in) {
+
+    protected DocumentListBean(Parcel in) {
         doc_imgs = in.createTypedArrayList(DocumentImageBean.CREATOR);
         id = in.readString();
         uid = in.readString();
@@ -106,12 +118,16 @@ public class DocumentListBean implements Parcelable{
         now_uid = in.readString();
         from_uid = in.readString();
         n_time = in.readString();
+        opinion = in.readString();
         is_writable = in.readInt();
         c_username = in.readString();
         c_nickname = in.readString();
+        c_realname = in.readString();
         now_username = in.readString();
         now_nickname = in.readString();
+        now_realname = in.readString();
         dept_name = in.readString();
+        is_forward = in.readString();
     }
 
     public static final Creator<DocumentListBean> CREATOR = new Creator<DocumentListBean>() {
@@ -125,6 +141,30 @@ public class DocumentListBean implements Parcelable{
             return new DocumentListBean[size];
         }
     };
+
+    public String getOpinion() {
+        return opinion;
+    }
+
+    public void setOpinion(String opinion) {
+        this.opinion = opinion;
+    }
+
+    public String getC_realname() {
+        return c_realname;
+    }
+
+    public void setC_realname(String c_realname) {
+        this.c_realname = c_realname;
+    }
+
+    public String getNow_realname() {
+        return now_realname;
+    }
+
+    public void setNow_realname(String now_realname) {
+        this.now_realname = now_realname;
+    }
 
     public ArrayList<DocumentImageBean> getDoc_imgs() {
         return doc_imgs;
@@ -238,13 +278,8 @@ public class DocumentListBean implements Parcelable{
         this.n_time = n_time;
     }
 
-    public Object getOpinion() {
-        return opinion;
-    }
 
-    public void setOpinion(Object opinion) {
-        this.opinion = opinion;
-    }
+
 
     public int getIs_writable() {
         return is_writable;
@@ -270,13 +305,6 @@ public class DocumentListBean implements Parcelable{
         this.c_nickname = c_nickname;
     }
 
-    public Object getC_realname() {
-        return c_realname;
-    }
-
-    public void setC_realname(Object c_realname) {
-        this.c_realname = c_realname;
-    }
 
     public String getNow_username() {
         return now_username;
@@ -294,21 +322,20 @@ public class DocumentListBean implements Parcelable{
         this.now_nickname = now_nickname;
     }
 
-    public Object getNow_realname() {
-        return now_realname;
-    }
 
-    public void setNow_realname(Object now_realname) {
-        this.now_realname = now_realname;
-    }
 
     public String getDept_name() {
+
+        if(dept_name == null){
+            return "";
+        }
         return dept_name;
     }
 
     public void setDept_name(String dept_name) {
         this.dept_name = dept_name;
     }
+
 
     @Override
     public int describeContents() {
@@ -331,11 +358,15 @@ public class DocumentListBean implements Parcelable{
         dest.writeString(now_uid);
         dest.writeString(from_uid);
         dest.writeString(n_time);
+        dest.writeString(opinion);
         dest.writeInt(is_writable);
         dest.writeString(c_username);
         dest.writeString(c_nickname);
+        dest.writeString(c_realname);
         dest.writeString(now_username);
         dest.writeString(now_nickname);
+        dest.writeString(now_realname);
         dest.writeString(dept_name);
+        dest.writeString(is_forward);
     }
 }

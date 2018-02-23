@@ -1,6 +1,7 @@
 package com.example.ysl.mywps.net;
 
 
+import android.os.Handler;
 import android.util.Log;
 
 import com.example.ysl.mywps.application.MyApplication;
@@ -8,6 +9,9 @@ import com.example.ysl.mywps.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -24,6 +28,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class HttpUtl {
 
     private final static String HTTP_URL = "http://oa.wgxmcb.top/index.php/";
+
 
     private static Retrofit getRetrofit(String httpurl) {
 
@@ -44,10 +49,10 @@ public class HttpUtl {
 
     }
 
-    public static Call<String> documentList(String url, String token, String page, String pageLimit) {
+    public static Call<String> documentList(String url, String token, String page, String pageLimit, String type) {
         String httpUrl = HTTP_URL + url;
         NetApi netApi = getRetrofit(httpUrl).create(NetApi.class);
-        return netApi.doucmentList(token, page, pageLimit);
+        return netApi.doucmentList(token, page, pageLimit, type);
     }
 
     public static Call<ResponseBody> donwoldWps(String headUrl, String end) {
@@ -129,7 +134,9 @@ public class HttpUtl {
         return netApi.signedCommit(proceId, docId, opinion, signed, token, body);
     }
 
-
+    /**
+     * 获取公文流程
+     */
     public static Call<String> getFlow(String url, String docId, String token) {
         String httpUrl = HTTP_URL + url;
 
@@ -137,4 +144,82 @@ public class HttpUtl {
         return netApi.getFlow(docId, token);
 
     }
+
+    /**
+     * 流程
+     */
+    public static Call<String> docForward(String url, String docId, String uids, String token) {
+
+        String httpUrl = HTTP_URL + url;
+        NetApi netApi = getRetrofit(httpUrl).create(NetApi.class);
+        return netApi.doc_forward(docId, uids, token);
+    }
+
+    /***
+     * 流程反馈
+     */
+    public static Call<String> feedBack(String url, String docId, String opinion, String token) {
+
+        String httpUrl = HTTP_URL + url;
+        NetApi netApi = getRetrofit(httpUrl).create(NetApi.class);
+        return netApi.feed_back(docId, opinion, token);
+    }
+
+    /**
+     * 文件共享上传文件
+     */
+    public static Call<String> sharedUpload(String url, String fileType, String token, String fileName, String filePath,ProgressListener listener) {
+
+        String httpUrl = HTTP_URL + url;
+        NetApi netApi = getRetrofit(httpUrl).create(NetApi.class);
+
+        File file = new File(filePath);
+
+        if (!file.exists()) {
+            ToastUtils.showShort(MyApplication.getMyContext(), "文件不存在");
+            Logger.i("filenotexists");
+            return null;
+        }
+        RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"), file);
+//        MultipartBody.Part body = MultipartBody.Part.createFormData("name", fileName, requestFile);
+        UploadFileRequestBody fileRequestBody = new UploadFileRequestBody(requestFile,listener);
+        Map<String, RequestBody> requestBodyMap = new HashMap<>();
+        requestBodyMap.put("file\"; filename=\"" + fileName, fileRequestBody);
+        return netApi.sharedUpload(fileType, token, requestBodyMap);
+
+    }
+
+    /**
+     * 文件类目
+     */
+    public static Call<String> getFileType(String url, String token) {
+
+        String httpUrl = HTTP_URL + url;
+
+        NetApi netApi = getRetrofit(httpUrl).create(NetApi.class);
+        return netApi.getFileType(token);
+    }
+
+    /**
+     * 文件列表
+     */
+    public static Call<String> fileList(String url, String fileType, String page, String pagelimit, String token) {
+
+        String httpUrl = HTTP_URL + url;
+
+        NetApi netApi = getRetrofit(httpUrl).create(NetApi.class);
+
+        return netApi.fileList(token, fileType, page, pagelimit);
+    }
+
+    /***
+     * 删除文件
+     */
+    public static Call<String> deleteFile(String url, String id, String token) {
+
+        String httpUrl = HTTP_URL + url;
+        NetApi netApi = getRetrofit(httpUrl).create(NetApi.class);
+        return netApi.deleteDocument(id, token);
+    }
+
 }

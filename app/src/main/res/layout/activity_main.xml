@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     android:background="@color/white_back">
 
-    <RelativeLayout
-        android:id="@+id/main_rl_container"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main_vp_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/main_ll_id_bottom"
         >
 
-    </RelativeLayout>
+    </android.support.v4.view.ViewPager>
 
 
     <LinearLayout
@@ -37,6 +37,7 @@
                 android:layout_width="@dimen/icon_large"
                 android:layout_height="@dimen/icon_large"
                 android:background="@mipmap/icon_message_normal"
+                android:clickable="false"
                 />
 
             <TextView
@@ -45,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:text="消息"
                 android:textAlignment="center"
+                android:clickable="false"
                 android:textSize="@dimen/text_normal" />
         </LinearLayout>
 
@@ -62,6 +64,7 @@
                 android:layout_width="@dimen/icon_large"
                 android:layout_height="@dimen/icon_large"
                 android:background="@mipmap/icon_work_normal"
+                android:clickable="false"
                 />
 
             <TextView
@@ -70,7 +73,9 @@
                 android:layout_height="wrap_content"
                 android:text="工作"
                 android:textAlignment="center"
-                android:textSize="@dimen/text_normal" />
+                android:textSize="@dimen/text_normal"
+                android:clickable="false"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -86,6 +91,7 @@
                 android:layout_width="@dimen/icon_large"
                 android:layout_height="@dimen/icon_large"
                 android:background="@mipmap/icon_contact_normal"
+                android:clickable="false"
                 />
 
             <TextView
@@ -94,7 +100,9 @@
                 android:layout_height="wrap_content"
                 android:text="通讯录"
                 android:textAlignment="center"
-                android:textSize="@dimen/text_normal" />
+                android:textSize="@dimen/text_normal"
+                android:clickable="false"
+                />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/main_ll_mine"
@@ -109,6 +117,7 @@
                 android:layout_width="@dimen/icon_large"
                 android:layout_height="@dimen/icon_large"
                 android:background="@mipmap/icon_mine_normal"
+                android:clickable="false"
                 />
 
             <TextView
@@ -117,7 +126,9 @@
                 android:layout_height="wrap_content"
                 android:text="我的"
                 android:textAlignment="center"
-                android:textSize="@dimen/text_normal" />
+                android:textSize="@dimen/text_normal"
+                android:clickable="false"
+                />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

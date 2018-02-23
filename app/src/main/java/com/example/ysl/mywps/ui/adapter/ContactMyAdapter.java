@@ -5,13 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.bean.ContactBean;
+import com.example.ysl.mywps.interfaces.PasssString;
+import com.example.ysl.mywps.utils.CommonUtil;
+import com.example.ysl.mywps.utils.ToastUtils;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * Created by ysl on 2018/1/16.
@@ -22,11 +28,52 @@ public class ContactMyAdapter extends MyBaseAdapter {
     private Context context;
     private ArrayList<ContactBean> list = new ArrayList<>();
     private ArrayList<String> exitContact = new ArrayList<>();
+    private PasssString passsString;
+    private LinkedHashMap<Integer,ContactBean> selected = new LinkedHashMap<>();
 
-    public ContactMyAdapter(ArrayList<ContactBean> list, Context context) {
+    private boolean shouldHide;
+
+    public ContactMyAdapter(ArrayList<ContactBean> list, Context context, Boolean isHide,PasssString passsString) {
         super(list, context);
         this.list = list;
         this.context = context;
+        this.shouldHide = isHide;
+        this.passsString = passsString;
+    }
+
+    public void selectAll(boolean isSelect){
+
+        if(isSelect){
+            for (int i = 0; i < list.size(); ++i){
+
+                selected.put(i,list.get(i));
+            }
+        }else {
+            selected.clear();
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public void docFroward(){
+
+        String uids = null;
+
+        if(selected.size() == 0){
+            ToastUtils.showShort(context,"请选择要转发的人");
+            return;
+        }
+
+        for (ContactBean bean : selected.values()){
+
+            if(uids == null){
+                uids = bean.getUid();
+            }else {
+                uids += ","+uids;
+            }
+        }
+
+        passsString.setString(uids);
 
     }
 
@@ -34,13 +81,13 @@ public class ContactMyAdapter extends MyBaseAdapter {
         TextView tvCapital;
         TextView tvName, tvPhone, tvDepart;
         LinearLayout llCapital;
-
+        CheckBox checkBox;
     }
 
     private ViewHolder holder;
 
     @Override
-    public View myView(int i, View view, ViewGroup viewGroup) {
+    public View myView(final int i, View view, ViewGroup viewGroup) {
 
         if (view == null) {
             holder = new ViewHolder();
@@ -50,11 +97,13 @@ public class ContactMyAdapter extends MyBaseAdapter {
             holder.tvDepart = (TextView) view.findViewById(R.id.contact_tv_num);
             holder.tvPhone = (TextView) view.findViewById(R.id.contact_tv_phone);
             holder.llCapital = (LinearLayout) view.findViewById(R.id.contact_ll_capital);
+            holder.checkBox = (CheckBox) view.findViewById(R.id.contact_item_cb);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        ContactBean info = list.get(i);
+
+        final ContactBean info = list.get(i);
 
         if (exitContact.contains(info.getCapital())) {
 
@@ -63,6 +112,25 @@ public class ContactMyAdapter extends MyBaseAdapter {
             exitContact.add(info.getCapital());
             holder.llCapital.setVisibility(View.VISIBLE);
             holder.tvCapital.setText(info.getCapital());
+        }
+        if(shouldHide){
+            holder.checkBox.setVisibility(View.VISIBLE);
+            if(selected.get(i) != null) holder.checkBox.setChecked(true);
+            else holder.checkBox.setChecked(false);
+            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                    if(isChecked){
+
+                        selected.put(i,info);
+                    }else {
+
+                        selected.remove(i);
+                    }
+
+                }
+            });
         }
         holder.tvName.setText(info.getUsername());
         holder.tvDepart.setText(info.getDept_name());

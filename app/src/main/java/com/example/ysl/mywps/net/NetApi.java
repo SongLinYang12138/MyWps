@@ -2,13 +2,17 @@ package com.example.ysl.mywps.net;
 
 import com.example.ysl.mywps.bean.PostQueryInfo;
 
+import java.util.Map;
+
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
@@ -21,7 +25,7 @@ public interface NetApi {
     Call<String> login(@Query("username") String username, @Query("password") String password, @Query("regid") String regId);
 
     @POST("query")
-    Call<String> doucmentList(@Query("token") String token, @Query("page") String page, @Query("pagelimit") String pagemilit);
+    Call<String> doucmentList(@Query("token") String token, @Query("page") String page, @Query("pagelimit") String pagemilit,@Query("proce_type") String type);
 
     /**
      * 提交审核
@@ -68,4 +72,42 @@ public interface NetApi {
     * */
     @POST("query")
     Call<String>  getFlow(@Query("doc_id") String docId,@Query("token") String token);
+
+    /**
+     * 转发进入反馈流程
+     * */
+ @POST("query")
+ Call<String> doc_forward(@Query("doc_id") String docId,@Query("uids") String uids,@Query("token") String token);
+
+    /**
+     * 反馈
+     * */
+    @POST("query")
+    Call<String> feed_back(@Query("doc_id") String docId,@Query("opinion") String opinion,@Query("token") String token);
+
+    /**
+     * 上传文件
+     * */
+    @Multipart
+    @POST("query")
+    Call<String>  sharedUpload(@Query("file_type") String fileType,@Query("token")String token,@PartMap Map<String, RequestBody> file);
+
+    /**
+     * 文件类目
+     * */
+    @POST("query")
+    Call<String> getFileType(@Query("token") String token);
+
+    /**
+     * 文件列表
+     * */
+    @POST("query")
+    Call<String> fileList(@Query("token") String token,@Query("file_type") String fileType,@Query("page") String page,@Query("pagelimit") String pagelimit);
+
+    /**
+     *删除文件
+     * */
+    @POST("query")
+    Call<String> deleteDocument (@Query("file_id") String id,@Query("token") String token);
+
 }

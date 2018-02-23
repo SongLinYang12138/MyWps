@@ -85,7 +85,7 @@ public class StayDoAdapter extends BaseAdapter {
         DocumentListBean info = list.get(position);
 
 
-        holder.tvTitle.setText(info.getTitle()+0);
+        holder.tvTitle.setText(info.getTitle());
         holder.tvDate.setText(CommonUtil.isEmpty(info.getN_time()) ? info.getCtime():info.getN_time());
         holder.tvHandel.setText("处理人: "+info.getNow_nickname());
 //        拟稿1-》审核2-》审核通过5-》签署3（不同意）-》审核通过4
@@ -96,13 +96,15 @@ public class StayDoAdapter extends BaseAdapter {
            if(info.getStatus().equals("2"))
                holder.tvSend.setText("审核");
            if(info.getStatus().equals("3"))
-               holder.tvSend.setText("签署");
+               holder.tvSend.setText("发文");
            if(info.getStatus().equals("5"))
-               holder.tvSend.setText("审核通过");
+               holder.tvSend.setText("发文");
+           if(info.getStatus().equals("6"))
+               holder.tvSend.setText("发文");
        }else {
            holder.ivStatus.setVisibility(View.INVISIBLE);
-           holder.tvSend.setText("审核通过");
-
+//           holder.tvSend.setText("审核通过");
+           holder.tvSend.setText("发文");
        }
 
 

@@ -31,7 +31,6 @@
     <application
         android:name=".application.MyApplication"
 
-
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
@@ -39,7 +38,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            >
 
         </activity>
         <activity android:name=".ui.activity.BaseActivity" />
@@ -48,11 +49,14 @@
         <activity android:name=".ui.activity.StayToDoActivity"
             android:launchMode="singleTask"
             ></activity>
-        <activity android:name=".ui.activity.WpcDetailActivity"></activity>
+        <activity android:name=".ui.activity.WpsDetailActivity"></activity>
         <activity android:name=".ui.activity.SignActivity"></activity>
         <activity android:name=".ui.activity.CommitActivity"></activity>
         <activity android:name=".ui.activity.FlowActivity"></activity>
-        <activity android:name=".ui.activity.ContactActivity"></activity>
+        <activity android:name=".ui.activity.ContactActivity"
+            ></activity>
+        <activity android:name=".ui.activity.MaterialActivity"></activity>
+        <activity android:name=".ui.activity.SearchActivity"></activity>
         <activity android:name=".ui.activity.LoginActivity" >
 
             <intent-filter>
@@ -106,6 +110,17 @@
                 <category android:name="com.example.ysl.mywps" />
             </intent-filter>
         </receiver>
+
+        <provider
+            android:authorities="com.example.ysl.mywps.upload"
+            android:name="com.example.ysl.mywps.provider.UploadProvider"
+            android:exported="true"
+            />
+        <provider
+            android:authorities="com.example.ysl.mywps.download.file"
+            android:name="com.example.ysl.mywps.provider.DownLoadProvider"
+            android:exported="true"
+            />
 
     </application>
 

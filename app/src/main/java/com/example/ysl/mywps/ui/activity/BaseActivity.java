@@ -1,5 +1,7 @@
 package com.example.ysl.mywps.ui.activity;
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.ysl.mywps.R;
+import com.example.ysl.mywps.ui.view.IconTextView;
 import com.example.ysl.mywps.utils.CommonUtil;
 
 import butterknife.BindView;
@@ -25,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private TextView tvBack;
     private TextView tvTitle;
-    private TextView tvRight;
+    private IconTextView tvRight,tvRight1;
     private LinearLayout llBack;
     private RelativeLayout rlCotent;
 
@@ -41,13 +44,23 @@ public abstract class BaseActivity extends AppCompatActivity {
             // 透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+        initData();
+    }
 
+    @Override
+    public Resources getResources() {
+
+        Resources res = super.getResources();
+        Configuration config=new Configuration();
+        config.setToDefaults();
+        res.updateConfiguration(config,res.getDisplayMetrics());
+        return res;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        initData();
+
         initView();
     }
 
@@ -59,7 +72,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         tvBack = (TextView) findViewById(R.id.title_tv_back);
         tvTitle = (TextView) findViewById(R.id.title_tv_title);
-        tvRight = (TextView) findViewById(R.id.title_tv_right);
+        tvRight = (IconTextView) findViewById(R.id.title_tv_right);
+        tvRight1 = (IconTextView) findViewById(R.id.title_tv_right1);
         llRoot = (LinearLayout) findViewById(R.id.ll_basetitle_root);
         llBack = (LinearLayout) findViewById(R.id.title_ll_back);
         rlCotent = (RelativeLayout) findViewById(R.id.tittle_rl_content);
@@ -67,6 +81,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         llBack.setVisibility(View.INVISIBLE);
         tvTitle.setVisibility(View.INVISIBLE);
         tvRight.setVisibility(View.INVISIBLE);
+
 
     }
 
@@ -86,7 +101,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void setTitleText(String text) {
-        tvTitle.setVisibility(View.VISIBLE);
+      if(tvTitle.getVisibility() != View.VISIBLE)  tvTitle.setVisibility(View.VISIBLE);
         tvTitle.setText(text);
     }
 
@@ -110,6 +125,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (CommonUtil.isNotEmpty(text)) tvRight.setText(text);
         if (click != null) tvRight.setOnClickListener(click);
     }
+    public void showRight1(boolean isShow,int resource,View.OnClickListener click){
+
+        if(isShow)tvRight1.setVisibility(View.VISIBLE);
+        else tvRight1.setVisibility(View.GONE);
+
+        if(resource != 0) tvRight1.setText(resource);
+        tvRight1.setOnClickListener(click);
+    }
 
     public void showRight(boolean isShow, int resource, View.OnClickListener click) {
 
@@ -118,6 +141,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         tvRight.setText(resource);
         if (click != null) tvRight.setOnClickListener(click);
+    }
+    public void setRightVisible(boolean isShow){
+        if (isShow) tvRight.setVisibility(View.VISIBLE);
+        else tvRight.setVisibility(View.INVISIBLE);
+    }
+    public void setRight1Visible(boolean isShow){
+        if (isShow) tvRight1.setVisibility(View.VISIBLE);
+        else tvRight1.setVisibility(View.INVISIBLE);
     }
 
     /**

@@ -11,7 +11,7 @@ import android.widget.ListView;
 import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.bean.DocumentListBean;
 import com.example.ysl.mywps.net.HttpUtl;
-import com.example.ysl.mywps.ui.activity.WpcDetailActivity;
+import com.example.ysl.mywps.ui.activity.WpsDetailActivity;
 import com.example.ysl.mywps.ui.adapter.StayDoAdapter;
 import com.example.ysl.mywps.utils.CommonSetting;
 import com.example.ysl.mywps.utils.CommonUtil;
@@ -61,6 +61,11 @@ public class StayDoFragment extends BaseFragment {
     private boolean isLoadMore = false;
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     public View setView(LayoutInflater inflater, ViewGroup container) {
 
         View view = inflater.inflate(R.layout.frament_stay_to_do_layout, container, false);
@@ -73,7 +78,7 @@ public class StayDoFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent = new Intent(getActivity(), WpcDetailActivity.class);
+                Intent intent = new Intent(getActivity(), WpsDetailActivity.class);
 
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("documentben", documents.get((int) id));
@@ -100,7 +105,7 @@ public class StayDoFragment extends BaseFragment {
             public void subscribe(final ObservableEmitter<String> emitter) throws Exception {
                 String token = SharedPreferenceUtils.loginValue(getActivity(), "token");
                 Logger.i("token  " + token + "  " + CommonSetting.HTTP_TOKEN);
-                Call<String> call = HttpUtl.documentList("User/Oa/doc_list/", token, pageNUmber + "", PAGE_SIZE + "");
+                Call<String> call = HttpUtl.documentList("User/Oa/doc_list/", token, pageNUmber + "", PAGE_SIZE + "","1");
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {

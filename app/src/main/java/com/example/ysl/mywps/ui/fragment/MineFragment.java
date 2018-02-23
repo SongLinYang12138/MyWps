@@ -25,12 +25,18 @@ public class MineFragment extends BaseFragment {
     RelativeLayout rlLoginOut;
 
     private MyclickListener click = new MyclickListener();
+
+    @Override
+    public void initData() {
+
+    }
+
     @Override
     public View setView(LayoutInflater inflater, ViewGroup container) {
 
-        View view = inflater.inflate(R.layout.fragment_mine_layout,container,false);
+        View view = inflater.inflate(R.layout.fragment_mine_layout, container, false);
 
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         return view;
     }
 
@@ -45,19 +51,19 @@ public class MineFragment extends BaseFragment {
 
     }
 
-    private class MyclickListener extends NoDoubleClickListener{
+    private class MyclickListener extends NoDoubleClickListener {
         @Override
         public void click(View v) {
 
-            switch (v.getId()){
+            switch (v.getId()) {
 
                 case R.id.mine_rl_loginout:
 
-                    SharedPreferenceUtils.loginSave(getActivity(),"token","");
+                    SharedPreferenceUtils.loginSave(getActivity(), "token", "");
 
                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent);
-
+                    getActivity().finish();
                     break;
 
             }

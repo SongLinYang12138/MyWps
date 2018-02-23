@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.bean.FlowBean;
+import com.example.ysl.mywps.utils.CommonUtil;
 
 import java.util.ArrayList;
 
@@ -78,13 +79,17 @@ public class FlowAdapter extends BaseAdapter {
 
         FlowBean bean = list.get(position);
 
+
+
+
         holder.tvStage.setText(bean.getStatus());
-        holder.tvDate.setText(bean.getCtime());
+      if(CommonUtil.isEmpty(bean.getMonth()))  holder.tvDate.setText(bean.getCtime());
+        else holder.tvDate.setText("  "+bean.getMonth()+"\n  "+bean.getTime());
         holder.tvLeader.setText(bean.getUsername());
         holder.tvOpinion.setText(bean.getOpinion());
-        if (position == list.size() - 1) {
-           holder.ivCircle.setBackground(context.getResources().getDrawable(R.drawable.circle_red));
-        }
+//        if (position == list.size() - 1) {
+//           holder.ivCircle.setBackground(context.getResources().getDrawable(R.drawable.circle_red));
+//        }
         return view;
     }
 }

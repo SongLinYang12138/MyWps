@@ -9,14 +9,22 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.example.ysl.mywps.R;
+import com.example.ysl.mywps.bean.FileType;
 import com.example.ysl.mywps.utils.CommonSetting;
 import com.example.ysl.mywps.utils.CommonUtil;
 import com.example.ysl.mywps.net.HttpUtl;
 import com.example.ysl.mywps.utils.NoDoubleClickListener;
+import com.example.ysl.mywps.utils.SharedPreferenceUtils;
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
+import com.wang.avi.AVLoadingIndicatorView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +51,8 @@ public class LoginActivity extends BaseActivity {
     EditText etPhone;
     @BindView(R.id.login_rl_confirm)
     RelativeLayout rlConfirm;
+    @BindView(R.id.av_loading)
+    AVLoadingIndicatorView loading;
 
     private String name;
     private String password;
@@ -59,6 +69,7 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login_layout);
         ButterKnife.bind(this);
         rlConfirm.setOnClickListener(clik);
+        loading.setVisibility(View.GONE);
         getLogin();
     }
 
@@ -110,33 +121,28 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-    public void login(final ObservableEmitter<String> emitter) {
-
-        Call<String> call = HttpUtl.login("User/Login/user_login/", name, password, identity);
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-
-                emitter.onNext(response.body().toString());
-
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable throwable) {
-                emitter.onNext(throwable.getMessage());
-
-            }
-        });
-
-    }
 
     private void doLogin() {
-
+        loading.setVisibility(View.VISIBLE);
         Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
-            public void subscribe(ObservableEmitter<String> e) throws Exception {
+            public void subscribe(final ObservableEmitter<String> emitter) throws Exception {
 
-                login(e);
+                Call<String> call = HttpUtl.login("User/Login/user_login/", name, password, identity);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+
+                        emitter.onNext(response.body().toString());
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable throwable) {
+                        emitter.onNext(throwable.getMessage());
+
+                    }
+                });
             }
         });
 
@@ -164,7 +170,7 @@ public class LoginActivity extends BaseActivity {
 
 
                         String token = childObject.getString("token");
-
+                        saveFileTypes(token);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("token", token);
                         editor.commit();
@@ -178,14 +184,68 @@ public class LoginActivity extends BaseActivity {
                     CommonUtil.showLong(getApplicationContext(), s);
                 }
 
+                loading.setVisibility(View.GONE);
 
             }
+
+
         };
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
 
+    }
+    /**
+     * 获取文件类目
+     * */
+    private void saveFileTypes(final String token){
+        final Thread fileTypeThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                Call<String> call = HttpUtl.getFileType("User/Share/file_type/", token);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        String data = response.body();
+                        Logger.i("fileType  " + data);
+                        if (CommonUtil.isEmpty(data))
+                            return;
+                        try {
+                            JSONObject object = new JSONObject(data);
+                            int code = object.getInt("code");
+                            JSONArray array = object.getJSONArray("data");
+                            if (code == 0) {
+                                Gson gson = new Gson();
+                                List<FileType> dataList = new ArrayList<FileType>();
+
+                                for (int i = 0; i < array.length(); ++i) {
+
+                                    JSONObject child = array.getJSONObject(i);
+                                    FileType bean = gson.fromJson(child.toString(),FileType.class);
+                                    dataList.add(bean);
+                                }
+
+                                SharedPreferenceUtils.setFileTypeList(getApplicationContext(),dataList);
+
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                        Logger.i("fileType   " + t.getMessage());
+                    }
+                });
+            }
+        });
+        fileTypeThread.setDaemon(true);
+        fileTypeThread.start();
     }
 
     private void loginSuccess() {
