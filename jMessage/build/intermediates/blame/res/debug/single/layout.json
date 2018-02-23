@@ -1,0 +1,314 @@
+[
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_no_disturb_list.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_no_disturb_list.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_update_group_info.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_update_group_info.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_send_text_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_send_text_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_receipt.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_receipt.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_add_users_to_black_list.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_add_users_to_black_list.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_blocked_group_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_blocked_group_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_image_content_bitmap.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_image_content_bitmap.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_update_user_avatar.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_update_user_avatar.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_update_user_extras.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_update_user_extras.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_is_show_group_notify.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_is_show_group_notify.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_add_friend.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_add_friend.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_asserte_quals.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_asserte_quals.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_show_trans_command.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_show_trans_command.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_set_group_mem_silence.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_set_group_mem_silence.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\conversation_target_input_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\conversation_target_input_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_conversation.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_conversation.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_send_voice.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_send_voice.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_image_content.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_image_content.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_is_show_sig_notify.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_is_show_sig_notify.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_show_logout_info.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_show_logout_info.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_forward_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_forward_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_show_download_voice_info.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_show_download_voice_info.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_friend_contact_manager.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_friend_contact_manager.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_update_user_info.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_update_user_info.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_get_user_info.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_get_user_info.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_message_content.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_message_content.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_add_remove_group_member.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_add_remove_group_member.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_group_voice_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_group_voice_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_show_group_notification.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_show_group_notification.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_set_get_custom_message_string.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_set_get_custom_message_string.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_send_custom_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_send_custom_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_chatroom.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_chatroom.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_location_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_location_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_show_download_path.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_show_download_path.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_type.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_type.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_show_friend_reason.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_show_friend_reason.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_trans_command.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_trans_command.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_set_get_string_extra.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_set_get_string_extra.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_show_group_member_approval_list_item.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_show_group_member_approval_list_item.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_register.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_register.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_get_custom_map.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_get_custom_map.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_group_image_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_group_image_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_show_image.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_show_image.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_show_info.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_show_info.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_get_conversation_info.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_get_conversation_info.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_get_black_list.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_get_black_list.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_single_voice_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_single_voice_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_get_local_group_members.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_get_local_group_members.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\message_sending_options_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\message_sending_options_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_retract.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_retract.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_single_text_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_single_text_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_login.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_login.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_set_get_number_extra.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_set_get_number_extra.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_show_myinfo_update.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_show_myinfo_update.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_image_content_file.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_image_content_file.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_group_text_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_group_text_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_group_info.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_group_info.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_group.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_group.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_message_info.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_message_info.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_set_get_boolean_extra.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_set_get_boolean_extra.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_send_image_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_send_image_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_single_custom_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_single_custom_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_show_group_member_approval.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_show_group_member_approval.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_conversation_info.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_conversation_info.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_send_file_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_send_file_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_chat.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_chat.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_group_custom_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_group_custom_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_set_get_extra.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_set_get_extra.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_apply_join_group.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_apply_join_group.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_notify_type.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_notify_type.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_about_setting.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_about_setting.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_message.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_updatepassword.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_updatepassword.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_delete_conversation.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_delete_conversation.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_exit_group.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_exit_group.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_show_groupinfo.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_show_groupinfo.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\jMessage\\build\\intermediates\\res\\merged\\debug\\layout\\activity_create_single_image_message.xml",
+        "source": "E:\\studioworkspace\\MyWps\\jMessage\\res\\layout\\activity_create_single_image_message.xml"
+    }
+]

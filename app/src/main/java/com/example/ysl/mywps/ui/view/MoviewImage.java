@@ -18,6 +18,11 @@ import android.widget.ImageView;
  */
 public class MoviewImage extends ImageView {
 
+    private float startX;
+    private float startY;
+    float moveX;
+    float moveY;
+
     public MoviewImage(Context context) {
         super(context);
     }
@@ -37,12 +42,17 @@ public class MoviewImage extends ImageView {
     // 移动
     public boolean autoMouse(MotionEvent event) {
         boolean rb = false;
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
-                this.setLocation((int) event.getX(), (int) event.getY());
+                this.setLocation((int) event.getX()-this.getWidth()/2, (int) event.getY()+this.getHeight()/2);
                 rb = true;
                 break;
         }
-        return rb;
+
+        return false;
+
     }
+
+
 }

@@ -1,8 +1,10 @@
 package com.example.ysl.mywps.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,16 @@ public abstract class BaseFragment extends Fragment {
         return setView(inflater, container);
 
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    initData();
+    }
+
+    public abstract void initData();
+
+
 
     public abstract View setView(LayoutInflater inflater, ViewGroup container);
 
