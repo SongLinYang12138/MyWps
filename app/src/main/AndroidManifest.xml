@@ -1,32 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ysl.mywps">
+    package="com.example.ysl.mywps"
+    >
+
+
+    <permission android:name="com.example.ysl.mywps.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- Optional. Required for location feature -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:name=".application.MyApplication"
-        android:allowBackup="true"
+
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            >
 
         </activity>
         <activity android:name=".ui.activity.BaseActivity" />
         <activity android:name=".ui.activity.DocumentFlowActivity" />
         <activity android:name=".ui.activity.DocumentTurnActivity" />
-        <activity android:name=".ui.activity.StayToDoActivity"></activity>
-        <activity android:name=".ui.activity.WpcDetailActivity"></activity>
+        <activity android:name=".ui.activity.StayToDoActivity"
+            android:launchMode="singleTask"
+            ></activity>
+        <activity android:name=".ui.activity.WpsDetailActivity"></activity>
         <activity android:name=".ui.activity.SignActivity"></activity>
         <activity android:name=".ui.activity.CommitActivity"></activity>
         <activity android:name=".ui.activity.FlowActivity"></activity>
-        <activity android:name=".ui.activity.ContactActivity"></activity>
+        <activity android:name=".ui.activity.ContactActivity"
+            ></activity>
+        <activity android:name=".ui.activity.MaterialActivity"></activity>
+        <activity android:name=".ui.activity.SearchActivity"></activity>
         <activity android:name=".ui.activity.LoginActivity" >
 
             <intent-filter>
@@ -46,6 +76,52 @@
                 <action android:name="cn.wps.moffice.client.OfficeServiceClient" />
             </intent-filter>
         </service>
+
+
+
+        <receiver android:name=".receiver.WpsBroadCastReceiver">
+            <intent-filter>
+                <action android:name="com.kingsoft.writer.back.key.down" />
+                <action android:name="cn.wps.moffice.file.close" />
+                <action android:name="cn.wps.moffice.file.save" />
+                <action android:name="cn.wps.moffice.broadcast.AfterSaved" />
+                <action android:name="com.kingsoft.writer.back.key.down" />
+                <action android:name="com.kingsoft.writer.home.key.down" />
+
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".receiver.MyJipushReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />
+                <action android:name="cn.jpush.android.intent.CONNECTION" />
+                <category android:name="com.example.ysl.mywps" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".receiver.TalkReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <category android:name="com.example.ysl.mywps" />
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:authorities="com.example.ysl.mywps.upload"
+            android:name="com.example.ysl.mywps.provider.UploadProvider"
+            android:exported="true"
+            />
+        <provider
+            android:authorities="com.example.ysl.mywps.download.file"
+            android:name="com.example.ysl.mywps.provider.DownLoadProvider"
+            android:exported="true"
+            />
+
     </application>
 
 </manifest>

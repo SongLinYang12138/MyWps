@@ -1,0 +1,342 @@
+[
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_contact_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\activity_contact_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_popup_menu_header_item_layout.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_popup_menu_header_item_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_tranport_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\fragment_tranport_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_part_chronometer.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\notification_template_part_chronometer.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_commit_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\activity_commit_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\listveiw_item_documents_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\listveiw_item_documents_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_work_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\fragment_work_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_flow_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\activity_flow_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\frament_stay_to_do_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\frament_stay_to_do_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_alert_dialog_button_bar_material.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_alert_dialog_button_bar_material.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\listview_item_wpcdetail_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\listview_item_wpcdetail_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_activity_chooser_view_list_item.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_activity_chooser_view_list_item.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_search_dropdown_item_icons_2line.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_search_dropdown_item_icons_2line.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\listview_item_document_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\listview_item_document_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\select_dialog_multichoice_material.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\select_dialog_multichoice_material.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_action.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\notification_action.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\color_selector.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\ad513251c6d39d5e45ebac428a82a6e29fd774c6\\output\\res\\layout\\color_selector.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\snackbar.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\ad513251c6d39d5e45ebac428a82a6e29fd774c6\\output\\res\\layout\\snackbar.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\material_popupwindow_bottom.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\material_popupwindow_bottom.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_menu_item_layout.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_action_menu_item_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\add_transport_task_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\add_transport_task_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\contact_last_item_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\contact_last_item_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\popupwindow_material_top_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\popupwindow_material_top_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\document_flow_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\document_flow_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_toolbar.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_screen_toolbar.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\listview_item_flow_progress_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\listview_item_flow_progress_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_search_view.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_search_view.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_mine_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\fragment_mine_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_dialog_title_material.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_dialog_title_material.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\material_editext.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\material_editext.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_transport_fragment_layou.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\fragment_transport_fragment_layou.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_list_menu_item_layout.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_list_menu_item_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_mode_bar.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_action_mode_bar.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_content_include.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_screen_content_include.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\jpush_webview_layout.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\e8689ed642d98a26151a8976246ef01133c7245b\\output\\res\\layout\\jpush_webview_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_custom_big.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\notification_template_custom_big.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_action_tombstone.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\notification_action_tombstone.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_stay_to_do_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\activity_stay_to_do_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_bar_up_container.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_action_bar_up_container.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_bar_title_item.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_action_bar_title_item.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_media_custom.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\notification_template_media_custom.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_activity_chooser_view.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_activity_chooser_view.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\listview_item_contact_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\listview_item_contact_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\sign_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\sign_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_login_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\activity_login_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\listview_item_transport_item_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\listview_item_transport_item_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_part_time.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\notification_template_part_time.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\pull_to_refresh_header_horizontal.xml",
+        "source": "E:\\studioworkspace\\MyWps\\pulltoRefresh\\build\\intermediates\\bundles\\default\\res\\layout\\pull_to_refresh_header_horizontal.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_document_turn_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\activity_document_turn_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_have_do_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\fragment_have_do_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\dialog.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\ad513251c6d39d5e45ebac428a82a6e29fd774c6\\output\\res\\layout\\dialog.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_popup_menu_item_layout.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_popup_menu_item_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_menu_layout.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_action_menu_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragments_document_fragment_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\fragments_document_fragment_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_message_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\fragment_message_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_bar_view_list_nav_layout.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_action_bar_view_list_nav_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\select_dialog_singlechoice_material.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\select_dialog_singlechoice_material.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_alert_dialog_title_material.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_alert_dialog_title_material.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\pull_to_refresh_header_vertical.xml",
+        "source": "E:\\studioworkspace\\MyWps\\pulltoRefresh\\build\\intermediates\\bundles\\default\\res\\layout\\pull_to_refresh_header_vertical.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_contact_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\fragment_contact_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_list_menu_item_icon.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_list_menu_item_icon.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\support_simple_spinner_dropdown_item.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\support_simple_spinner_dropdown_item.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_list_menu_item_checkbox.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_list_menu_item_checkbox.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\jpush_popwin_layout.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\e8689ed642d98a26151a8976246ef01133c7245b\\output\\res\\layout\\jpush_popwin_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_simple_overlay_action_mode.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_screen_simple_overlay_action_mode.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\progress_dialog.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\ad513251c6d39d5e45ebac428a82a6e29fd774c6\\output\\res\\layout\\progress_dialog.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_media.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\notification_template_media.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_icon_group.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\notification_template_icon_group.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_search_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\activity_search_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_select_dialog_material.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_select_dialog_material.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_wpc_details_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\activity_wpc_details_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_simple.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_screen_simple.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_material_document.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\fragment_material_document.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\select_dialog_item_material.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\select_dialog_item_material.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_mode_close_item_material.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_action_mode_close_item_material.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\base_title_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\base_title_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_main.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_lines_media.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\notification_template_lines_media.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\number_indicator_spinner.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\ad513251c6d39d5e45ebac428a82a6e29fd774c6\\output\\res\\layout\\number_indicator_spinner.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_list_menu_item_radio.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_list_menu_item_radio.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_alert_dialog_material.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_alert_dialog_material.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_expanded_menu_layout.xml",
+        "source": "C:\\Users\\Administrator\\.android\\build-cache\\27b35d2f7c16507738fd31e79f3650a0ad28f6e9\\output\\res\\layout\\abc_expanded_menu_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\message_listview_item_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\message_listview_item_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_material_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\activity_material_layout.xml"
+    },
+    {
+        "merged": "E:\\studioworkspace\\MyWps\\app\\build\\intermediates\\res\\merged\\debug\\layout\\listview_item_stay_to_do_layout.xml",
+        "source": "E:\\studioworkspace\\MyWps\\app\\src\\main\\res\\layout\\listview_item_stay_to_do_layout.xml"
+    }
+]

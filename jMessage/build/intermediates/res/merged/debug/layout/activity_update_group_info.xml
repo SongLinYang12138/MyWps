@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_group_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="被修改的群组id"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/et_group_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="新的群组名" />
+
+    <EditText
+        android:id="@+id/et_group_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="新的群组描述" />
+
+    <EditText
+        android:id="@+id/et_group_avatar_path"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="新的群头像路径："
+        android:inputType="none" />
+
+    <Button
+        android:id="@+id/bt_update_group_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="修改群组名" />
+
+    <Button
+        android:id="@+id/bt_update_group_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="修改群组描述" />
+
+    <Button
+        android:id="@+id/bt_update_group_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="修改群组头像" />
+
+    <TextView
+        android:id="@+id/tv_update_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

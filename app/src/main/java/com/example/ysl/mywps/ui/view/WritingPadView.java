@@ -12,8 +12,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.example.ysl.mywps.R;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,7 +19,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Created by Kuang
+ * Created by ysl
  * on 2017/9/14.
  */
 
@@ -64,7 +62,7 @@ public class WritingPadView extends View {
     /**
      * 前景色
      */
-    private int mPenColor = getResources().getColor(R.color.rect_orange);
+    private int mPenColor = Color.BLACK;
     /**
      * 背景色（指最终签名结果文件的背景颜色，默认为透明色）
      */
@@ -177,9 +175,18 @@ public class WritingPadView extends View {
         if (cacheCanvas != null) {
             isTouched = false;
             //更新画板信息
+            mGesturePaint.setAntiAlias(true);
+            //设置签名笔画样式
+            mGesturePaint.setStyle(Paint.Style.STROKE);
+            //设置笔画宽度
+            mGesturePaint.setStrokeWidth(mPaintWidth);
+            //设置签名颜色
             mGesturePaint.setColor(mPenColor);
-            cacheCanvas.drawColor(mBackColor, PorterDuff.Mode.CLEAR);
-            mGesturePaint.setColor(mPenColor);
+
+            cachebBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+            cacheCanvas = new Canvas(cachebBitmap);
+            cacheCanvas.drawColor(mBackColor);
+
             invalidate();
         }
     }
@@ -204,7 +211,7 @@ public class WritingPadView extends View {
     public void save(String path, boolean clearBlank, int blank) throws IOException {
 
         Bitmap bitmap = cachebBitmap;
-//        BitmapUtil.createScaledBitmapByHeight(srcBitmap, 300);//  压缩图片
+        //BitmapUtil.createScaledBitmapByHeight(srcBitmap, 300);//  压缩图片
         if (clearBlank) {
             bitmap = clearBlank(bitmap, blank);
         }
@@ -220,10 +227,6 @@ public class WritingPadView extends View {
             outputStream.write(buffer);
             outputStream.close();
         }
-    }
-
-    public Bitmap getMyBitMap(){
-       return cachebBitmap;
     }
 
     /**

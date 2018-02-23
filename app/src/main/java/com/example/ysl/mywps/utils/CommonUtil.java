@@ -12,6 +12,7 @@ import com.orhanobut.logger.Logger;
 import net.sourceforge.pinyin4j.PinyinHelper;
 
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -24,11 +25,19 @@ public class CommonUtil {
     public static String myPath;
 
     public static void showShort(Context context, String msg) {
+
+
+        if (isEmpty(msg)) {
+            return;
+        }
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
     public static void showLong(Context context, String msg) {
 
+        if (isEmpty(msg)) {
+            return;
+        }
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 
@@ -77,22 +86,6 @@ public class CommonUtil {
     }
 
 
-    public static String getPinYinHeadChar(String str) {
-
-        String convert = "";
-        for (int j = 0; j < str.length(); j++) {
-            char word = str.charAt(j);
-            String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(word);
-            if (pinyinArray != null) {
-                convert += pinyinArray[0].charAt(0);
-            } else {
-                convert += word;
-            }
-        }
-        //截取第一个汉字的字母，convert获得的是所有汉字的首字母相加，转换成大写字母，才能进行排序，利用正则表达式匹配
-        return convert.substring(0, 1).toUpperCase();
-    }
-
     public static String getAndroidId(Context context) {
 
         String serialnum = null;
@@ -108,8 +101,39 @@ public class CommonUtil {
 
             Logger.i(" " + ignored.toString());
         }
-    serialnum =   Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        serialnum = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         return serialnum;
+    }
+
+    /**
+     * 返回文件大小
+     */
+    public static String getFileSize(long length) {
+        DecimalFormat df = new DecimalFormat("######0.00");
+
+        double kb = length / 1024;
+        double mb = 0;
+        double gb = 0;
+        if (kb > 1000) {
+            mb = kb / 1024;
+        }
+        if (mb > 1000) {
+            gb = mb / 1024;
+        }
+
+        if (gb > 0) {
+            df.format(gb);
+
+            return gb + " G";
+        }else if(mb > 0){
+            df.format(mb);
+            return mb+" M";
+        }else if(kb > 0){
+            df.format(kb);
+            return kb+" kb";
+        }else {
+            return length+" b";
+        }
     }
 
 

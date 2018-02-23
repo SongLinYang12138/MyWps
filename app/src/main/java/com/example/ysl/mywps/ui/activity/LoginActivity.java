@@ -9,25 +9,32 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.example.ysl.mywps.R;
-import com.example.ysl.mywps.bean.LoginBean;
-import com.example.ysl.mywps.bean.PostQueryInfo;
-import com.example.ysl.mywps.retofiInftace.LoginInteface;
+import com.example.ysl.mywps.bean.FileType;
+import com.example.ysl.mywps.utils.CommonSetting;
 import com.example.ysl.mywps.utils.CommonUtil;
-import com.example.ysl.mywps.utils.HttpUtl;
+import com.example.ysl.mywps.net.HttpUtl;
 import com.example.ysl.mywps.utils.NoDoubleClickListener;
-import com.google.gson.jpush.JsonObject;
+import com.example.ysl.mywps.utils.SharedPreferenceUtils;
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
+import com.wang.avi.AVLoadingIndicatorView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-//import okhttp3.FormBody;
-//import okhttp3.OkHttpClient;
-//import okhttp3.Request;
-//import okhttp3.RequestBody;
+import cn.jpush.android.api.JPushInterface;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,6 +51,8 @@ public class LoginActivity extends BaseActivity {
     EditText etPhone;
     @BindView(R.id.login_rl_confirm)
     RelativeLayout rlConfirm;
+    @BindView(R.id.av_loading)
+    AVLoadingIndicatorView loading;
 
     private String name;
     private String password;
@@ -60,6 +69,7 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login_layout);
         ButterKnife.bind(this);
         rlConfirm.setOnClickListener(clik);
+        loading.setVisibility(View.GONE);
         getLogin();
     }
 
@@ -73,29 +83,9 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    public void login() {
-
-        LoginInteface loginInteface = HttpUtl.getRetrofit("http://oa.wgxmcb.top/index.php/User/Login/user_login/").create(LoginInteface.class);
-        Logger.i("username  " + name + "password " + password + " regid" + identity);
-        Call<String> call = loginInteface.login(name, password, identity);
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-
-                Logger.i(" " + response.body().toString());
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable throwable) {
-
-                Logger.i(" " + call + " \n " + throwable.toString());
-
-            }
-        });
-
-    }
 
     private void saveLogin() {
+
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("name", name);
@@ -111,6 +101,11 @@ public class LoginActivity extends BaseActivity {
         String name = preferences.getString("name", "");
         String passowrd = preferences.getString("password", "");
         identity = preferences.getString("identity", "");
+        String token = preferences.getString("token", "");
+        CommonSetting.HTTP_TOKEN = token;
+        if (CommonUtil.isNotEmpty(token)) {
+            loginSuccess();
+        }
         if (CommonUtil.isEmpty(identity)) {
             havIdentity = false;
         } else {
@@ -125,6 +120,141 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+
+
+    private void doLogin() {
+        loading.setVisibility(View.VISIBLE);
+        Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(final ObservableEmitter<String> emitter) throws Exception {
+
+                Call<String> call = HttpUtl.login("User/Login/user_login/", name, password, identity);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+
+                        emitter.onNext(response.body().toString());
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable throwable) {
+                        emitter.onNext(throwable.getMessage());
+
+                    }
+                });
+            }
+        });
+
+        Consumer<String> observer = new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+//
+//                {
+//                    "code": 0,
+//                        "msg": "登录成功",
+//                        -"data": {
+//                    "token": "94721ad0fb81a31b4fad59808097f290d521fd2a"
+//                }
+//                }
+                Logger.i("登录  " + s);
+                try {
+                    JSONObject object = new JSONObject(s);
+
+                    int code = object.getInt("code");
+                    String msg = object.getString("msg");
+
+                    CommonUtil.showShort(getApplicationContext(), msg);
+                    JSONObject childObject = object.getJSONObject("data");
+                    if (childObject.has("token")) {
+
+
+                        String token = childObject.getString("token");
+                        saveFileTypes(token);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("token", token);
+                        editor.commit();
+                        loginSuccess();
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                    CommonUtil.showLong(getApplicationContext(), s);
+                }
+
+                loading.setVisibility(View.GONE);
+
+            }
+
+
+        };
+
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+
+    }
+    /**
+     * 获取文件类目
+     * */
+    private void saveFileTypes(final String token){
+        final Thread fileTypeThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                Call<String> call = HttpUtl.getFileType("User/Share/file_type/", token);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        String data = response.body();
+                        Logger.i("fileType  " + data);
+                        if (CommonUtil.isEmpty(data))
+                            return;
+                        try {
+                            JSONObject object = new JSONObject(data);
+                            int code = object.getInt("code");
+                            JSONArray array = object.getJSONArray("data");
+                            if (code == 0) {
+                                Gson gson = new Gson();
+                                List<FileType> dataList = new ArrayList<FileType>();
+
+                                for (int i = 0; i < array.length(); ++i) {
+
+                                    JSONObject child = array.getJSONObject(i);
+                                    FileType bean = gson.fromJson(child.toString(),FileType.class);
+                                    dataList.add(bean);
+                                }
+
+                                SharedPreferenceUtils.setFileTypeList(getApplicationContext(),dataList);
+
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                        Logger.i("fileType   " + t.getMessage());
+                    }
+                });
+            }
+        });
+        fileTypeThread.setDaemon(true);
+        fileTypeThread.start();
+    }
+
+    private void loginSuccess() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+
     private class MyclickListener extends NoDoubleClickListener {
 
         @Override
@@ -136,8 +266,10 @@ public class LoginActivity extends BaseActivity {
 
                     name = etPhone.getText().toString();
                     password = etPassword.getText().toString();
-                    if (!havIdentity) identity = CommonUtil.getAndroidId(LoginActivity.this);
-
+                    havIdentity = false;
+                    if (!havIdentity)
+                        identity = JPushInterface.getRegistrationID(LoginActivity.this);
+                    Logger.i("identity  " + identity);
                     if (CommonUtil.isEmpty(name)) {
                         CommonUtil.showShort(LoginActivity.this, "请填写手机号");
                         return;
@@ -147,9 +279,7 @@ public class LoginActivity extends BaseActivity {
                         return;
                     }
                     saveLogin();
-                    login();
-                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                    startActivity(intent);
+                    doLogin();
                     break;
 
 

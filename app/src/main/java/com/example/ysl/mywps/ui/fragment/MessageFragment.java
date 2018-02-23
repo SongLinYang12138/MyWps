@@ -20,6 +20,11 @@ public class MessageFragment extends BaseFragment {
     private MessageAdapter adapter;
 
     @Override
+    public void initData() {
+
+    }
+
+    @Override
     public View setView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.fragment_message_layout, container, false);
 

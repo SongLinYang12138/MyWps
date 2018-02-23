@@ -162,20 +162,13 @@ public class DocumentFlowActivity extends BaseActivity {
         bundle.putString("ThirdPackage", getPackageName());
         //第三方应用的包名，用于对改应用合法性的验证
         bundle.putBoolean("ClearTrace", false);
-
         bundle.putBoolean("ShowReviewingPaneRightDefault", true);
-
         //打开文件时，在最近列表不显示该打开记录
-
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
         intent.setAction(android.content.Intent.ACTION_VIEW);
-
         intent.setClassName("com.kingsoft.moffice_pro", "cn.wps.moffice.documentmanager.PreStartActivity2");
         Uri uri = Uri.fromFile(file);
-
         intent.setData(uri);
-
         intent.putExtras(bundle);
         try {
             startActivity(intent);
