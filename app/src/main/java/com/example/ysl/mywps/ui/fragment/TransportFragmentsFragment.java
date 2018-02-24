@@ -40,9 +40,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.orhanobut.logger.Logger;
 import com.wang.avi.AVLoadingIndicatorView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +85,12 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
     private ArrayList<UploadBean> uploadList = new ArrayList<>();
     private ArrayList<UploadBean> loadingBean = new ArrayList<>();
     private UploadBean cunrrentBean;
+<<<<<<< HEAD
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(2);
+=======
+    private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(4);
+    private FileListChildBean downloadBean;
+>>>>>>> origin/master
     private ArrayList<View> downLoadView = new ArrayList<>();
     private ArrayList<View> uploadView = new ArrayList<>();
 
@@ -163,6 +165,55 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
         this.kindFlag = kindFlag;
     }
 
+<<<<<<< HEAD
+=======
+    private void addUploadView(UploadBean bean) {
+
+        final View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_transport_task_layout, null);
+        loadingContent.addView(view);
+        ImageView ivIcon = (ImageView) view.findViewById(R.id.documents_item_icon2);
+        TextView tvTitle = (TextView) view.findViewById(R.id.documents_item_title2);
+        TextView tvDate = (TextView) view.findViewById(R.id.documents_item_time2);
+        TextView tvSize = (TextView) view.findViewById(R.id.documents_item_size2);
+        ProgressBar progress = (ProgressBar) view.findViewById(R.id.transport_prgress_upload2);
+
+        tvTitle.setText(bean.getName());
+        tvDate.setText(bean.getPath());
+        File file = new File(bean.getPath());
+        if (file != null && file.exists()) {
+            tvSize.setText(CommonUtil.getFileSize(file.length()));
+        }
+
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                loadingContent.removeView(view);
+            }
+        };
+
+        uploadNetWork(handler);
+
+    }
+
+    private void uploadNetWork(final Handler handler) {
+
+        fixedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (getActivity() != null && loadingContent != null)
+                    handler.sendEmptyMessage(1);
+
+            }
+        });
+    }
+>>>>>>> origin/master
 
     /***
      * 上传文件
@@ -178,6 +229,21 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
         if (loadingContent != null)
             addUploadView(bean);
+<<<<<<< HEAD
+=======
+//        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(3);
+//        for (int i = 0; i < 30; i++) {
+//            final int finalI = i;
+//            Runnable runnable = new Runnable(){
+//                @Override
+//                public void run() {
+//                    SystemClock.sleep(3000);
+//                    Log.d("google_lenve_fb", "run: "+ finalI);
+//                }
+//            };
+//            fixedThreadPool.execute(runnable);
+//        }
+>>>>>>> origin/master
 
 
 //        uploadList.add(bean);
@@ -206,6 +272,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
     }
 
+<<<<<<< HEAD
     private void addUploadView(UploadBean bean) {
 
         final View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_transport_task_layout, null);
@@ -344,15 +411,109 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                     }
                 });
 
+=======
+    private synchronized void uploadFile(final String path, final String name, String fileType, String token) {
+
+
+        ProgressListener progressListener = new ProgressListener() {
+            @Override
+            public void onProgress(long hasWrittenLen, long totalLen, boolean hasFinish) {
+
+                int progress = ((int) (hasWrittenLen * 100 / totalLen));
+                Log.i("aaa", "progress " + progress);
+                progressHandler.sendEmptyMessage(progress);
+            }
+        };
+
+
+        Call<String> call = HttpUtl.sharedUpload("User/Share/upload_file/", fileType, token, name, path, progressListener);
+        if (call != null) call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                Logger.i("data  " + response.body() + "\n" + response.message());
+
+                File file = new File(path);
+                String length = CommonUtil.getFileSize(file.length());
+                TransportBean bean = new TransportBean();
+                bean.setName(name);
+                bean.setPath(path);
+                bean.setSize(length);
+                ContentValues values = bean.toContentValues();
+                getActivity().getContentResolver().insert(UploadProvider.CONTENT_URI, values);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getUploadData();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Logger.i("failure  " + t.getMessage());
+
             }
         });
     }
 
+    private void addDownloadView(FileListChildBean downloadBean) {
+
+        final View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_transport_task_layout, null);
+
+        ImageView ivIcon = (ImageView) view.findViewById(R.id.documents_item_icon2);
+        TextView tvTitle = (TextView) view.findViewById(R.id.documents_item_title2);
+        TextView tvDate = (TextView) view.findViewById(R.id.documents_item_time2);
+        TextView tvSize = (TextView) view.findViewById(R.id.documents_item_size2);
+        ProgressBar progress = (ProgressBar) view.findViewById(R.id.transport_prgress_upload2);
+
+        tvTitle.setText(downloadBean.getFilename());
+        tvDate.setText(downloadBean.getCtime());
+
+        loadingContent.addView(view);
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                loadingContent.removeView(view);
+            }
+        };
+
+        downLoadNetWork(handler);
+
+    }
+
+    private void downLoadNetWork(final Handler handler) {
+
+        fixedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (getActivity() != null && loadingContent != null)
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            handler.sendEmptyMessage(1);
+                        }
+                    });
+>>>>>>> origin/master
+            }
+        });
+    }
+
+<<<<<<< HEAD
     private synchronized void uploadFile(final String path, final String name, String fileType, String token) {
 
 
     }
 
+=======
+>>>>>>> origin/master
     /***
      *
      * 下载文件
@@ -362,8 +523,13 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
         if (files != null) {
 
+<<<<<<< HEAD
             for (int i = 0; i < files.size(); ++i) {
                 FileListChildBean downloadBean = files.get(i);
+=======
+            for (int i = 0; i < files.size(); ++i){
+                downloadBean = files.get(i);
+>>>>>>> origin/master
                 if (loadingContent != null) addDownloadView(downloadBean);
             }
 
@@ -377,6 +543,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
     }
 
 
+<<<<<<< HEAD
     private void addDownloadView(FileListChildBean downloadBean) {
 
         final View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_transport_task_layout, null);
@@ -434,6 +601,14 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
                     }
                 });
+=======
+    private synchronized void downLoadFile() {
+
+
+        final Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(final ObservableEmitter<String> emitter) {
+>>>>>>> origin/master
 
                 String url = downloadBean.getDownload_url();
                 int headIndex = url.indexOf("com/") + 3;
@@ -446,6 +621,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+<<<<<<< HEAD
 
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -453,6 +629,8 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                                 loading.setVisibility(View.GONE);
                             }
                         });
+=======
+>>>>>>> origin/master
                         try {
 
                             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "wpsSign";
@@ -470,7 +648,11 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                                 public void onLoading(long currentLength, long totalLength) {
 
                                     int precent = (int) (currentLength * 100 / totalLength);
+<<<<<<< HEAD
                                     handler.sendEmptyMessage(precent);
+=======
+                                    progressHandler.sendEmptyMessage(precent);
+>>>>>>> origin/master
                                 }
                             });
 
@@ -482,6 +664,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
                             contentResolver.insert(DownLoadProvider.CONTENT_URI, bean.toContentValues());
 
+<<<<<<< HEAD
                             Message msg = new Message();
                             msg.obj = "Y";
                             msg.what = 0;
@@ -492,6 +675,11 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                             msg.obj = "N";
                             msg.what = 0;
                             handler.sendMessage(msg);
+=======
+                            emitter.onNext("Y");
+                        } catch (Exception e) {
+                            emitter.onNext("N");
+>>>>>>> origin/master
                         }
 
                     }
@@ -499,6 +687,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
 
+<<<<<<< HEAD
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -527,11 +716,21 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
             public void subscribe(final ObservableEmitter<String> emitter) {
 
 
+=======
+                        emitter.onNext(t.getMessage());
+                    }
+                });
+
+>>>>>>> origin/master
             }
         });
         Consumer<String> observer = new Consumer<String>() {
             @Override
             public void accept(String s) throws Exception {
+<<<<<<< HEAD
+=======
+                loading.setVisibility(View.GONE);
+>>>>>>> origin/master
 
 
                 if (s.equals("Y")) {
