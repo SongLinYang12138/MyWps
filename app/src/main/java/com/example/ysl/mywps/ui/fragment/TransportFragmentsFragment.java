@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.bean.FileListBean;
 import com.example.ysl.mywps.bean.FileListChildBean;
@@ -38,6 +39,7 @@ import com.example.ysl.mywps.utils.ToastUtils;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.orhanobut.logger.Logger;
 import com.wang.avi.AVLoadingIndicatorView;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
@@ -82,7 +85,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
     private ArrayList<UploadBean> uploadList = new ArrayList<>();
     private ArrayList<UploadBean> loadingBean = new ArrayList<>();
     private UploadBean cunrrentBean;
-    private ExecutorService fixedThreadPool;
+    private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(4);
     private FileListChildBean downloadBean;
     private ArrayList<View> downLoadView = new ArrayList<>();
     private ArrayList<View> uploadView = new ArrayList<>();
@@ -90,7 +93,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
     @Override
     public void initData() {
-        uploadList.clear();
+
         token = SharedPreferenceUtils.loginValue(getActivity(), "token");
         adapter = new TransportAdater(list, getActivity());
 
@@ -157,9 +160,57 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
         this.kindFlag = kindFlag;
     }
-/***
- * 上传文件
- * */
+
+    private void addUploadView(UploadBean bean) {
+
+        final View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_transport_task_layout, null);
+        loadingContent.addView(view);
+        ImageView ivIcon = (ImageView) view.findViewById(R.id.documents_item_icon2);
+        TextView tvTitle = (TextView) view.findViewById(R.id.documents_item_title2);
+        TextView tvDate = (TextView) view.findViewById(R.id.documents_item_time2);
+        TextView tvSize = (TextView) view.findViewById(R.id.documents_item_size2);
+        ProgressBar progress = (ProgressBar) view.findViewById(R.id.transport_prgress_upload2);
+
+        tvTitle.setText(bean.getName());
+        tvDate.setText(bean.getPath());
+        File file = new File(bean.getPath());
+        if (file != null && file.exists()) {
+            tvSize.setText(CommonUtil.getFileSize(file.length()));
+        }
+
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                loadingContent.removeView(view);
+            }
+        };
+
+        uploadNetWork(handler);
+
+    }
+
+    private void uploadNetWork(final Handler handler) {
+
+        fixedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (getActivity() != null && loadingContent != null)
+                    handler.sendEmptyMessage(1);
+
+            }
+        });
+    }
+
+    /***
+     * 上传文件
+     * */
     @Override
     public void setString(String... args) {
 
@@ -169,6 +220,8 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
         bean.setType(args[2]);
         cunrrentBean = bean;
 
+        if (loadingContent != null)
+            addUploadView(bean);
 //        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(3);
 //        for (int i = 0; i < 30; i++) {
 //            final int finalI = i;
@@ -253,6 +306,78 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
             }
         });
     }
+
+    private void addDownloadView(FileListChildBean downloadBean) {
+
+        final View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_transport_task_layout, null);
+
+        ImageView ivIcon = (ImageView) view.findViewById(R.id.documents_item_icon2);
+        TextView tvTitle = (TextView) view.findViewById(R.id.documents_item_title2);
+        TextView tvDate = (TextView) view.findViewById(R.id.documents_item_time2);
+        TextView tvSize = (TextView) view.findViewById(R.id.documents_item_size2);
+        ProgressBar progress = (ProgressBar) view.findViewById(R.id.transport_prgress_upload2);
+
+        tvTitle.setText(downloadBean.getFilename());
+        tvDate.setText(downloadBean.getCtime());
+
+        loadingContent.addView(view);
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                loadingContent.removeView(view);
+            }
+        };
+
+        downLoadNetWork(handler);
+
+    }
+
+    private void downLoadNetWork(final Handler handler) {
+
+        fixedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (getActivity() != null && loadingContent != null)
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            handler.sendEmptyMessage(1);
+                        }
+                    });
+            }
+        });
+    }
+
+    /***
+     *
+     * 下载文件
+     */
+    @Override
+    public void passFileChild(ArrayList<FileListChildBean> files, int kind) {
+
+        if (files != null) {
+
+            for (int i = 0; i < files.size(); ++i){
+                downloadBean = files.get(i);
+                if (loadingContent != null) addDownloadView(downloadBean);
+            }
+
+//            llProgress1.setVisibility(View.VISIBLE);
+//            tvTitle1.setText(downloadBean.getFilename());
+//            tvDate1.setText(downloadBean.getDownload_url());
+//            tvSize1.setText(downloadBean.getCtime());
+//            downLoadFile();
+        }
+
+    }
+
 
     private synchronized void downLoadFile() {
 
@@ -354,24 +479,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
         }
     };
 
-/***
- *
- * 下载文件
- */
-    @Override
-    public void passFileChild(ArrayList<FileListChildBean> files, int kind) {
 
-        if (files != null && files.size() > 0) {
-            downloadBean = files.get(0);
-
-//            llProgress1.setVisibility(View.VISIBLE);
-//            tvTitle1.setText(downloadBean.getFilename());
-//            tvDate1.setText(downloadBean.getDownload_url());
-//            tvSize1.setText(downloadBean.getCtime());
-//            downLoadFile();
-        }
-
-    }
 }
 
 

@@ -68,15 +68,16 @@ public class FileListChildBean {
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return download_url.hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
 
+        FileListChildBean bean = (FileListChildBean) obj;
 
 
-        return super.equals(obj);
+        return this.download_url.equals(bean.getDownload_url());
     }
 
     @Override

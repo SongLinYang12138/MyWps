@@ -27,7 +27,7 @@ import java.util.ArrayList;
  * 介绍:
  */
 
-public class DocumenChildAdapter extends MyBaseAdapter  {
+public class DocumenChildAdapter extends MyBaseAdapter {
 
     private Context context;
     private ArrayList<FileListChildBean> list;
@@ -72,9 +72,8 @@ public class DocumenChildAdapter extends MyBaseAdapter  {
     public void update(ArrayList<?> list) {
         super.update(list);
         this.list = (ArrayList<FileListChildBean>) list;
-    selectList.clear();
+        selectList.clear();
     }
-
 
 
     private class ViewHolder {
@@ -104,10 +103,11 @@ public class DocumenChildAdapter extends MyBaseAdapter  {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     selectList.clear();
                     if (isChecked) {
-                     if(list.size() > postition)   selectList.add(list.get(postition));
-                        passFileChildList.passFileChild(selectList,0);
-                    } else{
-                        if(list.size() > postition)     selectList.remove(postition);
+                        if (list.size() > postition) selectList.add(list.get(postition));
+                        passFileChildList.passFileChild(selectList, 1);
+                    } else {
+                        if (list.size() > postition) selectList.add(list.get(postition));
+                        passFileChildList.passFileChild(selectList, 0);
                     }
                 }
             });

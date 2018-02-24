@@ -73,8 +73,8 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
     private ArrayList<FileListBean> fileListBeens = new ArrayList<>();
     private boolean loadMore = false;
     private PassFileChildList passFileChild;
-    private Window myWindow;
-    private WindowManager.LayoutParams myLp;
+
+
     private MyclickListener click = new MyclickListener();
     private ArrayList<FileListChildBean> selectList = new ArrayList<>();
 
@@ -82,8 +82,7 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
     @Override
     public void initData() {
 
-        myWindow = getActivity().getWindow();
-        myLp = myWindow.getAttributes();
+
         adapter = new DocumentAdapter(fileListBeens, getActivity(), this);
 
         fileTypes = SharedPreferenceUtils.getFileTypeDataList(getActivity());
@@ -312,8 +311,6 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.material_popupwindow_bottom, null);
 
-        myLp.alpha = 0.4f;
-        myWindow.setAttributes(myLp);
 
         if (bottomWindow == null) {
             bottomWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, 240, true);
@@ -329,12 +326,12 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
 //            bottomWindow.setBackgroundDrawable(new ColorDrawable());
             bottomWindow.setOutsideTouchable(true);
             bottomWindow.setAnimationStyle(R.style.Popupwindow);
-            bottomWindow.setFocusable(true);
+            bottomWindow.setFocusable(false);
             rlDownload.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    passFileChild.passFileChild(selectList,0);
+                    passFileChild.passFileChild(selectList, 0);
                     bottomWindow.dismiss();
                 }
             });
@@ -355,8 +352,7 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
             bottomWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
                 public void onDismiss() {
-                    myLp.alpha = 1f;
-                    myWindow.setAttributes(myLp);
+
                     adapter.notifyDataSetChanged();
 
                 }
@@ -423,7 +419,7 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
                         fileListBeens.clear();
                         netWork();
                     }
-                }else {
+                } else {
                     ToastUtils.showLong(getActivity(), s);
                 }
 
@@ -437,6 +433,9 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
 
     }
 
+    /***
+     * 选中下载的文件
+     * */
     @Override
     public void passFileChild(ArrayList<FileListChildBean> files, int kind) {
 
@@ -448,8 +447,19 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
         }
 
         if (files != null) {
-            selectList.clear();
-            selectList = files;
+
+            switch (kind) {
+                case 0://删除选中的item  DocumentChildAdapter中
+                    try {
+                        selectList.remove(files.get(0));
+                    } catch (IndexOutOfBoundsException e) {
+                    }
+                    break;
+                case 1://添加选中的item
+                    selectList.add(files.get(0));
+                    break;
+            }
+            Logger.i("listSize  "+selectList.size());
         }
     }
 
