@@ -237,6 +237,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                     progress.setProgress(pro);
 
                     if (pro == 100) {
+
                         loadingContent.removeView(view);
                         tvSize.setText("下载中");
                     }
