@@ -40,6 +40,9 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.orhanobut.logger.Logger;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,8 +88,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
     private ArrayList<UploadBean> uploadList = new ArrayList<>();
     private ArrayList<UploadBean> loadingBean = new ArrayList<>();
     private UploadBean cunrrentBean;
-    private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(4);
-    private FileListChildBean downloadBean;
+    private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(2);
     private ArrayList<View> downLoadView = new ArrayList<>();
     private ArrayList<View> uploadView = new ArrayList<>();
 
@@ -161,52 +163,6 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
         this.kindFlag = kindFlag;
     }
 
-    private void addUploadView(UploadBean bean) {
-
-        final View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_transport_task_layout, null);
-        loadingContent.addView(view);
-        ImageView ivIcon = (ImageView) view.findViewById(R.id.documents_item_icon2);
-        TextView tvTitle = (TextView) view.findViewById(R.id.documents_item_title2);
-        TextView tvDate = (TextView) view.findViewById(R.id.documents_item_time2);
-        TextView tvSize = (TextView) view.findViewById(R.id.documents_item_size2);
-        ProgressBar progress = (ProgressBar) view.findViewById(R.id.transport_prgress_upload2);
-
-        tvTitle.setText(bean.getName());
-        tvDate.setText(bean.getPath());
-        File file = new File(bean.getPath());
-        if (file != null && file.exists()) {
-            tvSize.setText(CommonUtil.getFileSize(file.length()));
-        }
-
-        Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                loadingContent.removeView(view);
-            }
-        };
-
-        uploadNetWork(handler);
-
-    }
-
-    private void uploadNetWork(final Handler handler) {
-
-        fixedThreadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (getActivity() != null && loadingContent != null)
-                    handler.sendEmptyMessage(1);
-
-            }
-        });
-    }
 
     /***
      * 上传文件
@@ -222,18 +178,6 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
         if (loadingContent != null)
             addUploadView(bean);
-//        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(3);
-//        for (int i = 0; i < 30; i++) {
-//            final int finalI = i;
-//            Runnable runnable = new Runnable(){
-//                @Override
-//                public void run() {
-//                    SystemClock.sleep(3000);
-//                    Log.d("google_lenve_fb", "run: "+ finalI);
-//                }
-//            };
-//            fixedThreadPool.execute(runnable);
-//        }
 
 
 //        uploadList.add(bean);
@@ -262,97 +206,150 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
     }
 
-    private synchronized void uploadFile(final String path, final String name, String fileType, String token) {
-
-
-        ProgressListener progressListener = new ProgressListener() {
-            @Override
-            public void onProgress(long hasWrittenLen, long totalLen, boolean hasFinish) {
-
-                int progress = ((int) (hasWrittenLen * 100 / totalLen));
-                Log.i("aaa", "progress " + progress);
-                progressHandler.sendEmptyMessage(progress);
-            }
-        };
-
-
-        Call<String> call = HttpUtl.sharedUpload("User/Share/upload_file/", fileType, token, name, path, progressListener);
-        if (call != null) call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                Logger.i("data  " + response.body() + "\n" + response.message());
-
-                File file = new File(path);
-                String length = CommonUtil.getFileSize(file.length());
-                TransportBean bean = new TransportBean();
-                bean.setName(name);
-                bean.setPath(path);
-                bean.setSize(length);
-                ContentValues values = bean.toContentValues();
-                getActivity().getContentResolver().insert(UploadProvider.CONTENT_URI, values);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        getUploadData();
-                    }
-                });
-
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Logger.i("failure  " + t.getMessage());
-
-            }
-        });
-    }
-
-    private void addDownloadView(FileListChildBean downloadBean) {
+    private void addUploadView(UploadBean bean) {
 
         final View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_transport_task_layout, null);
+        loadingContent.addView(view);
 
         ImageView ivIcon = (ImageView) view.findViewById(R.id.documents_item_icon2);
         TextView tvTitle = (TextView) view.findViewById(R.id.documents_item_title2);
         TextView tvDate = (TextView) view.findViewById(R.id.documents_item_time2);
-        TextView tvSize = (TextView) view.findViewById(R.id.documents_item_size2);
-        ProgressBar progress = (ProgressBar) view.findViewById(R.id.transport_prgress_upload2);
+        final TextView tvSize = (TextView) view.findViewById(R.id.documents_item_size2);
+        final ProgressBar progress = (ProgressBar) view.findViewById(R.id.transport_prgress_upload2);
 
-        tvTitle.setText(downloadBean.getFilename());
-        tvDate.setText(downloadBean.getCtime());
+        tvSize.setText("等待中");
+        tvTitle.setText(bean.getName());
+        tvDate.setText(bean.getPath());
+        File file = new File(bean.getPath());
+        if (file != null && file.exists()) {
+            tvSize.setText(CommonUtil.getFileSize(file.length()));
+        }
 
-        loadingContent.addView(view);
         Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                loadingContent.removeView(view);
+                int pro = msg.what;
+                if (pro == 0 && msg.obj != null) {
+                    String message = msg.obj.toString();
+                    ToastUtils.showShort(getActivity(), message);
+                } else {
+                    progress.setProgress(pro);
+
+                    if (pro == 100) {
+                        loadingContent.removeView(view);
+                        tvSize.setText("下载中");
+                    }
+                }
             }
         };
 
-        downLoadNetWork(handler);
+        uploadNetWork(handler, bean, tvSize);
 
     }
 
-    private void downLoadNetWork(final Handler handler) {
+    private void uploadNetWork(final Handler handler, final UploadBean bean, final TextView tvStatus) {
 
         fixedThreadPool.execute(new Runnable() {
             @Override
             public void run() {
+//                uploadFile(bean.getPath(), bean.getName(), bean.getType(), token);
 
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (getActivity() != null && loadingContent != null)
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            handler.sendEmptyMessage(1);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        tvStatus.setText("下载中");
+                    }
+                });
+
+                ProgressListener progressListener = new ProgressListener() {
+                    @Override
+                    public void onProgress(long hasWrittenLen, long totalLen, boolean hasFinish) {
+
+                        int progress = ((int) (hasWrittenLen * 100 / totalLen));
+                        handler.sendEmptyMessage(progress);
+
+                    }
+                };
+
+
+                Call<String> call = HttpUtl.sharedUpload("User/Share/upload_file/", bean.getType(), token, bean.getName(), bean.getPath(), progressListener);
+                if (call != null) call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Logger.i("data  " + response.body() + "\n" + response.message());
+
+                        if (response.isSuccessful()) {
+
+                            String data = response.body();
+                            try {
+                                JSONObject jsonObject = new JSONObject(data);
+
+                                int code = jsonObject.getInt("code");
+                                String msg = jsonObject.getString("msg");
+                                Message message = new Message();
+                                message.what = 0;
+                                message.obj = msg;
+                                handler.sendMessage(message);
+
+                                if (code == 0) {//上传成功，记录上传的文件
+
+                                    File file = new File(bean.getPath());
+                                    String length = CommonUtil.getFileSize(file.length());
+                                    TransportBean bean1 = new TransportBean();
+                                    bean1.setName(bean.getName());
+                                    bean1.setPath(bean.getPath());
+                                    bean1.setSize(length);
+                                    ContentValues values = bean1.toContentValues();
+                                    getActivity().getContentResolver().insert(UploadProvider.CONTENT_URI, values);
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            getUploadData();
+                                        }
+                                    });
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                                Message message = new Message();
+                                message.what = 0;
+                                message.obj = "上传失败";
+                                handler.sendMessage(message);
+
+                            }
+                        } else {
+
+                            Message message = new Message();
+                            message.what = 0;
+                            message.obj = "上传失败";
+                            handler.sendMessage(message);
+
                         }
-                    });
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Logger.i("failure  " + t.getMessage());
+
+                        Message message = new Message();
+                        message.what = 0;
+                        message.obj = "上传失败";
+                        handler.sendMessage(message);
+
+                    }
+                });
+
             }
         });
+    }
+
+    private synchronized void uploadFile(final String path, final String name, String fileType, String token) {
+
+
     }
 
     /***
@@ -364,8 +361,8 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
         if (files != null) {
 
-            for (int i = 0; i < files.size(); ++i){
-                downloadBean = files.get(i);
+            for (int i = 0; i < files.size(); ++i) {
+                FileListChildBean downloadBean = files.get(i);
                 if (loadingContent != null) addDownloadView(downloadBean);
             }
 
@@ -379,12 +376,63 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
     }
 
 
-    private synchronized void downLoadFile() {
+    private void addDownloadView(FileListChildBean downloadBean) {
 
+        final View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_transport_task_layout, null);
 
-        final Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
+        ImageView ivIcon = (ImageView) view.findViewById(R.id.documents_item_icon2);
+        TextView tvTitle = (TextView) view.findViewById(R.id.documents_item_title2);
+        TextView tvDate = (TextView) view.findViewById(R.id.documents_item_time2);
+        final TextView tvSize = (TextView) view.findViewById(R.id.documents_item_size2);
+
+        final ProgressBar progress = (ProgressBar) view.findViewById(R.id.transport_prgress_upload2);
+
+        tvTitle.setText(downloadBean.getFilename());
+        tvDate.setText(downloadBean.getCtime());
+        tvSize.setText("等待中");
+
+        loadingContent.addView(view);
+        Handler handler = new Handler() {
             @Override
-            public void subscribe(final ObservableEmitter<String> emitter) {
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                loadingContent.removeView(view);
+
+
+                int progr = msg.what;
+                if (progr == 0 && msg.obj != null) {
+                    String message = msg.obj.toString();
+
+                } else {
+                    progress.setProgress(progr);
+                    if (progr == 100) {
+                        loadingContent.removeView(view);
+                        getDownloadData();
+                        tvSize.setText("下载完毕");
+                    }
+                }
+
+
+            }
+        };
+
+        downLoadNetWork(handler, downloadBean, tvSize);
+
+    }
+
+    private void downLoadNetWork(final Handler handler, final FileListChildBean downloadBean, final TextView tvStay) {
+
+        fixedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvStay.setText("下载中");
+
+                    }
+                });
 
                 String url = downloadBean.getDownload_url();
                 int headIndex = url.indexOf("com/") + 3;
@@ -397,6 +445,13 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loading.setVisibility(View.GONE);
+                            }
+                        });
                         try {
 
                             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "wpsSign";
@@ -414,7 +469,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                                 public void onLoading(long currentLength, long totalLength) {
 
                                     int precent = (int) (currentLength * 100 / totalLength);
-                                    progressHandler.sendEmptyMessage(precent);
+                                    handler.sendEmptyMessage(precent);
                                 }
                             });
 
@@ -426,9 +481,16 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
                             contentResolver.insert(DownLoadProvider.CONTENT_URI, bean.toContentValues());
 
-                            emitter.onNext("Y");
+                            Message msg = new Message();
+                            msg.obj = "Y";
+                            msg.what = 0;
+                            handler.sendMessage(msg);
+
                         } catch (Exception e) {
-                            emitter.onNext("N");
+                            Message msg = new Message();
+                            msg.obj = "N";
+                            msg.what = 0;
+                            handler.sendMessage(msg);
                         }
 
                     }
@@ -436,16 +498,39 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                        emitter.onNext(t.getMessage());
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                            }
+                        });
+                        Message msg = new Message();
+                        msg.obj = "N";
+                        msg.what = 0;
+                        handler.sendMessage(msg);
+//                        emitter.onNext(t.getMessage());
                     }
                 });
+
+
+            }
+        });
+    }
+
+
+    private synchronized void downLoadFile() {
+
+
+        final Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(final ObservableEmitter<String> emitter) {
+
 
             }
         });
         Consumer<String> observer = new Consumer<String>() {
             @Override
             public void accept(String s) throws Exception {
-                loading.setVisibility(View.GONE);
 
 
                 if (s.equals("Y")) {

@@ -87,9 +87,11 @@ public class TransportAdater extends BaseAdapter {
         if(list.size() > position){
             TransportBean bean = list.get(position);
 
-            if(bean.getName().contains("png") || bean.getName().contains("jpg")){
-                ImageLoader.getInstance().displayImage("file:///"+bean.getPath(), holder.ivIcon, options);
-            }
+         if(bean.getName() != null && bean.getPath() != null){
+             if(bean.getName().contains("png") || bean.getName().contains("jpg")){
+                 ImageLoader.getInstance().displayImage("file:///"+bean.getPath(), holder.ivIcon, options);
+             }
+         }
 
             holder.tvTitle.setText(bean.getName());
             holder.tvSize.setText(bean.getSize());
