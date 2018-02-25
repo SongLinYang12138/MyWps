@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:id="@+id/main_rl_all"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_back">
+    android:background="@color/white_back"
+    >
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/main_vp_container"
+    <RelativeLayout
+        android:id="@+id/main_rl_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/main_ll_id_bottom"
+        android:clickable="true"
         >
 
-    </android.support.v4.view.ViewPager>
+    </RelativeLayout>
 
 
     <LinearLayout

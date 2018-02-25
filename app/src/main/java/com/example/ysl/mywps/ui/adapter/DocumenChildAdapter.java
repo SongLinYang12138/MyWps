@@ -8,6 +8,7 @@ import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
  * 介绍:
  */
 
-public class DocumenChildAdapter extends MyBaseAdapter {
+public class DocumenChildAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<FileListChildBean> list;
@@ -38,7 +39,6 @@ public class DocumenChildAdapter extends MyBaseAdapter {
     private ArrayList<FileListChildBean> selectList = new ArrayList<>();
 
     public DocumenChildAdapter(ArrayList<FileListChildBean> list, Context context, int kindFlag, PassFileChildList passFileChildList) {
-        super(list, context);
 
         this.context = context;
         this.list = list;
@@ -68,26 +68,28 @@ public class DocumenChildAdapter extends MyBaseAdapter {
         selectList.clear();
     }
 
-    @Override
     public void update(ArrayList<?> list) {
-        super.update(list);
         this.list = (ArrayList<FileListChildBean>) list;
         selectList.clear();
     }
 
-
-    private class ViewHolder {
-        ImageView ivIcon;
-        TextView tvName, tvDate;
-        CheckBox cb;
-
+    @Override
+    public int getCount() {
+        return list.size();
     }
 
-    private ViewHolder holder;
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public View myView(final int postition, View view, ViewGroup viewGroup) {
+    public Object getItem(int position) {
+        return list.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(final int postition, View view, ViewGroup viewGroup) {
 
         if (view == null) {
             holder = new ViewHolder();
@@ -132,4 +134,16 @@ public class DocumenChildAdapter extends MyBaseAdapter {
         holder.tvDate.setText(bean.getCtime());
         return view;
     }
+
+
+    private class ViewHolder {
+        ImageView ivIcon;
+        TextView tvName, tvDate;
+        CheckBox cb;
+
+    }
+
+    private ViewHolder holder;
+
+
 }

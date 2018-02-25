@@ -44,27 +44,34 @@
         android:paddingBottom="@dimen/margin_small"
         android:paddingTop="@dimen/margin_small">
 
-       <LinearLayout
-           android:layout_width="wrap_content"
+        <LinearLayout
+           android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:orientation="horizontal"
-           android:layout_centerInParent="true"
+           android:background="@color/white_back"
            android:gravity="center_vertical"
-           >
-           <com.example.ysl.mywps.ui.view.IconTextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:paddingLeft="@dimen/activity_horizontal_margin"
+           android:paddingRight="@dimen/activity_horizontal_margin"
+         >
 
-               android:text="&#xe639;"
-               android:textColor="@color/text_black"
-               android:textSize="@dimen/icon_normal" />
-           <TextView
+           <com.example.ysl.mywps.ui.view.IconTextView
+               android:id="@+id/contact_itv_search"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:textSize="@dimen/text_large"
-               android:textColor="@color/text_black"
-               android:text="搜索"
-               />
+               android:background="@color/white_back"
+               android:text="&#xe639;"
+               android:textColor="@color/arrow"
+               android:textSize="@dimen/icon_large" />
+
+           <EditText
+               android:id="@+id/contact_et_search"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:background="@null"
+               android:hint="请输入要查找的用户名或者电话号码"
+               android:paddingLeft="@dimen/activity_horizontal_margin"
+               android:textColor="@color/black_panit"
+               android:textSize="@dimen/text_small" />
        </LinearLayout>
 
     </RelativeLayout>

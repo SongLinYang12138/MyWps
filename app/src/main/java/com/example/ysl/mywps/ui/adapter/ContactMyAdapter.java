@@ -23,7 +23,7 @@ import java.util.LinkedHashMap;
  * Created by ysl on 2018/1/16.
  */
 
-public class ContactMyAdapter extends MyBaseAdapter {
+public class ContactMyAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<ContactBean> list = new ArrayList<>();
@@ -34,11 +34,16 @@ public class ContactMyAdapter extends MyBaseAdapter {
     private boolean shouldHide;
 
     public ContactMyAdapter(ArrayList<ContactBean> list, Context context, Boolean isHide,PasssString passsString) {
-        super(list, context);
+
         this.list = list;
         this.context = context;
         this.shouldHide = isHide;
         this.passsString = passsString;
+    }
+
+    public void update(ArrayList<ContactBean> list){
+        this.list = list;
+        notifyDataSetChanged();
     }
 
     public void selectAll(boolean isSelect){
@@ -77,18 +82,23 @@ public class ContactMyAdapter extends MyBaseAdapter {
 
     }
 
-    private class ViewHolder {
-        TextView tvCapital;
-        TextView tvName, tvPhone, tvDepart;
-        LinearLayout llCapital;
-        CheckBox checkBox;
+    @Override
+    public int getCount() {
+        return list.size();
     }
 
-    private ViewHolder holder;
+    @Override
+    public Object getItem(int position) {
+        return list.get(position);
+    }
 
     @Override
-    public View myView(final int i, View view, ViewGroup viewGroup) {
+    public long getItemId(int position) {
+        return position;
+    }
 
+    @Override
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         if (view == null) {
             holder = new ViewHolder();
             view = LayoutInflater.from(context).inflate(R.layout.listview_item_contact_layout, viewGroup, false);
@@ -137,4 +147,15 @@ public class ContactMyAdapter extends MyBaseAdapter {
         holder.tvPhone.setText(info.getMobile());
         return view;
     }
+
+    private class ViewHolder {
+        TextView tvCapital;
+        TextView tvName, tvPhone, tvDepart;
+        LinearLayout llCapital;
+        CheckBox checkBox;
+    }
+
+    private ViewHolder holder;
+
+
 }

@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.example.ysl.mywps.R;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
  * Created by Administrator on 2018/1/20 0020.
  */
 
-public class WpsDetailAdapter extends MyBaseAdapter {
+public class WpsDetailAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<DocumentImageBean> list;
@@ -28,7 +29,7 @@ public class WpsDetailAdapter extends MyBaseAdapter {
     private Thread imageThread;
 
     public WpsDetailAdapter(ArrayList<DocumentImageBean> list, Context context) {
-        super(list, context);
+
         this.list = list;
         this.context = context;
 
@@ -51,16 +52,23 @@ public class WpsDetailAdapter extends MyBaseAdapter {
         return imgBitmap;
     }
 
-    private class ViewHolder {
-
-        ImageView ivIcon;
+    @Override
+    public int getCount() {
+        return list.size();
     }
 
-
-    private ViewHolder holder;
+    @Override
+    public Object getItem(int position) {
+        return list.get(position);
+    }
 
     @Override
-    public View myView(final int postion, View view, ViewGroup viewGroup) {
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(final int postion, View view, ViewGroup viewGroup) {
 
         if (view == null) {
             holder = new ViewHolder();
@@ -88,7 +96,17 @@ public class WpsDetailAdapter extends MyBaseAdapter {
             }
         }
         return view;
+
     }
+
+    private class ViewHolder {
+
+        ImageView ivIcon;
+    }
+
+
+    private ViewHolder holder;
+
 
 
 }

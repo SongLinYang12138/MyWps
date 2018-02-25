@@ -46,7 +46,11 @@
                 android:textColor="@color/black_panit"
                 android:textSize="@dimen/text_small" />
         </LinearLayout>
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="10dp"
+    android:background="@color/white_back"
+    ></RelativeLayout>
         <ListView
             android:id="@+id/contact_listview"
             android:layout_width="match_parent"

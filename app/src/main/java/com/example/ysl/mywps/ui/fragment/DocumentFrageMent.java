@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.ysl.mywps.R;
@@ -28,7 +29,7 @@ import butterknife.ButterKnife;
 public class DocumentFrageMent extends BaseFragment {
 
     @BindView(R.id.material_document_viewpager)
-     ViewPager viewPager;
+    ViewPager viewPager;
     @BindView(R.id.fragment_documents_picture)
     TextView tvPicture;
     @BindView(R.id.fragment_documents_documents)
@@ -37,23 +38,38 @@ public class DocumentFrageMent extends BaseFragment {
     TextView tvVideo;
     @BindView(R.id.fragment_documents_music)
     TextView tvMusic;
+    @BindView(R.id.fragment_documents_all)
+    TextView tvAll;
+
+    @BindView(R.id.fragment_documents_rl_picture)
+    RelativeLayout rlPicture;
+    @BindView(R.id.fragment_documents_rl_documents)
+    RelativeLayout rlDocuments;
+    @BindView(R.id.fragment_documents_rl_video)
+    RelativeLayout rlVideo;
+    @BindView(R.id.fragment_documents_rl_music)
+    RelativeLayout rlMusic;
+    @BindView(R.id.fragment_documents_rl_all)
+    RelativeLayout rlAll;
 
     @BindView(R.id.fragment_ll_picture)
-    LinearLayout llPicture;
+    RelativeLayout llPicture;
     @BindView(R.id.fragment_ll_documents)
-    LinearLayout llDocuments;
+    RelativeLayout llDocuments;
     @BindView(R.id.fragment_ll_video)
-    LinearLayout llVieo;
+    RelativeLayout llVieo;
     @BindView(R.id.fragment_ll_music)
-    LinearLayout llMusic;
+    RelativeLayout llMusic;
+    @BindView(R.id.fragment_ll_all)
+    RelativeLayout llAll;
 
-    private   PagerAdapter pagerAdapter;
+    private PagerAdapter pagerAdapter;
     private ArrayList<Fragment> fragments = new ArrayList<>();
-    private DocufragmentsFragment fragment1,fragment2,fragment3,fragment4;
-    private ColorStateList normal,select;
+    private DocufragmentsFragment fragment0, fragment1, fragment2, fragment3, fragment4;
+    private ColorStateList normal, select;
     private MyclickListener click = new MyclickListener();
     private PassFileChildList passFileChildList;
-    private PasssString passsString1,passsString2,passsString3,passsString4;
+    private PasssString passsString1, passsString2, passsString3, passsString4;
 
     @Override
     public void initData() {
@@ -63,9 +79,11 @@ public class DocumentFrageMent extends BaseFragment {
     @Override
     public View setView(LayoutInflater inflater, ViewGroup container) {
 
-        View view = inflater.inflate(R.layout.fragment_material_document,container,false);
-        ButterKnife.bind(this,view);
+        View view = inflater.inflate(R.layout.fragment_material_document, container, false);
+        ButterKnife.bind(this, view);
 
+        fragment0 = new DocufragmentsFragment();
+        fragment0.setKindFlag(0);
         fragment1 = new DocufragmentsFragment();
         fragment1.setKindFlag(1);
         passsString1 = fragment1;
@@ -83,16 +101,17 @@ public class DocumentFrageMent extends BaseFragment {
         passsString4 = fragment4;
         fragment4.setPassFileChild(passFileChildList);
 
+        fragments.add(fragment0);
         fragments.add(fragment1);
         fragments.add(fragment2);
         fragments.add(fragment3);
         fragments.add(fragment4);
 
-        pagerAdapter = new PagerAdapter(getFragmentManager(),fragments);
+        pagerAdapter = new PagerAdapter(getFragmentManager(), fragments);
         return view;
     }
 
-    public void setPassFileChildList(PassFileChildList fileChildList){
+    public void setPassFileChildList(PassFileChildList fileChildList) {
         this.passFileChildList = fileChildList;
     }
 
@@ -105,6 +124,7 @@ public class DocumentFrageMent extends BaseFragment {
         llDocuments.setOnClickListener(click);
         llVieo.setOnClickListener(click);
         llMusic.setOnClickListener(click);
+        llAll.setOnClickListener(click);
 
         viewPager.setAdapter(pagerAdapter);
         setTextBack(0);
@@ -131,80 +151,122 @@ public class DocumentFrageMent extends BaseFragment {
         });
     }
 
-    private void setTextBack(int position){
+    private void setTextBack(int position) {
 
-        switch (position){
+        switch (position) {
             case 0:
+                tvAll.setTextColor(select);
+                tvPicture.setTextColor(normal);
+                tvDocuments.setTextColor(normal);
+                tvVideo.setTextColor(normal);
+                tvMusic.setTextColor(normal);
 
+                rlAll.setVisibility(View.VISIBLE);
+                rlPicture.setVisibility(View.GONE);
+                rlDocuments.setVisibility(View.GONE);
+                rlVideo.setVisibility(View.GONE);
+                rlMusic.setVisibility(View.GONE);
+
+                break;
+
+            case 1:
+
+                tvAll.setTextColor(normal);
                 tvPicture.setTextColor(select);
                 tvDocuments.setTextColor(normal);
                 tvVideo.setTextColor(normal);
                 tvMusic.setTextColor(normal);
 
+                rlAll.setVisibility(View.GONE);
+                rlPicture.setVisibility(View.VISIBLE);
+                rlDocuments.setVisibility(View.GONE);
+                rlVideo.setVisibility(View.GONE);
+                rlMusic.setVisibility(View.GONE);
 
                 break;
-            case 1:
-
+            case 2:
+                tvAll.setTextColor(normal);
                 tvPicture.setTextColor(normal);
                 tvDocuments.setTextColor(select);
                 tvVideo.setTextColor(normal);
                 tvMusic.setTextColor(normal);
 
+                rlAll.setVisibility(View.GONE);
+                rlPicture.setVisibility(View.GONE);
+                rlDocuments.setVisibility(View.VISIBLE);
+                rlVideo.setVisibility(View.GONE);
+                rlMusic.setVisibility(View.GONE);
 
                 break;
 
-            case 2:
+            case 3:
 
+                tvAll.setTextColor(normal);
                 tvPicture.setTextColor(normal);
                 tvDocuments.setTextColor(normal);
                 tvVideo.setTextColor(select);
                 tvMusic.setTextColor(normal);
 
+                rlAll.setVisibility(View.GONE);
+                rlPicture.setVisibility(View.GONE);
+                rlDocuments.setVisibility(View.GONE);
+                rlVideo.setVisibility(View.VISIBLE);
+                rlMusic.setVisibility(View.GONE);
 
                 break;
-            case 3:
+            case 4:
 
+                tvAll.setTextColor(normal);
                 tvPicture.setTextColor(normal);
                 tvDocuments.setTextColor(normal);
                 tvVideo.setTextColor(normal);
                 tvMusic.setTextColor(select);
 
+                rlAll.setVisibility(View.GONE);
+                rlPicture.setVisibility(View.GONE);
+                rlDocuments.setVisibility(View.GONE);
+                rlVideo.setVisibility(View.GONE);
+                rlMusic.setVisibility(View.VISIBLE);
 
                 break;
-
 
 
         }
 
 
     }
+
     @Override
     public void setKindFlag(int kindFlag) {
 
     }
 
-    private class MyclickListener extends NoDoubleClickListener{
+    private class MyclickListener extends NoDoubleClickListener {
 
         @Override
         public void click(View v) {
 
-            switch (v.getId()){
+            switch (v.getId()) {
 
-                case R.id.fragment_ll_picture:
+                case R.id.fragment_ll_all:
 
                     viewPager.setCurrentItem(0);
                     break;
-                case R.id.fragment_ll_documents:
+                case R.id.fragment_ll_picture:
 
                     viewPager.setCurrentItem(1);
                     break;
-                case R.id.fragment_ll_video:
+                case R.id.fragment_ll_documents:
 
                     viewPager.setCurrentItem(2);
                     break;
-                case R.id.fragment_ll_music:
+                case R.id.fragment_ll_video:
 
                     viewPager.setCurrentItem(3);
+                    break;
+                case R.id.fragment_ll_music:
+
+                    viewPager.setCurrentItem(4);
                     break;
 
 

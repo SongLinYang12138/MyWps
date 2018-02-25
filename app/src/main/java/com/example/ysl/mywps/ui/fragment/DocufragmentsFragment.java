@@ -2,6 +2,7 @@ package com.example.ysl.mywps.ui.fragment;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,13 +107,23 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
                     fileType = fileInfo.getCode();
                     netWork();
                 }
-
-
             }
+
+            if (kindFlag == 0) {
+
+                        fileType = "all";
+                        Log.i("aaa","filetype  "+fileType);
+                        netWork();
+            }
+
         }
 
 
         switch (kindFlag) {
+            case 0:
+
+                adapter.setKindFlag(0);
+                break;
             case 1:
 
                 adapter.setKindFlag(1);
@@ -197,7 +208,7 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
 
                         if (response.isSuccessful()) {
                             String data = response.body();
-                            Logger.i("data   " + fileType + "  " + data);
+                         if(kindFlag == 0)   Logger.i("data   " + fileType + "  " + data);
                             if (data == null) {
                                 emitter.onNext("N");
                                 return;
@@ -324,7 +335,7 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
             rlDelete.setOnClickListener(click);
             rlMessage.setOnClickListener(click);
 //            bottomWindow.setBackgroundDrawable(new ColorDrawable());
-            bottomWindow.setOutsideTouchable(true);
+            bottomWindow.setOutsideTouchable(false);
             bottomWindow.setAnimationStyle(R.style.Popupwindow);
             bottomWindow.setFocusable(false);
             rlDownload.setOnClickListener(new View.OnClickListener() {
@@ -459,7 +470,7 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
                     selectList.add(files.get(0));
                     break;
             }
-            Logger.i("listSize  "+selectList.size());
+            Logger.i("listSize  " + selectList.size());
         }
     }
 
