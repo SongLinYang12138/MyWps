@@ -16,6 +16,7 @@ import com.example.ysl.mywps.ui.adapter.StayDoAdapter;
 import com.example.ysl.mywps.utils.CommonSetting;
 import com.example.ysl.mywps.utils.CommonUtil;
 import com.example.ysl.mywps.utils.SharedPreferenceUtils;
+import com.example.ysl.mywps.utils.SysytemSetting;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -61,10 +62,17 @@ public class HasDoFragment extends BaseFragment {
     private ArrayList<DocumentListBean> documents = new ArrayList<>();
     private boolean isLoadMore = false;
 
+    private String wpsMode = "";
+
     @Override
     public void initData() {
 
     }
+
+    public void setWpsMode(String wpsMode) {
+        this.wpsMode = wpsMode;
+    }
+
 
     @Override
     public View setView(LayoutInflater inflater, ViewGroup container) {
@@ -80,6 +88,7 @@ public class HasDoFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(getActivity(), WpsDetailActivity.class);
+                intent.putExtra(SysytemSetting.WPS_MODE,wpsMode);
 
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("documentben", documents.get((int) id));

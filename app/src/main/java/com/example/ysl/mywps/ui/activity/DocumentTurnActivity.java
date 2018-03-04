@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 
 import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.utils.NoDoubleClickListener;
+import com.example.ysl.mywps.utils.SysytemSetting;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +57,7 @@ public class DocumentTurnActivity extends BaseActivity {
                 case R.id.document_ll_inside:
 
                     Intent intent = new Intent(DocumentTurnActivity.this,StayToDoActivity.class);
+                    intent.putExtra(SysytemSetting.WPS_MODE,SysytemSetting.WPS_WRITE);
                     startActivity(intent);
                     break;
 

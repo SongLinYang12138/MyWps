@@ -49,6 +49,7 @@ import com.example.ysl.mywps.utils.CommonUtil;
 import com.example.ysl.mywps.utils.FileUtils;
 import com.example.ysl.mywps.utils.NoDoubleClickListener;
 import com.example.ysl.mywps.utils.SharedPreferenceUtils;
+import com.example.ysl.mywps.utils.SysytemSetting;
 import com.example.ysl.mywps.utils.ToastUtils;
 import com.example.ysl.mywps.utils.WpsModel;
 import com.example.ysl.mywps.utils.WpsUtils;
@@ -132,6 +133,7 @@ public class WpsDetailActivity extends BaseActivity {
     private String uploadImageName = "";
     float ivWith;
     float ivHeight;
+    private String wpsMode = "";
 
     private SharedPreferences wpsPreference;
 //    提交审核后是2 文档返回给拟稿人后是5  提交文件领导签署后是3 签署完成后 成功是4 失败是五，继续提交审核
@@ -172,6 +174,7 @@ public class WpsDetailActivity extends BaseActivity {
         wpsPreference = getSharedPreferences("wpsStatus", Context.MODE_PRIVATE);
 
 
+        wpsMode = getIntent().getStringExtra(SysytemSetting.WPS_MODE);
         ivArtical.setOnClickListener(click);
         llArtival.setOnClickListener(click);
         ivMessage.setOnClickListener(click);
@@ -402,10 +405,25 @@ public class WpsDetailActivity extends BaseActivity {
 
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
-        if (documentInfo.getIs_writable() == 1)
-            bundle.putString(WpsModel.OPEN_MODE, WpsModel.OpenMode.NORMAL); // 正常模式
-        else
-            bundle.putString(WpsModel.OPEN_MODE, WpsModel.OpenMode.READ_ONLY); // 只读模式
+
+        switch (wpsMode){
+
+            case SysytemSetting.WPS_READE:
+
+                bundle.putString(WpsModel.OPEN_MODE, WpsModel.OpenMode.READ_ONLY); // 只读模式
+
+                break;
+
+            case SysytemSetting.WPS_WRITE:
+
+
+                if (documentInfo.getIs_writable() == 1)
+                    bundle.putString(WpsModel.OPEN_MODE, WpsModel.OpenMode.NORMAL); // 正常模式
+                else
+                    bundle.putString(WpsModel.OPEN_MODE, WpsModel.OpenMode.READ_ONLY); // 只读模式
+                break;
+
+        }
         bundle.putBoolean(WpsModel.SEND_CLOSE_BROAD, true); // 关闭时是否发送广播
         bundle.putBoolean(WpsModel.SEND_SAVE_BROAD, true);//文件保存是是否发送广播
         bundle.putString(WpsModel.THIRD_PACKAGE, getPackageName()); // 第三方应用的包名，用于对改应用合法性的验证

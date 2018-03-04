@@ -16,6 +16,7 @@ import com.example.ysl.mywps.ui.adapter.StayDoAdapter;
 import com.example.ysl.mywps.utils.CommonSetting;
 import com.example.ysl.mywps.utils.CommonUtil;
 import com.example.ysl.mywps.utils.SharedPreferenceUtils;
+import com.example.ysl.mywps.utils.SysytemSetting;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -60,9 +61,15 @@ public class StayDoFragment extends BaseFragment {
     private ArrayList<DocumentListBean> documents = new ArrayList<>();
     private boolean isLoadMore = false;
 
+    private String wpsMode = "";
+
     @Override
     public void initData() {
 
+    }
+
+    public void setWpsMode(String wpsMode) {
+        this.wpsMode = wpsMode;
     }
 
     @Override
@@ -80,6 +87,7 @@ public class StayDoFragment extends BaseFragment {
 
                 Intent intent = new Intent(getActivity(), WpsDetailActivity.class);
 
+                intent.putExtra(SysytemSetting.WPS_MODE,wpsMode);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("documentben", documents.get((int) id));
                 intent.putExtras(bundle);
@@ -99,13 +107,13 @@ public class StayDoFragment extends BaseFragment {
         if (isLoadMore) {
             documents.clear();
         }
-     if(!isLoadMore)   loading.setVisibility(View.VISIBLE);
+        if (!isLoadMore) loading.setVisibility(View.VISIBLE);
         Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(final ObservableEmitter<String> emitter) throws Exception {
                 String token = SharedPreferenceUtils.loginValue(getActivity(), "token");
                 Logger.i("token  " + token + "  " + CommonSetting.HTTP_TOKEN);
-                Call<String> call = HttpUtl.documentList("User/Oa/doc_list/", token, pageNUmber + "", PAGE_SIZE + "","1");
+                Call<String> call = HttpUtl.documentList("User/Oa/doc_list/", token, pageNUmber + "", PAGE_SIZE + "", "1");
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
@@ -119,7 +127,7 @@ public class StayDoFragment extends BaseFragment {
                             if (code != 0) {
                                 emitter.onNext(msg);
                                 isLoadMore = true;
-                            }else {
+                            } else {
                                 isLoadMore = false;
                             }
 //                            String datas = jsonObject.getString("data");

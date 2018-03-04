@@ -16,12 +16,17 @@ public class JavascriptBridge extends Object {
         this.jsCallBack = jsCallBack;
     }
 
+    /**
+     * 调用相机拍照
+     * **/
     @JavascriptInterface
-    public void callCamera(String s) {
+    public void callCamera() {
 
-        jsCallBack.jsCallBack("callCamera", s);
+        jsCallBack.jsCallBack("callCamera", "callCamera");
     }
-
+    /**
+     * 选择文件
+     * **/
     @JavascriptInterface
     public void callDocument(){
 
@@ -29,7 +34,9 @@ public class JavascriptBridge extends Object {
 
     }
 
-
+    /**
+     * 选择提交
+     * **/
     @JavascriptInterface
     public void callCommit(){
 

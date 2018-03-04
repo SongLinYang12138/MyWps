@@ -16,6 +16,8 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -41,6 +43,7 @@ import android.widget.RelativeLayout;
 import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.interfaces.JSCallBack;
 import com.example.ysl.mywps.interfaces.JavascriptBridge;
+import com.example.ysl.mywps.utils.SharedPreferenceUtils;
 import com.example.ysl.mywps.utils.ToastUtils;
 import com.gc.materialdesign.views.ButtonRectangle;
 
@@ -66,8 +69,10 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
 
     private final int DOCUMENT_REQUEST_CODE = 222;
     private final int VIDEO_WITH_CAMERA = 333;
+    private static final int WEBVIEW_LOADED = 444;
 
     private String cameraPath = "";
+    private String token = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,11 +113,13 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
 
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-
+        webSettings.setDomStorageEnabled(true);//设置适应Html5 重点是这个设置
     }
 
     @Override
     public void initData() {
+
+        token = SharedPreferenceUtils.loginValue(this,"token");
 
     }
 
@@ -121,10 +128,10 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
 
         MyWebChromeClient chromeClient = new MyWebChromeClient();
         MyWebviewClient client = new MyWebviewClient();
-
-
-        webView.addJavascriptInterface(new JavascriptBridge(this), "test");
-        webView.loadUrl("file:///android_asset/index.html");
+//        file:///android_asset/index.html
+//
+        webView.addJavascriptInterface(new JavascriptBridge(this), "javaBridge");
+        webView.loadUrl("http://www.haont.cn/CPPCC/sqmy/#!/submit/");
         webView.setWebChromeClient(chromeClient);
         webView.setWebViewClient(client);
 
@@ -245,8 +252,8 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
                 break;
 
             case "callCommit":
-
-                commitHavDone();
+                ToastUtils.showShort(this, "callCommit");
+//                commitHavDone();
                 break;
 
 
@@ -329,6 +336,7 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
                 @Override
                 public void onClick(View v) {
                     takePhoto();
+                    bottomWindow.dismiss();
                 }
             });
             btVideo.setOnClickListener(new View.OnClickListener() {
@@ -336,7 +344,9 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
                 public void onClick(View v) {
 
                     takeVideo();
+                    bottomWindow.dismiss();
                 }
+
             });
 
 //            bottomWindow.setBackgroundDrawable(new ColorDrawable());
@@ -510,13 +520,35 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
 
     }
 
-    private static class MyWebChromeClient extends WebChromeClient {
+
+    private class MyWebChromeClient extends WebChromeClient {
 
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
 
             Log.i(TAG, "progress  " + newProgress);
+
+            if (newProgress == 100) {
+
+                webView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (version < 18) {
+                            webView.loadUrl("javascript:getToken('" + token + "')");
+                        } else {
+
+                            webView.evaluateJavascript("javascript:getToken('" + token + "')", new ValueCallback<String>() {
+                                @Override
+                                public void onReceiveValue(String s) {
+
+                                    Log.i("aaa", "return  " + s);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
         }
 
         @Override

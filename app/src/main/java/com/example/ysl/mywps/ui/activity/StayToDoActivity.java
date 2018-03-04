@@ -20,6 +20,7 @@ import com.example.ysl.mywps.ui.adapter.PagerAdapter;
 import com.example.ysl.mywps.ui.fragment.HasDoFragment;
 import com.example.ysl.mywps.ui.fragment.StayDoFragment;
 import com.example.ysl.mywps.utils.NoDoubleClickListener;
+import com.example.ysl.mywps.utils.SysytemSetting;
 
 import java.util.ArrayList;
 
@@ -57,6 +58,7 @@ public class StayToDoActivity extends BaseActivity {
     private ArrayList<Fragment> fragments;
     private StayDoFragment stayDoFragment;
     private HasDoFragment hasDoFragment;
+    private String wpsMode = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class StayToDoActivity extends BaseActivity {
             }
         });
 
+        wpsMode = getIntent().getStringExtra(SysytemSetting.WPS_MODE);
         initDatas();
         tvStay.setOnClickListener(click);
         tvHave.setOnClickListener(click);
@@ -97,6 +100,8 @@ public class StayToDoActivity extends BaseActivity {
         fragments = new ArrayList<>();
         stayDoFragment = new StayDoFragment();
         hasDoFragment = new HasDoFragment();
+        stayDoFragment.setWpsMode(wpsMode);
+        hasDoFragment.setWpsMode(wpsMode);
         fragments.add(stayDoFragment);
         fragments.add(hasDoFragment);
         pagerAdapter = new PagerAdapter(getSupportFragmentManager(), fragments);
@@ -126,7 +131,7 @@ public class StayToDoActivity extends BaseActivity {
         switch (position) {
 
             case 0:
-setTitleText("代办事项");
+                setTitleText("代办事项");
                 tvStay.setTextColor(selected);
                 tvHave.setTextColor(normal);
                 rlStay.setVisibility(View.VISIBLE);
@@ -176,7 +181,7 @@ setTitleText("代办事项");
 
                 case R.id.stay_tv_stay_do:
 
-                 viewPager.setCurrentItem(0);
+                    viewPager.setCurrentItem(0);
                     break;
                 case R.id.stay_tv_have_do:
                     viewPager.setCurrentItem(1);
