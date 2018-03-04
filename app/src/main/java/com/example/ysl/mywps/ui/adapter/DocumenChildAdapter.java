@@ -33,7 +33,7 @@ public class DocumenChildAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<FileListChildBean> list;
     private int kindFlag;
-    private Drawable wps, picture, video, music;
+    private Drawable wps, picture, video, music,unknown;
     private DisplayImageOptions options;
     private PassFileChildList passFileChildList;
     private ArrayList<FileListChildBean> selectList = new ArrayList<>();
@@ -50,6 +50,7 @@ public class DocumenChildAdapter extends BaseAdapter {
             picture = context.getResources().getDrawable(R.mipmap.ft_jpg_l);
             video = context.getResources().getDrawable(R.mipmap.ft_mov_l);
             music = context.getResources().getDrawable(R.mipmap.myapplication);
+            unknown = context.getResources().getDrawable(R.mipmap.ic_type_unknown);
             options = new DisplayImageOptions.Builder()
 
                     .cacheInMemory(true)//设置下载的图片是否缓存在内存中
@@ -119,15 +120,17 @@ public class DocumenChildAdapter extends BaseAdapter {
 
         FileListChildBean bean = list.get(postition);
 
-        if (kindFlag == 1) {
+        if (bean.getFilename().endsWith("jpg") || bean.getFilename().endsWith("png") ||  bean.getFilename().endsWith("PNG")) {
             ImageLoader.getInstance().displayImage(bean.getDownload_url(), holder.ivIcon, options);
 //            holder.ivIcon.setBackground(picture);
-        } else if (kindFlag == 2) {
+        } else if (kindFlag == 2 || bean.getFilename().endsWith("docx") || bean.getFilename().endsWith("doc") || bean.getFilename().endsWith("txt") || bean.getFilename().endsWith("pdf")) {
             holder.ivIcon.setBackground(wps);
-        } else if (kindFlag == 3) {
+        } else if (kindFlag == 3 || bean.getFilename().endsWith("mp4")) {
             holder.ivIcon.setBackground(video);
-        } else if (kindFlag == 4) {
+        } else if (kindFlag == 4 || bean.getFilename().endsWith("apk")) {
             holder.ivIcon.setBackground(music);
+        }else {
+            holder.ivIcon.setBackground(unknown);
         }
 
         holder.tvName.setText(bean.getFilename());

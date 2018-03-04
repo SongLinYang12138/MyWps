@@ -2,6 +2,7 @@ package com.example.ysl.mywps.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +26,24 @@ public class TransportAdater extends BaseAdapter {
     private ArrayList<TransportBean>  list;
     private Context context;
     private DisplayImageOptions options;
+    private Drawable wps, picture, video, music,unknown;
+
 
     public TransportAdater(ArrayList<TransportBean> list, Context context) {
 
         this.list = list;
         this.context = context;
+
+
+        if(context != null){
+            wps = context.getResources().getDrawable(R.mipmap.ft_doc_l);
+            picture = context.getResources().getDrawable(R.mipmap.ft_jpg_l);
+            video = context.getResources().getDrawable(R.mipmap.ft_mov_l);
+            music = context.getResources().getDrawable(R.mipmap.myapplication);
+            unknown = context.getResources().getDrawable(R.mipmap.ic_type_unknown);
+
+        }
+
         options = new DisplayImageOptions.Builder()
 
                 .cacheInMemory(true)//设置下载的图片是否缓存在内存中
@@ -88,9 +102,18 @@ public class TransportAdater extends BaseAdapter {
             TransportBean bean = list.get(position);
 
          if(bean.getName() != null && bean.getPath() != null){
-             if(bean.getName().contains("png") || bean.getName().contains("jpg")){
+             if(bean.getName().endsWith("png") || bean.getName().contains("jpg")){
                  ImageLoader.getInstance().displayImage("file:///"+bean.getPath(), holder.ivIcon, options);
+             } else if ( bean.getName().endsWith("docx") || bean.getName().endsWith("doc") || bean.getName().endsWith("txt") || bean.getName().endsWith("pdf")) {
+                 holder.ivIcon.setBackground(wps);
+             } else if (bean.getName().endsWith("mp4") || bean.getName().endsWith("rmvb")) {
+                 holder.ivIcon.setBackground(video);
+             } else if (bean.getName().endsWith("apk")) {
+                 holder.ivIcon.setBackground(music);
+             }else {
+                 holder.ivIcon.setBackground(unknown);
              }
+
          }
 
             holder.tvTitle.setText(bean.getName());

@@ -36,7 +36,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
         <activity
             android:name=".ui.activity.MainActivity"
             android:screenOrientation="portrait"
@@ -50,7 +51,8 @@
         <activity android:name=".ui.activity.StayToDoActivity"
             android:launchMode="singleTask"
             ></activity>
-        <activity android:name=".ui.activity.WpsDetailActivity"></activity>
+        <activity android:name=".ui.activity.WpsDetailActivity"
+            ></activity>
         <activity android:name=".ui.activity.SignActivity"></activity>
         <activity android:name=".ui.activity.CommitActivity"></activity>
         <activity android:name=".ui.activity.FlowActivity"></activity>
@@ -58,8 +60,9 @@
             ></activity>
         <activity android:name=".ui.activity.MaterialActivity"></activity>
         <activity android:name=".ui.activity.SearchActivity"></activity>
-        <activity android:name=".ui.activity.LoginActivity" >
-
+        <activity android:name=".ui.activity.WebviewActivity"></activity>
+        <activity android:name=".ui.activity.LoginActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -77,8 +80,6 @@
                 <action android:name="cn.wps.moffice.client.OfficeServiceClient" />
             </intent-filter>
         </service>
-
-
 
         <receiver android:name=".receiver.WpsBroadCastReceiver">
             <intent-filter>

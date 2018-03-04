@@ -209,17 +209,18 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
     private void addUploadView(UploadBean bean) {
 
         final View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_transport_task_layout, null);
-        loadingContent.addView(view);
+
 
         ImageView ivIcon = (ImageView) view.findViewById(R.id.documents_item_icon2);
         TextView tvTitle = (TextView) view.findViewById(R.id.documents_item_title2);
         TextView tvDate = (TextView) view.findViewById(R.id.documents_item_time2);
         final TextView tvSize = (TextView) view.findViewById(R.id.documents_item_size2);
         final ProgressBar progress = (ProgressBar) view.findViewById(R.id.transport_prgress_upload2);
-
         tvSize.setText("等待中");
         tvTitle.setText(bean.getName());
         tvDate.setText(bean.getPath());
+        loadingContent.addView(view);
+
         File file = new File(bean.getPath());
         if (file != null && file.exists()) {
             tvSize.setText(CommonUtil.getFileSize(file.length()));
@@ -233,6 +234,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                 if (pro == 0 && msg.obj != null) {
                     String message = msg.obj.toString();
                     ToastUtils.showShort(getActivity(), message);
+                    loadingContent.removeView(view);
                 } else {
                     progress.setProgress(pro);
 
@@ -245,7 +247,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
             }
         };
 
-        uploadNetWork(handler, bean, tvSize);
+         uploadNetWork(handler, bean, tvSize);
 
     }
 
@@ -260,7 +262,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                     @Override
                     public void run() {
 
-                        tvStatus.setText("下载中");
+                        tvStatus.setText("上传中");
                     }
                 });
 
@@ -379,6 +381,14 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
     private void addDownloadView(FileListChildBean downloadBean) {
 
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "wpsSign"+"/"+downloadBean.getFilename();
+
+        File file = new File(path);
+        if(file.exists()){
+
+            ToastUtils.showShort(getActivity(),downloadBean.getFilename()+"已下载");
+            return;
+        }
         final View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_transport_task_layout, null);
 
         ImageView ivIcon = (ImageView) view.findViewById(R.id.documents_item_icon2);
@@ -403,7 +413,8 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                 int progr = msg.what;
                 if (progr == 0 && msg.obj != null) {
                     String message = msg.obj.toString();
-
+                    loadingContent.removeView(view);
+                    ToastUtils.showShort(getActivity(),message);
                 } else {
                     progress.setProgress(progr);
                     if (progr == 100) {
@@ -483,13 +494,13 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                             contentResolver.insert(DownLoadProvider.CONTENT_URI, bean.toContentValues());
 
                             Message msg = new Message();
-                            msg.obj = "Y";
+                            msg.obj = "下载成功";
                             msg.what = 0;
                             handler.sendMessage(msg);
 
                         } catch (Exception e) {
                             Message msg = new Message();
-                            msg.obj = "N";
+                            msg.obj = "下载失败";
                             msg.what = 0;
                             handler.sendMessage(msg);
                         }
@@ -506,7 +517,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                             }
                         });
                         Message msg = new Message();
-                        msg.obj = "N";
+                        msg.obj = msg;
                         msg.what = 0;
                         handler.sendMessage(msg);
 //                        emitter.onNext(t.getMessage());

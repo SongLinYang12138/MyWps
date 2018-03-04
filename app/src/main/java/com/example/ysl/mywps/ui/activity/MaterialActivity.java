@@ -209,7 +209,6 @@ public class MaterialActivity extends BaseActivity implements View.OnClickListen
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
         if (null != cursor && cursor.moveToFirst()) {
-            ;
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             res = cursor.getString(column_index);
             cursor.close();
@@ -348,7 +347,7 @@ public class MaterialActivity extends BaseActivity implements View.OnClickListen
         myWindow.setAttributes(myLp);
 
         if (topWindow == null) {
-            topWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, 320, true);
+            topWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
             RelativeLayout rlPicture = (RelativeLayout) view.findViewById(R.id.material_top_picture);
             RelativeLayout rlDocument = (RelativeLayout) view.findViewById(R.id.material_top_documents);
@@ -371,10 +370,10 @@ public class MaterialActivity extends BaseActivity implements View.OnClickListen
 
                 }
             });
-            topWindow.showAtLocation(rlContent, Gravity.TOP, 0, 200);
+            topWindow.showAtLocation(rlContent, Gravity.TOP, 0, 40);
         } else {
 
-            topWindow.showAtLocation(rlContent, Gravity.TOP, 0, 200);
+            topWindow.showAtLocation(rlContent, Gravity.TOP, 0, 40);
         }
 
 

@@ -33,6 +33,7 @@ public class SharedPreferenceUtils {
 
     public static String loginValue(Context context,String key){
         String value = "";
+        if(context == null) return "";
         SharedPreferences preferences = context.getSharedPreferences("login.xml",Context.MODE_PRIVATE);
 
         value = preferences.getString(key,"");
@@ -46,7 +47,7 @@ public class SharedPreferenceUtils {
      * @param datalist
      */
     public static void setFileTypeList(Context context, List<FileType> datalist) {
-        if (null == datalist || datalist.size() <= 0)
+        if (null == datalist || datalist.size() <= 0 || context == null)
             return;
         SharedPreferences preferences = context.getSharedPreferences("fileType",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();

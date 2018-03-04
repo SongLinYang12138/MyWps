@@ -38,12 +38,12 @@
                 <RelativeLayout
                     android:id="@+id/material_rl_download"
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"
+                    android:layout_height="2dp"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="-2dp"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:background="@color/text_gray"></RelativeLayout>
+                    android:background="@color/tool_bar"></RelativeLayout>
             </RelativeLayout>
 
             <RelativeLayout
@@ -73,12 +73,12 @@
                 <RelativeLayout
                     android:id="@+id/material_rl_upload"
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"
+                    android:layout_height="2dp"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="-2dp"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:background="@color/text_gray"></RelativeLayout>
+                    android:background="@color/tool_bar"></RelativeLayout>
             </RelativeLayout>
 
         </LinearLayout>

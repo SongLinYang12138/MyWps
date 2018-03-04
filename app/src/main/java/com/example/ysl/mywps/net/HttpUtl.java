@@ -12,9 +12,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -28,14 +30,21 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class HttpUtl {
 
     private final static String HTTP_URL = "http://oa.wgxmcb.top/index.php/";
+    private static final OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(1,TimeUnit.DAYS)
+            .writeTimeout(1,TimeUnit.DAYS)
+            .build();
 
 
     private static Retrofit getRetrofit(String httpurl) {
 
 
         Retrofit retrofit = new Retrofit.Builder()
+
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .baseUrl(httpurl)
+                .client(client)
                 .build();
         return retrofit;
     }

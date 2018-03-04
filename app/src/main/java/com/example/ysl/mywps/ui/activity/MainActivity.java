@@ -136,11 +136,97 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         llContact.setOnClickListener(this);
 
 
+
         colorNomal = getResources().getColorStateList(R.color.bottom_normal);
         colorSelect = getResources().getColorStateList(R.color.bottom_selected);
         fragmentManager = getSupportFragmentManager();
         showMessage(1);
+
     }
+
+
+
+    /**
+     * 当token过期后跳转到登陆界面
+     * */
+    private void jumpToLogin(){
+
+        SharedPreferenceUtils.loginSave(this, "token", "");
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+
+    }
+
+
+
+    /**
+     * 获取文件类目
+     * */
+    private void saveFileTypes(final String token){
+        final Thread fileTypeThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                Call<String> call = HttpUtl.getFileType("User/Share/file_type/", token);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        String data = response.body();
+                        Logger.i("fileType  " + data);
+                        if (CommonUtil.isEmpty(data))
+                            return;
+                        try {
+                            JSONObject object = new JSONObject(data);
+                            int code = object.getInt("code");
+                            String msg = object.getString("msg");
+
+                            if(CommonUtil.isNotEmpty(msg) && msg.contains("登陆信息有误") || code == 1){
+                                jumpToLogin();
+//                               getActivity().runOnUiThread(new Runnable() {
+//                                   @Override
+//                                   public void run() {
+//
+//                                   return;
+//                                   }
+//                               });
+                            }
+//                            JSONArray array = object.getJSONArray("data");
+//                            if (code == 0) {
+//                                Gson gson = new Gson();
+//                                List<FileType> dataList = new ArrayList<FileType>();
+//
+//                                for (int i = 0; i < array.length(); ++i) {
+//
+//                                    JSONObject child = array.getJSONObject(i);
+//                                    FileType bean = gson.fromJson(child.toString(),FileType.class);
+//                                    dataList.add(bean);
+//                                }
+//
+//                                SharedPreferenceUtils.setFileTypeList(MainActivity.this,dataList);
+//                            }else {
+//
+//
+//                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                        Logger.i("fileType   " + t.getMessage());
+                    }
+                });
+            }
+        });
+        fileTypeThread.setDaemon(true);
+        fileTypeThread.start();
+    }
+
 
     @Override
     public Resources getResources() {
@@ -200,7 +286,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
         final String token = SharedPreferenceUtils.loginValue(this, "token");
-
+        saveFileTypes(token);
 
     }
 
@@ -262,6 +348,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                 break;
             case 1:
+
                 setTitleText("工作");
 
                 tvMessage.setTextColor(colorNomal);
@@ -519,7 +606,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         } else {
 
-
+            writePermission();
 //            finish();
         }
     }
