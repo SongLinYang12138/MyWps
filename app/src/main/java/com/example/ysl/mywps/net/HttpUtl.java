@@ -230,5 +230,28 @@ public class HttpUtl {
         NetApi netApi = getRetrofit(httpUrl).create(NetApi.class);
         return netApi.deleteDocument(id, token);
     }
+    /**
+     * 社情民意上传文件
+     * */
+
+    public static Call<String> socialUpload(String url,  String token, String fileName, String filePath,ProgressListener listener){
+        String httpUrl = HTTP_URL + url;
+        NetApi netApi = getRetrofit(httpUrl).create(NetApi.class);
+
+        File file = new File(filePath);
+
+        if (!file.exists()) {
+            ToastUtils.showShort(MyApplication.getMyContext(), "文件不存在");
+            Logger.i("filenotexists");
+            return null;
+        }
+        RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"), file);
+//        MultipartBody.Part body = MultipartBody.Part.createFormData("name", fileName, requestFile);
+        UploadFileRequestBody fileRequestBody = new UploadFileRequestBody(requestFile,listener);
+        Map<String, RequestBody> requestBodyMap = new HashMap<>();
+        requestBodyMap.put("file\"; filename=\"" + fileName, fileRequestBody);
+        return netApi.socialUpload(fileName, token, requestBodyMap);
+
+    }
 
 }

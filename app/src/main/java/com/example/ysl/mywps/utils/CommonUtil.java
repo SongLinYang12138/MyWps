@@ -135,6 +135,18 @@ public class CommonUtil {
             return length+" b";
         }
     }
+    public static boolean isVideo(String name){
+        if(isEmpty(name)){
+            return false;
+        }
+        String videoType = "3gp,asf,avi,m4u,m4v,mov,mp4,mpe,mpeg,mpg,mpg4";
 
+        String type = name.substring(name.length()-3,name.length());
+        Logger.i("type   "+type);
+        type = type.toLowerCase();
+
+        if(videoType.contains(type)) return true;
+        else  return false;
+    }
 
 }

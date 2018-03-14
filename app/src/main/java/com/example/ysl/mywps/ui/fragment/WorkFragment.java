@@ -9,31 +9,17 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.example.ysl.mywps.R;
-import com.example.ysl.mywps.bean.FileType;
-import com.example.ysl.mywps.net.HttpUtl;
-import com.example.ysl.mywps.ui.activity.DocumentFlowActivity;
+
 import com.example.ysl.mywps.ui.activity.DocumentTurnActivity;
-import com.example.ysl.mywps.ui.activity.LoginActivity;
 import com.example.ysl.mywps.ui.activity.MaterialActivity;
 import com.example.ysl.mywps.ui.activity.WebviewActivity;
-import com.example.ysl.mywps.utils.CommonUtil;
+
 import com.example.ysl.mywps.utils.NoDoubleClickListener;
 import com.example.ysl.mywps.utils.SharedPreferenceUtils;
-import com.google.gson.Gson;
-import com.orhanobut.logger.Logger;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.CSCustomServiceInfo;
 
 /**
  * Created by Administrator on 2017/12/23 0023.
@@ -47,6 +33,12 @@ public class WorkFragment extends BaseFragment {
     LinearLayout llMaterial;
     @BindView(R.id.work_rl_social_condition)
     RelativeLayout rlSocialCondition;
+    @BindView(R.id.fragment_work_ll_kefu)
+    LinearLayout llKefu;
+
+    //融云客服信息
+    CSCustomServiceInfo.Builder csBuilder = new CSCustomServiceInfo.Builder();
+    final CSCustomServiceInfo csInfo = csBuilder.nickName("ysl").build();
 
     private String token = "";
     private MyclickListener myclickListener = new MyclickListener();
@@ -75,6 +67,7 @@ public class WorkFragment extends BaseFragment {
         llTurn.setOnClickListener(myclickListener);
         llMaterial.setOnClickListener(myclickListener);
         rlSocialCondition.setOnClickListener(myclickListener);
+        llKefu.setOnClickListener(myclickListener);
 
     }
 
@@ -104,9 +97,15 @@ public class WorkFragment extends BaseFragment {
 
                     intent = new Intent(getActivity(),WebviewActivity.class);
                     break;
+                case R.id.fragment_work_ll_kefu:
+
+                    RongIM.getInstance().startCustomerServiceChat(getActivity(), "KEFU152077670318138", "在线客服1",csInfo);
+                    break;
+
+
             }
 
-            startActivity(intent);
+          if(intent != null)  startActivity(intent);
         }
     }
 }

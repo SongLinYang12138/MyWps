@@ -3,14 +3,13 @@ package com.example.ysl.mywps.ui.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.Observable;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
@@ -37,18 +36,29 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-
-
+import android.widget.ProgressBar;
 import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.interfaces.JSCallBack;
 import com.example.ysl.mywps.interfaces.JavascriptBridge;
+import com.example.ysl.mywps.net.HttpUtl;
+import com.example.ysl.mywps.net.ProgressListener;
+import com.example.ysl.mywps.utils.CommonUtil;
 import com.example.ysl.mywps.utils.SharedPreferenceUtils;
 import com.example.ysl.mywps.utils.ToastUtils;
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.iceteck.silicompressorr.VideoCompress;
+import com.orhanobut.logger.Logger;
+import com.wang.avi.AVLoadingIndicatorView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by ysl on 2018/2/28.
@@ -60,10 +70,10 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
     private static final String TAG = "aaa";
     @BindView(R.id.webview_webview)
     WebView webView;
-    @BindView(R.id.webview_bt_left)
-    Button btLeft;
-    @BindView(R.id.webview_bt_right)
-    Button btRight;
+    @BindView(R.id.av_loading)
+    AVLoadingIndicatorView loading;
+
+    private String path = "";
 
     private final int CAMERA_REQUEST_CODE = 111;
 
@@ -119,7 +129,7 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
     @Override
     public void initData() {
 
-        token = SharedPreferenceUtils.loginValue(this,"token");
+        token = SharedPreferenceUtils.loginValue(this, "token");
 
     }
 
@@ -128,33 +138,13 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
 
         MyWebChromeClient chromeClient = new MyWebChromeClient();
         MyWebviewClient client = new MyWebviewClient();
-//        file:///android_asset/index.html
-//
+//file:///android_asset/index.html
+//   http://www.haont.cn/CPPCC/sqmy/#!/submit/
         webView.addJavascriptInterface(new JavascriptBridge(this), "javaBridge");
-        webView.loadUrl("http://www.haont.cn/CPPCC/sqmy/#!/submit/");
+        webView.loadUrl("file:///android_asset/index.html");
         webView.setWebChromeClient(chromeClient);
         webView.setWebViewClient(client);
 
-        btLeft.setOnClickListener(new View.OnClickListener() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View view) {
-                if (version < 18) {
-                    webView.loadUrl("javascript:hadCommit('" + path + "')");
-                } else {
-
-                    webView.evaluateJavascript("javascript:hadCommit('" + path + "')", new ValueCallback<String>() {
-                        @Override
-                        public void onReceiveValue(String s) {
-
-                            Log.i("aaa", "return  " + s);
-                        }
-                    });
-
-                }
-
-            }
-        });
     }
 
     // Android版本变量
@@ -169,13 +159,17 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
                     webView.loadUrl("javascript:hadCommit('" + path + "')");
                 } else {
 
-                    webView.evaluateJavascript("javascript:hadCommit('" + path + "')", new ValueCallback<String>() {
-                        @Override
-                        public void onReceiveValue(String s) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        webView.evaluateJavascript("javascript:hadCommit('" + path + "')", new ValueCallback<String>() {
+                            @Override
+                            public void onReceiveValue(String s) {
 
-                            Log.i("aaa", "return  " + s);
-                        }
-                    });
+                                Log.i("aaa", "return  " + s);
+                            }
+                        });
+                    }else {
+
+                    }
                 }
             }
         });
@@ -195,8 +189,8 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
         if (Build.VERSION.SDK_INT < 23) {
             return;
         }
-        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 11);
+        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, 11);
         }
     }
 
@@ -253,33 +247,201 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
 
             case "callCommit":
                 ToastUtils.showShort(this, "callCommit");
-//                commitHavDone();
+                if (CommonUtil.isEmpty(path)) {
+                    ToastUtils.showShort(this, "请选择要上传的文件");
+                    return;
+                }
+                final File file = new File(path);
+                if (!file.exists()) {
+
+                    ToastUtils.showShort(this, "文件不存在");
+                    return;
+                }
+                final long size = file.length() / 1024 / 1024;
+
+
+                WebviewActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loading.setVisibility(View.VISIBLE);
+
+                        if (size > 2) {
+                            if(CommonUtil.isVideo(file.getName()))
+                                comprossVideo(file.getName());
+
+                        }else {
+
+                            uploadFile(path,file.getName());
+                        }
+                    }
+                });
+
+
                 break;
 
 
         }
     }
 
-    String path = "来自android的消息";
+
+    /**
+     * 压缩视频
+     */
+    private void comprossVideo(final String name) {
+
+        final String outPutPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "wpsSign";
+        File file = new File(outPutPath);
+        if(!file.exists())
+            file.mkdirs();
+        final String myPath =  outPutPath + File.separator+name;
+        Logger.i("outputPath "+outPutPath);
+
+        WebviewActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                VideoCompress.compressVideoLow(path, myPath, new VideoCompress.CompressListener() {
+                    @Override
+                    public void onStart() {
+
+                    }
+
+                    @Override
+                    public void onSuccess() {
+
+                        Logger.i("success");
+                        uploadFile(myPath,name);
+                    }
+
+                    @Override
+                    public void onFail() {
+
+                        Logger.i("fail");
+                        uploadFile(path,name);
+                    }
+
+                    @Override
+                    public void onProgress(float percent) {
+
+                    }
+                });
+            }
+        });
+    }
+
+    private void uploadFile(final String filePath, final String name){
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                Call<String> call = HttpUtl.socialUpload("User/sheqing/uploadfile/", token, name, filePath, new ProgressListener() {
+                    @Override
+                    public void onProgress(long hasWrittenLen, long totalLen, boolean hasFinish) {
+
+                    }
+                });
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Message msg = new Message();
+                        if(response.isSuccessful()){
+                            try {
+                                JSONObject object = new JSONObject(response.body());
+
+                                int code = object.getInt("code");
+
+                                String message = object.getString("msg");
+                                if(code == 0) msg.obj = "Y";
+                                else if(CommonUtil.isNotEmpty(message)) msg.obj = message;
+                                else msg.obj = "N";
+                                JSONObject child = new JSONObject(object.getString("data"));
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }else {
+                            msg.obj = "N";
+                        }
+
+                        handler.sendMessage(msg);
+                        Logger.i("data  "+response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Message msg = new Message();
+                        msg.obj = "N";
+                        handler.sendMessage(msg);
+                        Logger.i("data  "+t.getMessage());
+                    }
+                });
+
+
+            }
+        });
+        thread.start();
+
+    }
+
+
+    private final Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            loading.setVisibility(View.GONE);
+
+            if(msg.obj != null){
+
+                if(msg.obj.toString().equals("Y")){
+
+                    if(msg.obj.equals("Y")){
+                        ToastUtils.showShort(WebviewActivity.this,"上传成功");
+                    }else if(msg.obj.equals("N")){
+                        ToastUtils.showShort(WebviewActivity.this,"上传失败");
+
+                    }else {
+                        ToastUtils.showShort(WebviewActivity.this,msg.obj.toString());
+
+                    }
+
+                }
+
+            }
+
+        }
+    };
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {//4.4以后
+        if (resultCode == RESULT_OK) {
 
 
-            try {
-                path = getPath(this, data.getData());
-            } catch (Exception e) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {//4.4以后
+                try {
+                    path = getPath(this, data.getData());
+                } catch (Exception e) {
 
+                }
+            } else {//4.4以下下系统调用方法
+                path = getRealPathFromURI(data.getData());
             }
-        } else {//4.4以下下系统调用方法
-            path = getRealPathFromURI(data.getData());
+
+
         }
+
         Log.i(TAG, "默认content地址：" + path);
     }
 
+
+    /**
+     * 调用随意拍选择拍照或拍视频
+     */
     private void callCamera() {
 
         showBottomWindow();
@@ -298,7 +460,7 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
     private void takeVideo() {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 //设置视频录制的最长时间
-        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 30);
+        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 20);
 //设置视频录制的画质
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
         startActivityForResult(intent, VIDEO_WITH_CAMERA);
@@ -534,17 +696,17 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
                 webView.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (version < 18) {
-                            webView.loadUrl("javascript:getToken('" + token + "')");
-                        } else {
 
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                             webView.evaluateJavascript("javascript:getToken('" + token + "')", new ValueCallback<String>() {
                                 @Override
                                 public void onReceiveValue(String s) {
-
                                     Log.i("aaa", "return  " + s);
                                 }
                             });
+                        }else {
+                            webView.loadUrl("javascript:getToken('" + token + "')");
                         }
                     }
                 });

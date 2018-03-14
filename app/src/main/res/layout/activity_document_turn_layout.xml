@@ -70,6 +70,7 @@
             />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/out_document"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -134,8 +135,9 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/query_document"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:orientation="vertical"
@@ -171,7 +173,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_large"
                         android:textColor="@color/text_black"
-                        android:text="阅文"
+                        android:text="经办查询"
                         android:layout_alignParentLeft="true"
                         />
 
@@ -192,11 +194,75 @@
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-               android:layout_height="0.3dp"
+            android:layout_height="0.3dp"
             android:background="@color/arrow"
             android:layout_marginTop="@dimen/paddingVertical"
             />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/issue_document"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/paddingVertical"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="@dimen/icon_normal"
+                android:layout_height="@dimen/icon_normal"
+                android:background="@mipmap/zhutihuodong" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:orientation="vertical"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_large"
+                        android:textColor="@color/text_black"
+                        android:text="下发查询"
+                        android:layout_alignParentLeft="true"
+                        />
+
+
+                    <com.example.ysl.mywps.ui.view.IconTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="&#xe679;"
+                        android:textColor="@color/arrow"
+                        android:textSize="@dimen/icon_normal"
+                        />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:background="@color/arrow"
+            android:layout_marginTop="@dimen/paddingVertical"
+            />
+    </LinearLayout>
 </LinearLayout>

@@ -110,4 +110,10 @@ public interface NetApi {
     @POST("query")
     Call<String> deleteDocument (@Query("file_id") String id,@Query("token") String token);
 
+    /**
+     * 社情民意上传文件
+     * */
+    @Multipart
+    @POST("query")
+    Call<String>  socialUpload(@Query("name") String name,@Query("token")String token,@PartMap Map<String, RequestBody> file);
 }

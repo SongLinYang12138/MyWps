@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="jmessage-android_v2.4.0">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/jMessage/libs/jmessage-android_v2.4.0.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.widget.Toast;
+
+import com.orhanobut.logger.Logger;
+
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
 import java.text.DateFormat;
@@ -226,5 +229,7 @@ public class CommonFun {
         }
         return false;
     }
+
+
 
 }

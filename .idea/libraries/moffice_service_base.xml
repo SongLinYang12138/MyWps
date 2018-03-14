@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="moffice-service-base">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/app/libs/moffice-service-base.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

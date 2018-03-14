@@ -21,6 +21,13 @@ public class DocumentTurnActivity extends BaseActivity {
     @BindView(R.id.document_ll_inside)
     LinearLayout llInside;
 
+    @BindView(R.id.out_document)
+    LinearLayout outDocument;
+    @BindView(R.id.query_document)
+    LinearLayout queryDocument;
+    @BindView(R.id.issue_document)
+    LinearLayout issueDocument;
+
     private MyClickListener click = new MyClickListener();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +36,9 @@ public class DocumentTurnActivity extends BaseActivity {
         setContentView(R.layout.activity_document_turn_layout);
         ButterKnife.bind(this);
        llInside.setOnClickListener(click);
+       outDocument.setOnClickListener(click);
+       queryDocument.setOnClickListener(click);
+       issueDocument.setOnClickListener(click);
     }
 
     @Override
@@ -52,17 +62,26 @@ public class DocumentTurnActivity extends BaseActivity {
         @Override
         public void click(View v) {
 
+            Intent intent = new Intent(DocumentTurnActivity.this,StayToDoActivity.class);
             switch (v.getId()){
 
                 case R.id.document_ll_inside:
-
-                    Intent intent = new Intent(DocumentTurnActivity.this,StayToDoActivity.class);
                     intent.putExtra(SysytemSetting.WPS_MODE,SysytemSetting.WPS_WRITE);
-                    startActivity(intent);
+                    break;
+                case R.id.out_document:
+                    intent.putExtra(SysytemSetting.WPS_MODE,SysytemSetting.WPS_READE);
+                    break;
+                case  R.id.query_document:
+                    intent.putExtra(SysytemSetting.WPS_MODE,SysytemSetting.WPS_READE);
+                    break;
+                case R.id.issue_document:
+                    intent.putExtra(SysytemSetting.WPS_MODE,SysytemSetting.WPS_READE);
                     break;
 
-
             }
+
+            startActivity(intent);
+
 
         }
     }

@@ -504,6 +504,7 @@
 
 
            <LinearLayout
+               android:id="@+id/fragment_work_ll_kefu"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:layout_marginTop="@dimen/paddingVertical"
