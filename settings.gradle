@@ -1,2 +1,2 @@
-include ':app', ':jMessage', ':fit7'
+include ':app', ':jMessage', ':fit7', ':silicompressor', ':IMLib', ':IMKit'
 include ':pulltoRefresh'
