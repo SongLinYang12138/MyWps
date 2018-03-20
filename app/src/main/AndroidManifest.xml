@@ -60,6 +60,8 @@
         <activity android:name=".ui.activity.MaterialActivity"></activity>
         <activity android:name=".ui.activity.SearchActivity"></activity>
         <activity android:name=".ui.activity.WebviewActivity"></activity>
+        <activity android:name=".ui.activity.ContactDetailActivity"></activity>
+        <activity android:name=".ui.activity.DocumentDetailActivity"></activity>
         <activity android:name=".ui.activity.LoginActivity"
             >
             <intent-filter>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +22,7 @@ import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.bean.ContactBean;
 import com.example.ysl.mywps.net.HttpUtl;
 import com.example.ysl.mywps.ui.activity.ContactActivity;
+import com.example.ysl.mywps.ui.activity.ContactDetailActivity;
 import com.example.ysl.mywps.ui.adapter.ContactAdapter;
 import com.example.ysl.mywps.ui.view.IconTextView;
 import com.example.ysl.mywps.utils.CommonUtil;
@@ -168,21 +170,15 @@ public class ContactFragment extends BaseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
                 ContactBean bean = list.get((int) id);
 
-                try {
-                    if(CommonUtil.isNotEmpty(bean.getMobile())){
-
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_DIAL);
-                        intent.setData(Uri.parse("tel:"+bean.getMobile()));
-                        startActivity(intent);
-                    }
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                    checkPermission();
-                }
+                Intent intent = new Intent(getActivity(), ContactDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("contact",bean);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 

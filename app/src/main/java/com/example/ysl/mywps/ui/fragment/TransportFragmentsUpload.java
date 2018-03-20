@@ -3,20 +3,17 @@ package com.example.ysl.mywps.ui.fragment;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -27,44 +24,46 @@ import com.example.ysl.mywps.bean.FileListBean;
 import com.example.ysl.mywps.bean.FileListChildBean;
 import com.example.ysl.mywps.bean.TransportBean;
 import com.example.ysl.mywps.bean.UploadBean;
+import com.example.ysl.mywps.bean.UploadChildFileBean;
+import com.example.ysl.mywps.bean.UploadSlefBean;
 import com.example.ysl.mywps.interfaces.HttpFileCallBack;
 import com.example.ysl.mywps.interfaces.PassFileChildList;
 import com.example.ysl.mywps.interfaces.PasssString;
-import com.example.ysl.mywps.interfaces.TransportCallBack;
+import com.example.ysl.mywps.interfaces.UploadCallback;
 import com.example.ysl.mywps.net.HttpUtl;
 import com.example.ysl.mywps.net.ProgressListener;
 import com.example.ysl.mywps.provider.DownLoadProvider;
 import com.example.ysl.mywps.provider.UploadProvider;
 import com.example.ysl.mywps.ui.activity.DocumentDetailActivity;
-import com.example.ysl.mywps.ui.adapter.DocumentAdapter;
-import com.example.ysl.mywps.ui.adapter.TransportAdater;
+import com.example.ysl.mywps.ui.adapter.FileUploadAdapter;
+
 import com.example.ysl.mywps.ui.view.MatchListView;
 import com.example.ysl.mywps.utils.CommonUtil;
 import com.example.ysl.mywps.utils.FileUtils;
 import com.example.ysl.mywps.utils.SharedPreferenceUtils;
 import com.example.ysl.mywps.utils.ToastUtils;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
@@ -76,7 +75,7 @@ import retrofit2.Response;
  * Created by Administrator on 2018/2/4 0004.
  */
 
-public class TransportFragmentsFragment extends BaseFragment implements PasssString, PassFileChildList ,TransportCallBack{
+public class TransportFragmentsUpload extends BaseFragment implements PasssString, UploadCallback {
 
     @BindView(R.id.fragment_documents_listview)
     MatchListView listView;
@@ -87,72 +86,137 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
     AVLoadingIndicatorView loading;
 
 
-    TransportAdater adapter;
-    ArrayList<TransportBean> list = new ArrayList<>();
-    ArrayList<TransportBean> selectList = new ArrayList<>();
+    private FileUploadAdapter adapter;
+    ArrayList<UploadSlefBean> list = new ArrayList<>();
     private int kindFlag;
     private String token;
+    private ContentResolver contentResolver;
     private ArrayList<UploadBean> uploadList = new ArrayList<>();
     private ArrayList<UploadBean> loadingBean = new ArrayList<>();
     private UploadBean cunrrentBean;
     private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(2);
-    private ArrayList<View> downLoadView = new ArrayList<>();
-    private ArrayList<View> uploadView = new ArrayList<>();
-    private ContentResolver contentResolver;
-
+    private ArrayList<UploadChildFileBean> selectList = new ArrayList<>();
+//    private ArrayList<UploadBean>
 
     @Override
     public void initData() {
 
         token = SharedPreferenceUtils.loginValue(getActivity(), "token");
-        adapter = new TransportAdater(list, getActivity(),this);
+        adapter = new FileUploadAdapter(getActivity(),list,this);
 
 
     }
 
-    private void getDownloadData() {
 
+
+    private void netWork() {
         list.clear();
-        loading.setVisibility(View.VISIBLE);
-        Thread thread = new Thread(new Runnable() {
+        if (loading != null) loading.setVisibility(View.VISIBLE);
+        Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
-            public void run() {
-                Cursor cursor = contentResolver.query(DownLoadProvider.CONTENT_URI, TransportBean.TRANSPORTBEANS, null, null, null);
-                if (cursor != null) {
+            public void subscribe(@NonNull final ObservableEmitter<String> emitter) throws Exception {
 
-                    list = TransportBean.getTransportBeans(cursor);
+                Call<String> call = HttpUtl.selfUpload("User/Share/my_share_files/", token);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
 
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter.update(list);
-                            loading.setVisibility(View.GONE);
+                        Logger.i("上传的文件 "+response.body());
+                        if (response.isSuccessful()) {
+                            String data = response.body();
+//                            {"code":0,"msg":"文件列表获取成功","data":[{"ctime":"2018-02-26","files":[{"id":"53","filen
+                            try {
+                                JSONObject jsonObject = new JSONObject(data);
+                                int code = jsonObject.getInt("code");
+                                String msg = jsonObject.getString("msg");
+
+                                if(code != 0){
+                                    emitter.onNext("N");
+                                    emitter.onNext(msg);
+                                    emitter.onComplete();
+                                    return;
+                                }
+
+                                JSONArray array = jsonObject.getJSONArray("data");
+                                Gson gson = new Gson();
+                                for (int i = 0; i < array.length(); ++i){
+
+                                    JSONObject object = array.getJSONObject(i);
+                                    UploadSlefBean bean = gson.fromJson(object.toString(),UploadSlefBean.class);
+                                    list.add(bean);
+                                }
+                                emitter.onNext("Y");
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                emitter.onNext("N");
+
+                            }
+
+                        } else {
+                            String msg = response.message();
+
+                            emitter.onNext(msg);
+                            emitter.onNext("N");
+
                         }
-                    });
-                }
-                cursor.close();
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable throwable) {
+
+                        emitter.onNext(throwable.getMessage());
+                        emitter.onNext("N");
+                        emitter.onComplete();
+                    }
+                });
+
+
             }
         });
-        thread.setDaemon(true);
-        thread.start();
+
+        Observer<String> observer = new Observer<String>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable disposable) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull String s) {
+
+                if(s.equals("Y")){
+                    adapter.updateList(list);
+                }else if (s.equals("N")){
+
+                }else {
+                    ToastUtils.showShort(getActivity(), s);
+                }
+
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable throwable) {
+
+            }
+
+            @Override
+            public void onComplete() {
+//                adapter.update(fileListBeens);
+//                listView.onRefreshComplete();
+                if (loading != null) loading.setVisibility(View.GONE);
+            }
+        };
+
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+
 
     }
 
-    private void getUploadData() {
 
-
-        Cursor cursor = contentResolver.query(UploadProvider.CONTENT_URI, TransportBean.TRANSPORTBEANS, null, null, null);
-
-        if (cursor != null) {
-
-            list = TransportBean.getTransportBeans(cursor);
-
-            adapter.update(list);
-        }
-        cursor.close();
-
-
-    }
 
 
     @Override
@@ -167,16 +231,11 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
     @Override
     public void afterView(View view) {
-//loadingContent.setVisibility(View.GONE);
 
-        contentResolver = getActivity().getContentResolver();
         loading.setVisibility(View.GONE);
 
-        if (kindFlag == 2) {
-            getUploadData();
-        } else if (kindFlag == 1) {
-            getDownloadData();
-        }
+        contentResolver = getActivity().getContentResolver();
+        netWork();
 
         listView.setAdapter(adapter);
     }
@@ -240,7 +299,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                     if (pro == 100) {
 
                         loadingContent.removeView(view);
-                        tvSize.setText("下载中");
+                        tvSize.setText("上传中");
                     }
                 }
             }
@@ -255,7 +314,6 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
         fixedThreadPool.execute(new Runnable() {
             @Override
             public void run() {
-//                uploadFile(bean.getPath(), bean.getName(), bean.getType(), token);
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -308,7 +366,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            getUploadData();
+                                            netWork();
                                         }
                                     });
                                 }
@@ -349,193 +407,13 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
         });
     }
 
-    private synchronized void uploadFile(final String path, final String name, String fileType, String token) {
-
-
-    }
-
-    /***
-     *
-     * 下载文件
-     */
+    /**
+     * 获取子菜单选择的item
+     *@param kind 1 加 0 删
+     * */
     @Override
-    public void passFileChild(ArrayList<FileListChildBean> files, int kind) {
+    public void setUploads(UploadChildFileBean bean, int kind) {
 
-        if (files != null) {
-
-            for (int i = 0; i < files.size(); ++i) {
-                FileListChildBean downloadBean = files.get(i);
-                if (loadingContent != null) addDownloadView(downloadBean);
-            }
-
-//            llProgress1.setVisibility(View.VISIBLE);
-//            tvTitle1.setText(downloadBean.getFilename());
-//            tvDate1.setText(downloadBean.getDownload_url());
-//            tvSize1.setText(downloadBean.getCtime());
-//            downLoadFile();
-        }
-
-    }
-
-
-    private void addDownloadView(FileListChildBean downloadBean) {
-
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "wpsSign"+"/"+downloadBean.getFilename();
-
-        File file = new File(path);
-        if(file.exists()){
-
-//            file.delete();
-//            ToastUtils.showShort(getActivity(),downloadBean.getFilename()+"已下载");
-//            return;
-        }
-        final View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_transport_task_layout, null);
-
-        ImageView ivIcon = (ImageView) view.findViewById(R.id.documents_item_icon2);
-        TextView tvTitle = (TextView) view.findViewById(R.id.documents_item_title2);
-        TextView tvDate = (TextView) view.findViewById(R.id.documents_item_time2);
-        final TextView tvSize = (TextView) view.findViewById(R.id.documents_item_size2);
-
-        final ProgressBar progress = (ProgressBar) view.findViewById(R.id.transport_prgress_upload2);
-
-        tvTitle.setText(downloadBean.getFilename());
-        tvDate.setText(downloadBean.getCtime());
-        tvSize.setText("等待中");
-
-        loadingContent.addView(view);
-        Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                loadingContent.removeView(view);
-
-
-                int progr = msg.what;
-                if (progr == 0 && msg.obj != null) {
-                    String message = msg.obj.toString();
-                    loadingContent.removeView(view);
-                    if(message.equals("下载成功")){
-                        getDownloadData();
-                    }
-                    ToastUtils.showShort(getActivity(),message);
-                } else {
-                    progress.setProgress(progr);
-                    if (progr == 100) {
-                        loadingContent.removeView(view);
-
-                        tvSize.setText("下载完毕");
-                    }
-                }
-
-
-            }
-        };
-
-        downLoadNetWork(handler, downloadBean, tvSize);
-
-    }
-
-    private void downLoadNetWork(final Handler handler, final FileListChildBean downloadBean, final TextView tvStay) {
-
-        fixedThreadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvStay.setText("下载中");
-
-                    }
-                });
-
-                String url = downloadBean.getDownload_url();
-                int headIndex = url.indexOf("com/") + 3;
-                String headUrl = url.substring(0, headIndex + 1);
-                String bodyUrl = url.substring(headIndex + 1);
-
-
-                Call<ResponseBody> call = HttpUtl.donwoldWps(headUrl, bodyUrl);
-                call.enqueue(new Callback<ResponseBody>() {
-
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loading.setVisibility(View.GONE);
-                            }
-                        });
-                        try {
-
-                            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "wpsSign";
-
-                            File file = new File(path);
-                            if (!file.exists()) {
-                                file.mkdirs();
-                            }
-                            String name = downloadBean.getFilename();
-                            path = path + "/" + name;
-                            file = new File(path);
-
-                            FileUtils.writeFile2Disk(response, file, new HttpFileCallBack() {
-                                @Override
-                                public void onLoading(long currentLength, long totalLength) {
-
-                                    int precent = (int) (currentLength * 100 / totalLength);
-                                    handler.sendEmptyMessage(precent);
-                                }
-                            });
-
-                            TransportBean bean = new TransportBean();
-                            bean.setName(downloadBean.getFilename());
-                            bean.setDate(downloadBean.getCtime());
-                            bean.setPath(path);
-                            bean.setSize(CommonUtil.getFileSize(file.length()));
-
-                            contentResolver.insert(DownLoadProvider.CONTENT_URI, bean.toContentValues());
-
-                            Message msg = new Message();
-                            msg.obj = "下载成功";
-                            msg.what = 0;
-                            handler.sendMessage(msg);
-
-
-                        } catch (Exception e) {
-                            Message msg = new Message();
-                            msg.obj = "下载失败";
-                            msg.what = 0;
-                            handler.sendMessage(msg);
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                            }
-                        });
-                        Message msg = new Message();
-                        msg.obj = msg;
-                        msg.what = 0;
-                        handler.sendMessage(msg);
-//                        emitter.onNext(t.getMessage());
-                    }
-                });
-
-
-            }
-        });
-    }
-
-
-    @Override
-    public void setTransports(TransportBean bean, int kind) {
         switch (kind){
 
             case 0:
@@ -588,7 +466,6 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                     deleteDocument();
                     bottomWindow.dismiss();
                     selectList.clear();
-                    adapter.notifyDataSetChanged();
                 }
             });
             rlMessage.setOnClickListener(new View.OnClickListener() {
@@ -623,45 +500,90 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
         }
     }
 
-    private void deleteDocument(){
+
+    private void deleteDocument() {
+
+        loading.setVisibility(View.VISIBLE);
 
         if(selectList.size() <=0){
             ToastUtils.showShort(getActivity(),"请选择要删除的文件");
             return;
         }
-        loading.setVisibility(View.VISIBLE);
-        Thread thread = new Thread(new Runnable() {
+        String id = "";
+        for (int i = 0; i < selectList.size() ;++ i){
+            if("".equals(id)){
+                id = selectList.get(i).getId();
+            }else {
+                id += ","+selectList.get(i).getId();
+            }
+
+        }
+
+        final String ids = id;
+        Logger.i("ids  "+id);
+        Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
-            public void run() {
+            public void subscribe(@NonNull final ObservableEmitter<String> emitter) throws Exception {
 
-                for (int i = 0; i < selectList.size(); ++i){
-                    TransportBean bean = selectList.get(i);
 
-                    try {
-                        File file = new File(selectList.get(i).getPath());
-file.delete();
-                    }catch (Exception e){}
-                    contentResolver.delete(DownLoadProvider.CONTENT_URI,TransportBean.NAME+" = ?",new String[]{bean.getName()});
-                }
-
-                getActivity().runOnUiThread(new Runnable() {
+                Call<String> call = HttpUtl.deleteFile("User/Share/del_file/",ids, token);
+                call.enqueue(new Callback<String>() {
                     @Override
-                    public void run() {
-                        loading.setVisibility(View.GONE);
-                        getDownloadData();
+                    public void onResponse(Call<String> call, Response<String> response) {
+
+                        if (response.isSuccessful()) {
+
+                            String data = response.body();
+
+                            Logger.i("删除信息  " + data);
+                            try {
+                                JSONObject jsonObject = new JSONObject(data);
+
+                                int code = jsonObject.getInt("code");
+                                String msg = jsonObject.getString("msg");
+
+                                emitter.onNext(msg);
+                                if (code == 0) {
+                                    emitter.onNext("Y");
+                                } else {
+                                    emitter.onNext("N");
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable throwable) {
+                        emitter.onNext(throwable.getMessage());
+                        emitter.onNext("N");
                     }
                 });
             }
         });
-        thread.setDaemon(true);
-        thread.start();
+        Consumer<String> observer = new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+                if (loading.getVisibility() == View.VISIBLE) loading.setVisibility(View.GONE);
+                if (s.equals("Y") || s.equals("N")) {
+                    netWork();
+                } else {
+                    ToastUtils.showLong(getActivity(), s);
+                }
 
 
+            }
+        };
 
-
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
 
     }
 
-    }
+
+}
 
 

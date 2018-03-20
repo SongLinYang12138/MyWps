@@ -44,7 +44,8 @@ public class TransportFragment extends BaseFragment implements PassFileChildList
 
     private PagerAdapter pagerAdapter;
     private ArrayList<Fragment> fragments = new ArrayList<>();
-    private TransportFragmentsFragment fragment1, fragment2;
+    private TransportFragmentsFragment fragment1;
+    private TransportFragmentsUpload fragment2;
     private PasssString  passsString2;
     private PassFileChildList passFileChildList;
     private ColorStateList normal, select;
@@ -68,8 +69,18 @@ public class TransportFragment extends BaseFragment implements PassFileChildList
     @Override
     public void afterView(View view) {
 
-        tvDownload.setOnClickListener(click);
-        tvUpload.setOnClickListener(click);
+        tvDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 viewPager.setCurrentItem(0);
+            }
+        });
+        tvUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewPager.setCurrentItem(1);
+            }
+        });
         normal = getResources().getColorStateList(R.color.text_gray);
         select = getResources().getColorStateList(R.color.text_black);
 
@@ -77,7 +88,7 @@ public class TransportFragment extends BaseFragment implements PassFileChildList
         passFileChildList = fragment1;
         fragment1.setKindFlag(1);
 
-        fragment2 = new TransportFragmentsFragment();
+        fragment2 = new TransportFragmentsUpload();
         passsString2 = fragment2;
         fragment2.setKindFlag(2);
 
@@ -149,18 +160,17 @@ public class TransportFragment extends BaseFragment implements PassFileChildList
         @Override
         public void click(View v) {
 
-            switch (v.getId()) {
+//            switch (v.getId()) {
+//
+//                case R.id.material_tv_download:
+//
+//
+//                    break;
+//                case R.id.material_tv_upload:
 
-                case R.id.material_tv_download:
-
-                    viewPager.setCurrentItem(0);
-                    break;
-                case R.id.material_tv_upload:
-
-                    viewPager.setCurrentItem(1);
-                    break;
-
-            }
+//                    break;
+//
+//            }
 
         }
     }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white_back"
-    android:paddingBottom="20dp"
+    android:paddingBottom="5dp"
     >
     <RelativeLayout
         android:layout_width="0dp"
@@ -12,13 +13,13 @@
         android:id="@+id/material_top_picture"
         >
         <ImageView
-            android:id="@+id/material_pop_iv_picture"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@mipmap/circle_yellow"
-            android:layout_centerInParent="true"
-          android:clickable="false"
-            />
+        android:id="@+id/material_pop_iv_picture"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@mipmap/circle_yellow"
+        android:layout_centerInParent="true"
+        android:clickable="false"
+        />
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -35,7 +36,7 @@
             android:layout_below="@+id/material_pop_iv_picture"
             android:layout_centerHorizontal="true"
             android:textSize="@dimen/text_normal"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:clickable="false"
 
             />
@@ -51,8 +52,8 @@
         >
         <ImageView
             android:id="@+id/material_pop_iv_documents"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@mipmap/circle_light_blue"
             android:layout_centerInParent="true"
             android:clickable="false"
@@ -74,7 +75,7 @@
             android:layout_below="@+id/material_pop_iv_documents"
             android:layout_centerHorizontal="true"
             android:textSize="@dimen/text_normal"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:clickable="false"
 
             />
@@ -91,8 +92,8 @@
         >
         <ImageView
             android:id="@+id/material_pop_iv_video"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@mipmap/circle_orange"
             android:clickable="false"
 
@@ -116,7 +117,7 @@
             android:textSize="@dimen/text_normal"
             android:clickable="false"
 
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             />
 
 
@@ -131,8 +132,8 @@
         >
         <ImageView
             android:id="@+id/material_pop_iv_application"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@mipmap/circle_orange"
 
             android:clickable="false"
@@ -156,7 +157,7 @@
             android:textSize="@dimen/text_normal"
 
             android:clickable="false"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             />
 
 

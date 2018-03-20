@@ -1,8 +1,8 @@
 package com.example.ysl.mywps.application;
 
-import android.app.Application;
+
 import android.content.Context;
-import android.os.Environment;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -22,7 +22,7 @@ import io.rong.imlib.RongIMClient;
  * Created by Administrator on 2017/12/23 0023.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
     private String TAG = "aaa";
     String token = "ZSFFgGPsC2K8I9vy66QMO3v12hfQwFsD5nuDZRzqzhhSqTrkwzfFgbooxXrLy3SVcIyWlDQxhV1P/ZVCvWD5Aw==";
     private ImageLoaderConfiguration config;
@@ -46,8 +46,12 @@ public class MyApplication extends Application {
         int myALias = 3;
         JPushInterface.getAlias(this, myALias);
 
+        try {
 
-        rongYun();
+            rongYun();
+        }catch (Exception e){
+
+        }
     }
 
 
@@ -57,8 +61,12 @@ public class MyApplication extends Application {
 
 
     private void rongYun(){
-        RongIM.init(this);
 
+        try {
+            RongIM.init(this);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         RongIM.connect(token, new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {
@@ -78,5 +86,6 @@ public class MyApplication extends Application {
 
             }
         });
+
     }
 }

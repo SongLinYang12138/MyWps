@@ -1,6 +1,7 @@
 package com.example.ysl.mywps.ui.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,6 +22,7 @@ import com.example.ysl.mywps.bean.FileType;
 import com.example.ysl.mywps.interfaces.PassFileChildList;
 import com.example.ysl.mywps.interfaces.PasssString;
 import com.example.ysl.mywps.net.HttpUtl;
+import com.example.ysl.mywps.ui.activity.DocumentDetailActivity;
 import com.example.ysl.mywps.ui.adapter.DocumentAdapter;
 import com.example.ysl.mywps.utils.NoDoubleClickListener;
 import com.example.ysl.mywps.utils.SharedPreferenceUtils;
@@ -111,9 +113,9 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
 
             if (kindFlag == 0) {
 
-                        fileType = "all";
-                        Log.i("aaa","filetype  "+fileType);
-                        netWork();
+                fileType = "all";
+                Log.i("aaa","filetype  "+fileType);
+                netWork();
             }
 
         }
@@ -208,7 +210,7 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
 
                         if (response.isSuccessful()) {
                             String data = response.body();
-                         if(kindFlag == 0)   Logger.i("data   " + fileType + "  " + data);
+                            if(kindFlag == 0)   Logger.i("data   " + fileType + "  " + data);
                             if (data == null) {
                                 emitter.onNext("N");
                                 return;
@@ -324,16 +326,13 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
 
 
         if (bottomWindow == null) {
-            bottomWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, 240, true);
+            bottomWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
             RelativeLayout rlDownload = (RelativeLayout) view.findViewById(R.id.material_pop_bottom_download);
             RelativeLayout rlDelete = (RelativeLayout) view.findViewById(R.id.material_pop_bottom_delete);
             RelativeLayout rlMessage = (RelativeLayout) view.findViewById(R.id.material_pop_bottom_message);
 
-
-            rlDownload.setOnClickListener(click);
-            rlDelete.setOnClickListener(click);
-            rlMessage.setOnClickListener(click);
+            rlDelete.setVisibility(View.GONE);
 //            bottomWindow.setBackgroundDrawable(new ColorDrawable());
             bottomWindow.setOutsideTouchable(false);
             bottomWindow.setAnimationStyle(R.style.Popupwindow);
@@ -342,22 +341,38 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
                 @Override
                 public void onClick(View v) {
 
-                    passFileChild.passFileChild(selectList, 0);
+                    DocufragmentsFragment.this.passFileChild.passFileChild(selectList, 0);
                     bottomWindow.dismiss();
+                    selectList.clear();
                 }
             });
-            rlDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteDocument();
-                    bottomWindow.dismiss();
-                }
-            });
+//            rlDelete.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    deleteDocument();
+//                    bottomWindow.dismiss();
+//                    selectList.clear();
+//                }
+//            });
             rlMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
+                    if(selectList.size() > 1){
+                        ToastUtils.showShort(getActivity(),"只能选择一个文件查看信息");
+                    }else if(selectList.size() == 0){
+                        ToastUtils.showShort(getActivity(),"请选择文件查看信息");
+                    }else if(selectList.size() == 1){
+                        Intent intent = new Intent(getActivity(), DocumentDetailActivity.class);
+                        intent.putExtra("flag","file");
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("file",selectList.get(0));
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+
                     bottomWindow.dismiss();
+                    selectList.clear();
                 }
             });
             bottomWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -378,6 +393,21 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
     private void deleteDocument() {
 
         loading.setVisibility(View.VISIBLE);
+
+        if(selectList.size() <=0){
+            ToastUtils.showShort(getActivity(),"请选择要删除的文件");
+            return;
+        }
+        String id = "";
+        for (int i = 0; i < selectList.size() ;++ i){
+            if("".equals(id)){
+                id = selectList.get(i).getId();
+            }else {
+                id += ","+id;
+            }
+
+        }
+
 
         Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
@@ -451,11 +481,6 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
     public void passFileChild(ArrayList<FileListChildBean> files, int kind) {
 
 
-        if (bottomWindow == null) {
-            showBottomWindow();
-        } else if (!bottomWindow.isShowing()) {
-            showBottomWindow();
-        }
 
         if (files != null) {
 
@@ -470,7 +495,14 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
                     selectList.add(files.get(0));
                     break;
             }
-            Logger.i("listSize  " + selectList.size());
+            if (bottomWindow == null) {
+                showBottomWindow();
+            }else if(!bottomWindow.isShowing()){
+                showBottomWindow();
+            } else if (selectList.size() == 0 && bottomWindow != null && bottomWindow.isShowing()) {
+                bottomWindow.dismiss();
+            }
+
         }
     }
 

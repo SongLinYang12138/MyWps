@@ -111,7 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:text="外部联系人"
+            android:text="企业联系人"
             android:textColor="@color/text_black"
             android:layout_toRightOf="@+id/contact_rl_at"
             android:textSize="@dimen/text_large" />

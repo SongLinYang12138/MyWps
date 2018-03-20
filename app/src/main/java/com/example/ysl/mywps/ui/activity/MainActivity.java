@@ -334,19 +334,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void setTextBack(int index) {
 
         switch (index) {
-            case 0:
-                tvMessage.setTextColor(colorSelect);
-                tvConact.setTextColor(colorNomal);
-                tvWork.setTextColor(colorNomal);
-                tvMine.setTextColor(colorNomal);
-
-                setTitleText("消息");
-                ibMessage.setBackground(getResources().getDrawable(R.mipmap.icon_message_selected));
-                ibWork.setBackground(getResources().getDrawable(R.mipmap.icon_work_normal));
-                ibContact.setBackground(getResources().getDrawable(R.mipmap.icon_contact_normal));
-                ibMine.setBackground(getResources().getDrawable(R.mipmap.icon_mine_normal));
-
-                break;
+//            case 0:
+//                tvMessage.setTextColor(colorSelect);
+//                tvConact.setTextColor(colorNomal);
+//                tvWork.setTextColor(colorNomal);
+//                tvMine.setTextColor(colorNomal);
+//
+//                setTitleText("消息");
+//                ibMessage.setBackground(getResources().getDrawable(R.mipmap.icon_message_selected));
+//                ibWork.setBackground(getResources().getDrawable(R.mipmap.icon_work_normal));
+//                ibContact.setBackground(getResources().getDrawable(R.mipmap.icon_contact_normal));
+//                ibMine.setBackground(getResources().getDrawable(R.mipmap.icon_mine_normal));
+//
+//                break;
             case 1:
 
                 setTitleText("工作");
@@ -429,17 +429,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if(currentFragment != null) fragmentTransaction.hide(currentFragment);
         switch (index){
 
-            case 0:
-                currentIndex = 0;
-                if(messageFragment == null){
-                    messageFragment = new MessageFragment();
-                    fragmentTransaction.add(R.id.main_rl_container,messageFragment);
-                }else {
-                    fragmentTransaction.show(messageFragment);
-                }
-                setTextBack(0);
-                currentFragment = messageFragment;
-                break;
+//            case 0:
+//                currentIndex = 0;
+//                if(messageFragment == null){
+//                    messageFragment = new MessageFragment();
+//                    fragmentTransaction.add(R.id.main_rl_container,messageFragment);
+//                }else {
+//                    fragmentTransaction.show(messageFragment);
+//                }
+//                setTextBack(0);
+//                currentFragment = messageFragment;
+//                break;
             case 1:
                 currentIndex = 1;
                 if(workFragment == null){

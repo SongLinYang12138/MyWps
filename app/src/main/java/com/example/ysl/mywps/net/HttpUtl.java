@@ -254,4 +254,16 @@ public class HttpUtl {
 
     }
 
+    /**
+     * 获取自己的上传文件
+     * */
+
+    public static Call<String> selfUpload(String url,  String token){
+
+        String httpUrl  = HTTP_URL+url;
+        NetApi netApi = getRetrofit(httpUrl).create(NetApi.class);
+
+        return netApi.selfUpload(token);
+    }
+
 }

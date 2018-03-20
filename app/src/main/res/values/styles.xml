@@ -25,7 +25,7 @@
         <item name="android:windowExitAnimation">@anim/windows_back</item>
     </style>
     <style name="Popupwindow_top">
-        <item name="android:windowEnterAnimation">@anim/windows_back</item>
+        <!--<item name="android:windowEnterAnimation">@anim/window_top_back</item>-->
         <item name="android:windowExitAnimation">@anim/windows_out</item>
     </style>
 </resources>

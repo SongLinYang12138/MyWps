@@ -96,7 +96,8 @@ dependencies {
     compile project(':fit7')
     compile project(":silicompressor")
     compile project(":IMKit")
-
+    compile 'com.android.support:multidex:1.0.1'
+//    compile 'com.android.support:multidex:'
     compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
 //    compile(name:'SmallVideoLib', ext:'aar')

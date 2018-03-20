@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.example.ysl.mywps.utils.CommonFun;
 import com.example.ysl.mywps.utils.CommonUtil;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
  * 介绍: 下载和上传文件的属性
  */
 
-public class TransportBean {
+public class TransportBean  implements Parcelable{
 
 
     public static final String NAME = "file_name";
@@ -31,6 +33,42 @@ public class TransportBean {
     private String date;
     private String size;
     private String path;
+
+    public TransportBean(){
+
+
+    }
+
+    protected TransportBean(Parcel in) {
+        name = in.readString();
+        date = in.readString();
+        size = in.readString();
+        path = in.readString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        TransportBean bean = (TransportBean) obj;
+
+        return this.getName().equals(bean.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getName().hashCode();
+    }
+
+    public static final Creator<TransportBean> CREATOR = new Creator<TransportBean>() {
+        @Override
+        public TransportBean createFromParcel(Parcel in) {
+            return new TransportBean(in);
+        }
+
+        @Override
+        public TransportBean[] newArray(int size) {
+            return new TransportBean[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -105,4 +143,16 @@ public class TransportBean {
 
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(date);
+        parcel.writeString(size);
+        parcel.writeString(path);
+    }
 }

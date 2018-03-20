@@ -3,14 +3,19 @@ package com.example.ysl.mywps.ui.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.bean.TransportBean;
+import com.example.ysl.mywps.interfaces.TransportCallBack;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -27,13 +32,15 @@ public class TransportAdater extends BaseAdapter {
     private Context context;
     private DisplayImageOptions options;
     private Drawable wps, picture, video, music,unknown;
+    private TransportCallBack transportCallBack;
 
 
-    public TransportAdater(ArrayList<TransportBean> list, Context context) {
+
+    public TransportAdater(ArrayList<TransportBean> list, Context context,TransportCallBack transportCallBack) {
 
         this.list = list;
         this.context = context;
-
+        this.transportCallBack = transportCallBack;
 
         if(context != null){
             wps = context.getResources().getDrawable(R.mipmap.ft_doc_l);
@@ -79,8 +86,9 @@ public class TransportAdater extends BaseAdapter {
         return position;
     }
     private ViewHolder holder;
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
+    public View getView(final int position, View view, ViewGroup parent) {
 
         if(view == null){
 
@@ -92,6 +100,20 @@ public class TransportAdater extends BaseAdapter {
             holder.tvDate = (TextView) view.findViewById(R.id.documents_item_time1);
             holder.tvSize = (TextView) view.findViewById(R.id.documents_item_size1);
             holder.tvPath = (TextView) view.findViewById(R.id.documents_item_path);
+            holder.cb = (CheckBox) view.findViewById(R.id.documents_item_cb);
+            holder.cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+
+                    if(isChecked){
+                        transportCallBack.setTransports(list.get(position),1);
+                    }else {
+                        transportCallBack.setTransports(list.get(position),0);
+
+                    }
+                }
+            });
 
             view.setTag(holder);
         }else {
@@ -101,7 +123,7 @@ public class TransportAdater extends BaseAdapter {
         if(list.size() > position){
             TransportBean bean = list.get(position);
 
-         if(bean.getName() != null && bean.getPath() != null){
+         if(bean.getName() != null){
              if(bean.getName().endsWith("png") || bean.getName().contains("jpg")){
                  ImageLoader.getInstance().displayImage("file:///"+bean.getPath(), holder.ivIcon, options);
              } else if ( bean.getName().endsWith("docx") || bean.getName().endsWith("doc") || bean.getName().endsWith("txt") || bean.getName().endsWith("pdf")) {
@@ -128,6 +150,7 @@ public class TransportAdater extends BaseAdapter {
 
     private class ViewHolder {
 
+        CheckBox cb;
         ImageView ivIcon;
         TextView tvTitle,tvDate,tvSize,tvPath;
 

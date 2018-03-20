@@ -1,10 +1,13 @@
 package com.example.ysl.mywps.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by ysl on 2018/1/16.
  */
 
-public class ContactBean {
+public class ContactBean  implements Parcelable {
 
 
     /**
@@ -16,13 +19,43 @@ public class ContactBean {
      * dept_name : 政协
      */
 
+
+
     private String capital;
     private String uid;
     private String username;
     private String mobile;
-    private Object realname;
+    private String realname;
     private String dept;
     private String dept_name;
+
+
+    public ContactBean(){
+
+    }
+
+
+    protected ContactBean(Parcel in) {
+        capital = in.readString();
+        uid = in.readString();
+        username = in.readString();
+        mobile = in.readString();
+        realname = in.readString();
+        dept = in.readString();
+        dept_name = in.readString();
+    }
+
+    public static final Creator<ContactBean> CREATOR = new Creator<ContactBean>() {
+        @Override
+        public ContactBean createFromParcel(Parcel in) {
+            return new ContactBean(in);
+        }
+
+        @Override
+        public ContactBean[] newArray(int size) {
+            return new ContactBean[size];
+        }
+    };
 
     public String getCapital() {
         return capital;
@@ -56,11 +89,11 @@ public class ContactBean {
         this.mobile = mobile;
     }
 
-    public Object getRealname() {
+    public String getRealname() {
         return realname;
     }
 
-    public void setRealname(Object realname) {
+    public void setRealname(String realname) {
         this.realname = realname;
     }
 
@@ -78,5 +111,22 @@ public class ContactBean {
 
     public void setDept_name(String dept_name) {
         this.dept_name = dept_name;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(capital);
+        parcel.writeString(uid);
+        parcel.writeString(username);
+        parcel.writeString(mobile);
+        parcel.writeString(realname);
+        parcel.writeString(dept);
+        parcel.writeString(dept_name);
     }
 }

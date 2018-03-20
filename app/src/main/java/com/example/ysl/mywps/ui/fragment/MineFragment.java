@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.ui.activity.LoginActivity;
@@ -23,6 +24,8 @@ public class MineFragment extends BaseFragment {
 
     @BindView(R.id.mine_rl_loginout)
     RelativeLayout rlLoginOut;
+    @BindView(R.id.mine_tv_name)
+    TextView mineTvName;
 
     private MyclickListener click = new MyclickListener();
 
@@ -44,6 +47,8 @@ public class MineFragment extends BaseFragment {
     public void afterView(View view) {
 
         rlLoginOut.setOnClickListener(click);
+        String name = SharedPreferenceUtils.loginValue(getActivity(),"name");
+        mineTvName.setText(name);
     }
 
     @Override

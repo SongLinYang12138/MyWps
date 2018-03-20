@@ -1,5 +1,8 @@
 package com.example.ysl.mywps.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -10,7 +13,7 @@ import org.json.JSONObject;
  * 介绍:filelist数组的bean文件
  */
 
-public class FileListChildBean {
+public class FileListChildBean implements Parcelable{
 //    {"id":"1","filename":"my_doc.docx","filename_qn":"my_doc.docx","ctime":"2018-02-05 14:44:47","download_url":"http:\/\/p2c152618.bkt.clouddn.com\/my_doc.docx"}
 
     /**
@@ -19,12 +22,38 @@ public class FileListChildBean {
      * download_url : http://p2c152618.bkt.clouddn.com/my_doc.docx
      */
 
+
+
     private String id;
     private String filename_qn;
     private String filename;
     private String ctime;
     private String download_url;
 
+    public FileListChildBean(){
+
+    }
+
+
+    protected FileListChildBean(Parcel in) {
+        id = in.readString();
+        filename_qn = in.readString();
+        filename = in.readString();
+        ctime = in.readString();
+        download_url = in.readString();
+    }
+
+    public static final Creator<FileListChildBean> CREATOR = new Creator<FileListChildBean>() {
+        @Override
+        public FileListChildBean createFromParcel(Parcel in) {
+            return new FileListChildBean(in);
+        }
+
+        @Override
+        public FileListChildBean[] newArray(int size) {
+            return new FileListChildBean[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -83,5 +112,19 @@ public class FileListChildBean {
     @Override
     public String toString() {
         return "{id: "+id+",filename_qn:"+filename_qn+",filename:"+filename+",ctime:"+ctime+",download_url:"+download_url+"}";
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(filename_qn);
+        parcel.writeString(filename);
+        parcel.writeString(ctime);
+        parcel.writeString(download_url);
     }
 }

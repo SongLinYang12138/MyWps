@@ -84,6 +84,7 @@ public class DocumentFrageMent extends BaseFragment {
 
         fragment0 = new DocufragmentsFragment();
         fragment0.setKindFlag(0);
+        fragment0.setPassFileChild(passFileChildList);
         fragment1 = new DocufragmentsFragment();
         fragment1.setKindFlag(1);
         passsString1 = fragment1;

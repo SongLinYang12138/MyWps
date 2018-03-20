@@ -116,4 +116,10 @@ public interface NetApi {
     @Multipart
     @POST("query")
     Call<String>  socialUpload(@Query("name") String name,@Query("token")String token,@PartMap Map<String, RequestBody> file);
+
+    /**
+     *获取自己上传的文件
+     * */
+    @POST("query")
+    Call<String> selfUpload (@Query("token") String token);
 }

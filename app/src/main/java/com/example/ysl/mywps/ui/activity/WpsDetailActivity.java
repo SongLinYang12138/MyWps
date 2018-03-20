@@ -207,6 +207,7 @@ public class WpsDetailActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        setRightSize(16);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         loading.setVisibility(View.GONE);
@@ -255,27 +256,10 @@ public class WpsDetailActivity extends BaseActivity {
             public boolean onTouch(View v, MotionEvent event) {
 
 
-//              x1<  clickx < x1+width
-//                y1 <   clicky < y1+height
-
-
-//                x2 = x1+ivIcon.getWidth();
-//                y2 = y1+ivIcon.getHeight();
-//                Log.i("aaa","clickx  "+clickx+" clickY "+clickY+" x1 "+x1+" y1 "+y1+"  "+" x2 "+x2+"  y2  "+y2);
-////y1 < clickY < y2
-//                if( x1 < clickx && clickx < x2 && clickY > y1 && clickY < y2){
-//                    ivIcon.autoMouse(event);
-//                    return true;
-//                }
-
-
                 float clickx = event.getX();
 
                 x1 = ivIcon.getX() - 90;
                 x2 = ivIcon.getX() + ivIcon.getWidth() + 90;
-
-//                x1 = event.getX();
-//                x2 = ivIcon.getX();
                 y1 = event.getY();
                 y2 = ivIcon.getY();
 
@@ -454,7 +438,7 @@ public class WpsDetailActivity extends BaseActivity {
         try {
             startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            ToastUtils.showShort(WpsDetailActivity.this, "打开wps异常：" + e.toString());
+            ToastUtils.showShort(WpsDetailActivity.this, "打开wps异常,请确认是否安装了WPS" );
             e.printStackTrace();
             return false;
         }

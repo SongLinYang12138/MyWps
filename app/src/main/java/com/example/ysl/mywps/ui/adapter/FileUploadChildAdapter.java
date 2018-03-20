@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,35 +16,30 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ysl.mywps.R;
-import com.example.ysl.mywps.bean.FileListChildBean;
-import com.example.ysl.mywps.interfaces.PassFileChildList;
-import com.example.ysl.mywps.interfaces.PasssString;
+import com.example.ysl.mywps.bean.UploadChildFileBean;
+import com.example.ysl.mywps.interfaces.UploadCallback;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
 /**
- * Created by ysl on 2018/2/8.
- * 介绍:
+ * Created by Administrator on 2018/3/20 0020.
  */
 
-public class DocumenChildAdapter extends BaseAdapter {
+public class FileUploadChildAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<FileListChildBean> list;
-    private int kindFlag;
+    private ArrayList<UploadChildFileBean> list;
     private Drawable wps, picture, video, music,unknown;
     private DisplayImageOptions options;
-    private PassFileChildList passFileChildList;
-    private ArrayList<FileListChildBean> selectList = new ArrayList<>();
+    private UploadCallback uploadCallback;
 
-    public DocumenChildAdapter(ArrayList<FileListChildBean> list, Context context, int kindFlag, PassFileChildList passFileChildList) {
+    public FileUploadChildAdapter(Context context, ArrayList<UploadChildFileBean> list,UploadCallback uploadCallback){
 
         this.context = context;
         this.list = list;
-        this.kindFlag = kindFlag;
-        this.passFileChildList = passFileChildList;
+        this.uploadCallback = uploadCallback;
         if (context != null) {
 
             wps = context.getResources().getDrawable(R.mipmap.ft_doc_l);
@@ -66,13 +62,9 @@ public class DocumenChildAdapter extends BaseAdapter {
                     .build();//
 
         }
-        selectList.clear();
+
     }
 
-    public void update(ArrayList<?> list) {
-        this.list = (ArrayList<FileListChildBean>) list;
-        selectList.clear();
-    }
 
     @Override
     public int getCount() {
@@ -80,18 +72,27 @@ public class DocumenChildAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
-        return list.get(position);
+    public Object getItem(int i) {
+        return list.get(i);
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public long getItemId(int i) {
+        return i;
     }
 
-    @Override
-    public View getView(final int postition, View view, ViewGroup viewGroup) {
 
+    private class ViewHolder {
+        ImageView ivIcon;
+        TextView tvName, tvDate;
+        CheckBox cb;
+
+    }
+
+    ViewHolder holder;
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         if (view == null) {
             holder = new ViewHolder();
             view = LayoutInflater.from(context).inflate(R.layout.listveiw_item_documents_layout, viewGroup, false);
@@ -104,48 +105,45 @@ public class DocumenChildAdapter extends BaseAdapter {
             holder.cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    selectList.clear();
-                    if (isChecked) {
-                        if (list.size() > postition) selectList.add(list.get(postition));
-                        passFileChildList.passFileChild(selectList, 1);
-                    } else {
-                        if (list.size() > postition) selectList.add(list.get(postition));
-                        passFileChildList.passFileChild(selectList, 0);
+
+                    if(uploadCallback == null) return;
+                    if(isChecked){
+
+                        uploadCallback.setUploads(list.get(i),1);
+                    }else {
+                        uploadCallback.setUploads(list.get(i),0);
                     }
+
                 }
             });
         } else {
             holder = (ViewHolder) view.getTag();
         }
+        /**
+         * id : 53
+         * filename : 1519652477320.mp4
+         * filename_qn : video_1519652477320.mp4
+         * ctime : 2018-02-26 22:29:41
+         * download_url : http://p2c152618.bkt.clouddn.com/video_1519652477320.mp4
+         */
 
-        FileListChildBean bean = list.get(postition);
+        UploadChildFileBean bean = list.get(i);
 
         if (bean.getFilename().endsWith("jpg") || bean.getFilename().endsWith("png") ||  bean.getFilename().endsWith("PNG")) {
             ImageLoader.getInstance().displayImage(bean.getDownload_url(), holder.ivIcon, options);
-        } else if (kindFlag == 2 || bean.getFilename().endsWith("docx") || bean.getFilename().endsWith("doc") || bean.getFilename().endsWith("txt") || bean.getFilename().endsWith("pdf")) {
+        } else if (bean.getFilename().endsWith("docx") || bean.getFilename().endsWith("doc") || bean.getFilename().endsWith("txt") || bean.getFilename().endsWith("pdf")) {
             holder.ivIcon.setBackground(wps);
-        } else if (kindFlag == 3 || bean.getFilename().endsWith("mp4")|| bean.getFilename().endsWith("rmvb") ||bean.getFilename().endsWith("3gp")) {
+        } else if (bean.getFilename().endsWith("mp4")|| bean.getFilename().endsWith("rmvb") ||bean.getFilename().endsWith("3gp")) {
             holder.ivIcon.setBackground(video);
-        } else if (kindFlag == 4 || bean.getFilename().endsWith("apk")) {
+        } else if (bean.getFilename().endsWith("apk")) {
             holder.ivIcon.setBackground(music);
         }else {
             holder.ivIcon.setBackground(unknown);
         }
-
         holder.tvName.setText(bean.getFilename());
         holder.tvDate.setText(bean.getCtime());
+
         return view;
     }
-
-
-    private class ViewHolder {
-        ImageView ivIcon;
-        TextView tvName, tvDate;
-        CheckBox cb;
-
-    }
-
-    private ViewHolder holder;
-
 
 }

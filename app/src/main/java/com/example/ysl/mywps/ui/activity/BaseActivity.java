@@ -125,6 +125,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (CommonUtil.isNotEmpty(text)) tvRight.setText(text);
         if (click != null) tvRight.setOnClickListener(click);
     }
+    public void setRightSize(int size){
+        tvRight.setTextSize(size);
+    }
     public void showRight1(boolean isShow,int resource,View.OnClickListener click){
 
         if(isShow)tvRight1.setVisibility(View.VISIBLE);
