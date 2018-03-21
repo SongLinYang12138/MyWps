@@ -75,6 +75,17 @@ public class HasDoFragment extends BaseFragment {
 
 
     @Override
+    public void onResume() {
+        super.onResume();
+        documents.clear();
+        isLoadMore = false;
+        pageNUmber = 1;
+
+        netWork();
+
+    }
+
+    @Override
     public View setView(LayoutInflater inflater, ViewGroup container) {
 
         View view = inflater.inflate(R.layout.frament_stay_to_do_layout, container, false);
@@ -97,10 +108,11 @@ public class HasDoFragment extends BaseFragment {
             }
         });
 
-        documents.clear();
-        isLoadMore = false;
-        netWork();
-        pageNUmber = 1;
+//        documents.clear();
+//        isLoadMore = false;
+//        pageNUmber = 1;
+//        netWork();
+
         return view;
     }
 

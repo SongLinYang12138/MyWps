@@ -135,6 +135,7 @@ public class CommonUtil {
             return length+" b";
         }
     }
+
     public static boolean isVideo(String name){
         if(isEmpty(name)){
             return false;
@@ -148,5 +149,18 @@ public class CommonUtil {
         if(videoType.contains(type)) return true;
         else  return false;
     }
+
+
+    public static String subsSize(String size){
+        if(CommonUtil.isEmpty(size)) return size;
+        int startIndex = size.indexOf(".");
+        int lastIndex = size.length();
+        if(lastIndex - startIndex > 5){
+            size = size.substring(0,startIndex+2)+size.substring(size.length()-2,size.length());
+        }
+        return size;
+    }
+
+
 
 }

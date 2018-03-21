@@ -134,6 +134,7 @@ public class WpsDetailActivity extends BaseActivity {
     float ivWith;
     float ivHeight;
     private String wpsMode = "";
+    private String mAccount = "";
 
     private SharedPreferences wpsPreference;
 //    提交审核后是2 文档返回给拟稿人后是5  提交文件领导签署后是3 签署完成后 成功是4 失败是五，继续提交审核
@@ -228,6 +229,8 @@ public class WpsDetailActivity extends BaseActivity {
 
     private void afterData() {
 
+        mAccount = SharedPreferenceUtils.loginValue(this,"name");
+
         Bundle bundle = getIntent().getExtras();
         documentInfo = bundle.getParcelable("documentben");
         setTitleText(documentInfo.getDoc_name());
@@ -248,7 +251,9 @@ public class WpsDetailActivity extends BaseActivity {
 
 
         listView.setAdapter(adapter);
-        downLoadWps();
+
+        //只有处理人才会下载文件
+     if(mAccount.equals(documentInfo.getNow_nickname()) || mAccount.equals(documentInfo.getNow_username()))   downLoadWps(false);
 
         listView.setOnTouchListener(new View.OnTouchListener() {
 
@@ -269,40 +274,40 @@ public class WpsDetailActivity extends BaseActivity {
                     ivIcon.autoMouse(event);
                     return true;
                 }
-                return true;
+                return false;
             }
         });
 
     }
 
-    public void downLoadWps() {
+    public void downLoadWps(final boolean shouldOpen) {
         String wpsPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getPath() + "/" + documentInfo.getDoc_name();
 
         File file = new File(wpsPath);
 
-        boolean shouldUpdate = false;
+//        boolean shouldUpdate = false;
 
 
-        if (file.exists()) {
-
-            String existsStatus = wpsPreference.getString(documentInfo.getDoc_name(), "");
-            if (CommonUtil.isNotEmpty(existsStatus)) {
-                if (documentInfo.getStatus().equals(existsStatus)) {
-                    downloadWpsPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getPath() + "/" + documentInfo.getDoc_name();
-                    shouldUpdate = false;
-                } else {
-                    shouldUpdate = true;
-                }
-            } else {
-                shouldUpdate = true;
-            }
-        } else {
-            shouldUpdate = true;
-        }
-
-        if (!shouldUpdate) {
-            return;
-        }
+//        if (file.exists()) {
+//
+//            String existsStatus = wpsPreference.getString(documentInfo.getDoc_name(), "");
+//            if (CommonUtil.isNotEmpty(existsStatus)) {
+//                if (documentInfo.getStatus().equals(existsStatus)) {
+//                    downloadWpsPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getPath() + "/" + documentInfo.getDoc_name();
+//                    shouldUpdate = false;
+//                } else {
+//                    shouldUpdate = true;
+//                }
+//            } else {
+//                shouldUpdate = true;
+//            }
+//        } else {
+//            shouldUpdate = true;
+//        }
+//
+//        if (!shouldUpdate) {
+//            return;
+//        }
 
         rlLoading.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
@@ -362,8 +367,8 @@ public class WpsDetailActivity extends BaseActivity {
             public void accept(String s) throws Exception {
                 loading.setVisibility(View.GONE);
                 if (s.equals("Y")) {
-                    openWps(downloadWpsPath);
 
+               if(shouldOpen)     openWps(downloadWpsPath);
                     SharedPreferences.Editor editor = wpsPreference.edit();
                     editor.putString(documentInfo.getDoc_name(), documentInfo.getStatus());
                     editor.apply();
@@ -873,22 +878,31 @@ public class WpsDetailActivity extends BaseActivity {
 
             if (id == R.id.wpcdetail_iv_artical || id == R.id.wpcdetail_ll_artical) {
 
+                if(!mAccount.equals(documentInfo.getNow_nickname()) && !mAccount.equals(documentInfo.getNow_username())){
+                    ToastUtils.showShort(WpsDetailActivity.this,"正在下载");
+                    downLoadWps(true);
+//                    ToastUtils.showShort(WpsDetailActivity.this,"只有处理人才能查看文件");
+                    return;
+                }else {
 
-                File file = new File(downloadWpsPath);
-                if (!file.exists()) {
-                    downLoadWps();
-                } else {
 
-                    openWps(downloadWpsPath);
+                    File file = new File(downloadWpsPath);
+                    if (!file.exists()) {
+                        ToastUtils.showShort(WpsDetailActivity.this,"正在下载");
+                        downLoadWps(true);
+                    } else {
+
+                        openWps(downloadWpsPath);
+                    }
+
                 }
-
 
             } else if (id == R.id.wpcdetail_iv_message || id == R.id.wpcdetail_ll_message) {
 
 //                if (documentInfo.getStatus().equals("1")) {
 ////               //                拟稿1-》审核2-》审核通过5-》签署3（不同意）-》审核通过4
 
-//
+//     1 拟文 2 审核  3 签署  4转发  5审核通过  6 反馈阶段
 //                    ToastUtils.showShort(WpsDetailActivity.this, "文档当前在拟稿状态");
 //                    return;
 //                }
@@ -906,10 +920,24 @@ public class WpsDetailActivity extends BaseActivity {
                 } else ToastUtils.showShort(WpsDetailActivity.this, "该文档目前不在审核或签署流程");
 
             } else if (id == R.id.wpcdetail_iv_sign || id == R.id.wpcdetail_ll_sign) {
+
+                if(!mAccount.equals(documentInfo.getNow_nickname()) && !mAccount.equals(documentInfo.getNow_username())){
+                    ToastUtils.showShort(WpsDetailActivity.this,"只有处理人才能签署文件");
+                    return;
+                }
+
+                if (!documentInfo.getStatus().equals("3")){
+                    ToastUtils.showShort(WpsDetailActivity.this,"只有签署阶段才能签署文件");
+                    return;
+                }
+
                 haveSigned = true;
                 setSign();
             } else if (id == R.id.wpcdetail_iv_send || id == R.id.wpcdetail_ll_send) {
-
+                if(!mAccount.equals(documentInfo.getNow_nickname()) && !mAccount.equals(documentInfo.getNow_username())){
+                    ToastUtils.showShort(WpsDetailActivity.this,"只有处理人才能发送文件");
+                    return;
+                }
                 if (documentInfo.getStatus().equals("1") || documentInfo.getStatus().equals("5") || documentInfo.getStatus().equals("4")) {
 
 

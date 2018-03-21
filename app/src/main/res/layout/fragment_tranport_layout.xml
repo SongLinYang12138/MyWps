@@ -12,7 +12,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="45dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:background="@color/stay_back"
@@ -21,8 +21,9 @@
             >
 
             <RelativeLayout
+                android:id="@+id/material_ll_download"
                 android:layout_width="1dp"
-                android:layout_height="match_parent"
+                android:layout_height="45dp"
                 android:layout_weight="1">
 
                 <TextView
@@ -47,15 +48,17 @@
             </RelativeLayout>
 
             <RelativeLayout
+
                 android:layout_width="1dp"
-                android:layout_height="match_parent"
+                android:layout_height="30dp"
                 android:layout_marginBottom="@dimen/padding_large"
                 android:layout_marginTop="@dimen/padding_large"
                 android:background="@color/text_gray"></RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/material_ll_upload"
                 android:layout_width="1dp"
-                android:layout_height="match_parent"
+                android:layout_height="45dp"
                 android:layout_weight="1">
 
                 <TextView

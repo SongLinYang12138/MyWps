@@ -246,7 +246,7 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
                 break;
 
             case "callCommit":
-                ToastUtils.showShort(this, "callCommit");
+
                 if (CommonUtil.isEmpty(path)) {
                     ToastUtils.showShort(this, "请选择要上传的文件");
                     return;

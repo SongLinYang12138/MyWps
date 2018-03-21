@@ -145,6 +145,7 @@ public class TransportFragmentsUpload extends BaseFragment implements PasssStrin
                                     UploadSlefBean bean = gson.fromJson(object.toString(),UploadSlefBean.class);
                                     list.add(bean);
                                 }
+                                Logger.i("upload_size "+list.size());
                                 emitter.onNext("Y");
 
                             } catch (JSONException e) {
@@ -184,9 +185,9 @@ public class TransportFragmentsUpload extends BaseFragment implements PasssStrin
 
             @Override
             public void onNext(@NonNull String s) {
-
+               if(adapter != null && list != null) adapter.updateList(list);
                 if(s.equals("Y")){
-                    adapter.updateList(list);
+
                 }else if (s.equals("N")){
 
                 }else {
@@ -292,7 +293,8 @@ public class TransportFragmentsUpload extends BaseFragment implements PasssStrin
                 if (pro == 0 && msg.obj != null) {
                     String message = msg.obj.toString();
                     ToastUtils.showShort(getActivity(), message);
-                    loadingContent.removeView(view);
+
+
                 } else {
                     progress.setProgress(pro);
 
@@ -328,7 +330,18 @@ public class TransportFragmentsUpload extends BaseFragment implements PasssStrin
                     public void onProgress(long hasWrittenLen, long totalLen, boolean hasFinish) {
 
                         int progress = ((int) (hasWrittenLen * 100 / totalLen));
+
+                        if (progress > 99){
+                            try {
+                                Thread.sleep(2000);
+                                handler.sendEmptyMessage(progress);
+
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }else
                         handler.sendEmptyMessage(progress);
+
 
                     }
                 };

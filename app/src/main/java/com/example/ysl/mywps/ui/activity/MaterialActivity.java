@@ -134,6 +134,9 @@ public class MaterialActivity extends BaseActivity implements View.OnClickListen
         llTransport.setOnClickListener(this);
 
         showMessage(1);
+
+        showMessage(0);
+
     }
 
 

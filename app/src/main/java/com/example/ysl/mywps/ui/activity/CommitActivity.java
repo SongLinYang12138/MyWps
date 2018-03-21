@@ -84,7 +84,6 @@ public class CommitActivity extends BaseActivity {
         setTitleText("审核意见");
 
         ButterKnife.bind(this);
-
         downloadPath = getIntent().getStringExtra("wpspath");
         token = SharedPreferenceUtils.loginValue(this, "token");
         documentInfo = getIntent().getExtras().getParcelable("documentInfo");
@@ -109,18 +108,30 @@ public class CommitActivity extends BaseActivity {
         tvOpinion.setText("审核意见：  "+documentInfo.getOpinion());
 
         String myAccount = SharedPreferenceUtils.loginValue(this,"name");
-//        documentInfo.getStatus().equals("6") && documentInfo.getIs_forward().equals("1"
-        if(!documentInfo.getStatus().equals("6") && myAccount.equals(documentInfo.getNow_username())){
+//        documentInfo.getStatus().equals("6") && documentInfo.getIs_forward().equals("1")
+//        if(documentInfo.getStatus().equals("6") && myAccount.equals(documentInfo.getNow_username())){
+//           etOpinion.setVisibility(View.VISIBLE);
+//            rlCommit.setVisibility(View.VISIBLE);
+//        }if(documentInfo.getStatus().equals("6") && documentInfo.getIs_forward().equals("1")){
+//            etOpinion.setVisibility(View.VISIBLE);
+//            rlCommit.setVisibility(View.VISIBLE);
+//        }else {
+//            etOpinion.setVisibility(View.INVISIBLE);
+//            rlCommit.setVisibility(View.INVISIBLE);
+//        }
+
+        if(myAccount.equals(documentInfo.getNow_username()) || myAccount.equals(documentInfo.getNow_nickname())){
            etOpinion.setVisibility(View.VISIBLE);
             rlCommit.setVisibility(View.VISIBLE);
-        }if(documentInfo.getStatus().equals("6") && documentInfo.getIs_forward().equals("1")){
-            etOpinion.setVisibility(View.VISIBLE);
-            rlCommit.setVisibility(View.VISIBLE);
-        }else {
+        }else  {
             etOpinion.setVisibility(View.INVISIBLE);
             rlCommit.setVisibility(View.INVISIBLE);
         }
 
+        if(documentInfo.getStatus().equals("1")  || documentInfo.getStatus().equals("4")|| documentInfo.getStatus().equals("5")){
+            etOpinion.setVisibility(View.INVISIBLE);
+            rlCommit.setVisibility(View.INVISIBLE);
+        }
 
     }
 
@@ -208,10 +219,10 @@ public class CommitActivity extends BaseActivity {
      */
     private void signCompleted(final String opinion, final String signed) {
 
-        if (CommonUtil.isEmpty(uploadIamgePath)) {
-            ToastUtils.showShort(this, "图片保存失败，请重新点击信息按钮");
-            return;
-        }
+//        if (CommonUtil.isEmpty(uploadIamgePath)) {
+//            ToastUtils.showShort(this, "图片保存失败，请重新点击信息按钮");
+//            return;
+//        }
         loading.setVisibility(View.VISIBLE);
         Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
@@ -388,7 +399,7 @@ public class CommitActivity extends BaseActivity {
                     } else if (documentInfo.getStatus().equals("3")) {
                         signCompleted(opinion, isSigned);
                     } else if (documentInfo.getStatus().equals("5")) {
-                        uploadFile(opinion);
+//                        uploadFile(opinion);
                     }else if(documentInfo.getStatus().equals("6")){
                         feedBack(opinion);
                     }else {

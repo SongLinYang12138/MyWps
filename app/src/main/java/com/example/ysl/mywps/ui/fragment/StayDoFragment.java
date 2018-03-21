@@ -68,9 +68,19 @@ public class StayDoFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        documents.clear();
+        isLoadMore = false;
+        pageNUmber = 1;
+        netWork();
+    }
+
     public void setWpsMode(String wpsMode) {
         this.wpsMode = wpsMode;
     }
+
 
     @Override
     public View setView(LayoutInflater inflater, ViewGroup container) {
@@ -95,10 +105,11 @@ public class StayDoFragment extends BaseFragment {
             }
         });
 
-        documents.clear();
-        isLoadMore = false;
-        netWork();
-        pageNUmber = 1;
+//        documents.clear();
+//        isLoadMore = false;
+//        pageNUmber = 1;
+//        netWork();
+
         return view;
     }
 
@@ -198,7 +209,7 @@ public class StayDoFragment extends BaseFragment {
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-                Logger.i("staqqy  upto");
+
                 if (isLoadMore) {
                     ++pageNUmber;
                     netWork();

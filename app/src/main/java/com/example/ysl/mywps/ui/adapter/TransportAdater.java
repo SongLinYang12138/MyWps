@@ -16,10 +16,12 @@ import android.widget.TextView;
 import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.bean.TransportBean;
 import com.example.ysl.mywps.interfaces.TransportCallBack;
+import com.example.ysl.mywps.utils.CommonUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * Created by ysl on 2018/2/10.
@@ -33,6 +35,7 @@ public class TransportAdater extends BaseAdapter {
     private DisplayImageOptions options;
     private Drawable wps, picture, video, music,unknown;
     private TransportCallBack transportCallBack;
+    private LinkedHashMap<Integer,TransportBean> selected =  new LinkedHashMap<>();
 
 
 
@@ -41,6 +44,7 @@ public class TransportAdater extends BaseAdapter {
         this.list = list;
         this.context = context;
         this.transportCallBack = transportCallBack;
+        selected.clear();
 
         if(context != null){
             wps = context.getResources().getDrawable(R.mipmap.ft_doc_l);
@@ -68,7 +72,8 @@ public class TransportAdater extends BaseAdapter {
     public void update(ArrayList<TransportBean> list){
 
         this.list = list;
-    notifyDataSetChanged();
+        notifyDataSetChanged();
+        selected.clear();
     }
 
     @Override
@@ -105,11 +110,14 @@ public class TransportAdater extends BaseAdapter {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
+                    if(position > list.size()) return;
 
                     if(isChecked){
+                        selected.put(position,list.get(position));
                         transportCallBack.setTransports(list.get(position),1);
                     }else {
                         transportCallBack.setTransports(list.get(position),0);
+                        selected.remove(position);
 
                     }
                 }
@@ -119,27 +127,30 @@ public class TransportAdater extends BaseAdapter {
         }else {
             holder = (ViewHolder) view.getTag();
         }
+        if(selected.get(position) != null) holder.cb.setChecked(true);
+        else  holder.cb.setChecked(false);
 
         if(list.size() > position){
             TransportBean bean = list.get(position);
 
-         if(bean.getName() != null){
-             if(bean.getName().endsWith("png") || bean.getName().contains("jpg")){
-                 ImageLoader.getInstance().displayImage("file:///"+bean.getPath(), holder.ivIcon, options);
-             } else if ( bean.getName().endsWith("docx") || bean.getName().endsWith("doc") || bean.getName().endsWith("txt") || bean.getName().endsWith("pdf")) {
-                 holder.ivIcon.setBackground(wps);
-             } else if (bean.getName().endsWith("mp4") || bean.getName().endsWith("rmvb")) {
-                 holder.ivIcon.setBackground(video);
-             } else if (bean.getName().endsWith("apk")) {
-                 holder.ivIcon.setBackground(music);
-             }else {
-                 holder.ivIcon.setBackground(unknown);
-             }
+            if(bean.getName() != null){
+                if(bean.getName().endsWith("png") || bean.getName().contains("jpg")){
+                    ImageLoader.getInstance().displayImage("file:///"+bean.getPath(), holder.ivIcon, options);
+                } else if ( bean.getName().endsWith("docx") || bean.getName().endsWith("doc") || bean.getName().endsWith("txt") || bean.getName().endsWith("pdf")) {
+                    holder.ivIcon.setBackground(wps);
+                } else if (bean.getName().endsWith("mp4") || bean.getName().endsWith("rmvb")) {
+                    holder.ivIcon.setBackground(video);
+                } else if (bean.getName().endsWith("apk")) {
+                    holder.ivIcon.setBackground(music);
+                }else {
+                    holder.ivIcon.setBackground(unknown);
+                }
 
-         }
+            }
 
             holder.tvTitle.setText(bean.getName());
-            holder.tvSize.setText(bean.getSize());
+
+            holder.tvSize.setText(CommonUtil.subsSize(bean.getSize()));
             holder.tvDate.setText(bean.getDate());
             holder.tvPath.setText(bean.getPath());
         }

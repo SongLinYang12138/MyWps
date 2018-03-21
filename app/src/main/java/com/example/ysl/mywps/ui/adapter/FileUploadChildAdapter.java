@@ -22,6 +22,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * Created by Administrator on 2018/3/20 0020.
@@ -34,12 +35,14 @@ public class FileUploadChildAdapter extends BaseAdapter {
     private Drawable wps, picture, video, music,unknown;
     private DisplayImageOptions options;
     private UploadCallback uploadCallback;
+    private LinkedHashMap<Integer,UploadChildFileBean> selected = new LinkedHashMap<>();
 
     public FileUploadChildAdapter(Context context, ArrayList<UploadChildFileBean> list,UploadCallback uploadCallback){
 
         this.context = context;
         this.list = list;
         this.uploadCallback = uploadCallback;
+        selected.clear();
         if (context != null) {
 
             wps = context.getResources().getDrawable(R.mipmap.ft_doc_l);
@@ -60,11 +63,21 @@ public class FileUploadChildAdapter extends BaseAdapter {
 //                .displayer(new RoundedBitmapDisplayer(20))//是否设置为圆角，弧度为多少
 //                .displayer(new FadeInBitmapDisplayer(100))//是否图片加载好后渐入的动画时间
                     .build();//
-
         }
 
     }
 
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    selected.clear();
+    }
+
+    @Override
+    public void notifyDataSetInvalidated() {
+        super.notifyDataSetInvalidated();
+    selected.clear();
+    }
 
     @Override
     public int getCount() {
@@ -105,13 +118,16 @@ public class FileUploadChildAdapter extends BaseAdapter {
             holder.cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                    if(i > list.size()) return;
                     if(uploadCallback == null) return;
                     if(isChecked){
 
+                        selected.put(i,list.get(i));
                         uploadCallback.setUploads(list.get(i),1);
                     }else {
                         uploadCallback.setUploads(list.get(i),0);
+                        selected.remove(i);
+
                     }
 
                 }
@@ -127,6 +143,8 @@ public class FileUploadChildAdapter extends BaseAdapter {
          * download_url : http://p2c152618.bkt.clouddn.com/video_1519652477320.mp4
          */
 
+        if(selected.get(i) != null) holder.cb.setChecked(true);
+        else  holder.cb.setChecked(false);
         UploadChildFileBean bean = list.get(i);
 
         if (bean.getFilename().endsWith("jpg") || bean.getFilename().endsWith("png") ||  bean.getFilename().endsWith("PNG")) {

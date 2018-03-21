@@ -12,6 +12,7 @@ import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.bean.DocumentListBean;
 import com.example.ysl.mywps.ui.fragment.StayDoFragment;
 import com.example.ysl.mywps.utils.CommonUtil;
+import com.example.ysl.mywps.utils.SharedPreferenceUtils;
 
 import java.util.ArrayList;
 
@@ -23,11 +24,12 @@ public class StayDoAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<DocumentListBean> list;
-
+private String myAccount = "";
     public StayDoAdapter(Context context, ArrayList<DocumentListBean> list) {
 
         this.context = context;
         this.list = list;
+        myAccount =   SharedPreferenceUtils.loginValue(context,"name");
 
     }
 
@@ -88,23 +90,29 @@ public class StayDoAdapter extends BaseAdapter {
         holder.tvTitle.setText(info.getTitle());
         holder.tvDate.setText(CommonUtil.isEmpty(info.getN_time()) ? info.getCtime():info.getN_time());
         holder.tvHandel.setText("处理人: "+info.getNow_nickname());
-//        拟稿1-》审核2-》审核通过5-》签署3（不同意）-》审核通过4
+        if(myAccount.equals(info.getNow_nickname()) || myAccount.equals(info.getNow_username())){
+            holder.ivStatus.setVisibility(View.VISIBLE);
+        }else {
+            holder.ivStatus.setVisibility(View.INVISIBLE);
+        }
+
+        //        拟稿1-》审核2-》审核通过5-》签署3（不同意）-》审核通过4
+        //           1 拟文 2 审核  3 签署  4转发  5审核通过  6 反馈阶段
        if(!info.getStatus().equals("4")){
-           holder.ivStatus.setVisibility(View.VISIBLE);
+
            if(info.getStatus().equals("1"))
-               holder.tvSend.setText("发文");
+               holder.tvSend.setText("拟文");
            if(info.getStatus().equals("2"))
                holder.tvSend.setText("审核");
            if(info.getStatus().equals("3"))
-               holder.tvSend.setText("发文");
+               holder.tvSend.setText("签署");
            if(info.getStatus().equals("5"))
-               holder.tvSend.setText("发文");
+               holder.tvSend.setText("审核通过");
            if(info.getStatus().equals("6"))
-               holder.tvSend.setText("发文");
+               holder.tvSend.setText("反馈");
        }else {
-           holder.ivStatus.setVisibility(View.INVISIBLE);
-//           holder.tvSend.setText("审核通过");
-           holder.tvSend.setText("发文");
+
+           holder.tvSend.setText("转发");
        }
 
 

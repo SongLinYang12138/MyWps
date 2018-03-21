@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,15 +32,21 @@ public class TransportFragment extends BaseFragment implements PassFileChildList
     @BindView(R.id.fragment_transport_viewpager)
     ViewPager viewPager;
 
+    @BindView(R.id.material_ll_download)
+    RelativeLayout llDownload;
     @BindView(R.id.material_tv_download)
     TextView tvDownload;
     @BindView(R.id.material_rl_download)
     RelativeLayout rlDownload;
 
+    @BindView(R.id.material_ll_upload)
+    RelativeLayout llUpload;
     @BindView(R.id.material_tv_upload)
     TextView tvUpload;
     @BindView(R.id.material_rl_upload)
     RelativeLayout rlUpload;
+
+
 
 
     private PagerAdapter pagerAdapter;
@@ -69,13 +76,13 @@ public class TransportFragment extends BaseFragment implements PassFileChildList
     @Override
     public void afterView(View view) {
 
-        tvDownload.setOnClickListener(new View.OnClickListener() {
+        llDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                  viewPager.setCurrentItem(0);
             }
         });
-        tvUpload.setOnClickListener(new View.OnClickListener() {
+        llUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 viewPager.setCurrentItem(1);

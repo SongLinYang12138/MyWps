@@ -132,7 +132,8 @@ public class TransportBean  implements Parcelable{
 
             info.setName(name);
             info.setDate(date);
-            
+
+
             info.setSize(size);
             info.setPath(path);
             list.add(info);

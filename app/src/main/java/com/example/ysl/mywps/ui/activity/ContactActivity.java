@@ -407,7 +407,7 @@ public class ContactActivity extends BaseActivity implements PasssString{
 
                 if(s.equals("Y") || s.equals("N")){
 
-                    if(s.equals("Y")) finish();
+                    if(s.equals("Y")) EventBus.getDefault().post(new WpsdetailFinish("转发成功"));
                 }else ToastUtils.showShort(getApplicationContext(),s);
 
 

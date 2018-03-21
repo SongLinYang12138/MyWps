@@ -76,7 +76,7 @@ import retrofit2.Response;
  * Created by Administrator on 2018/2/4 0004.
  */
 
-public class TransportFragmentsFragment extends BaseFragment implements PasssString, PassFileChildList ,TransportCallBack{
+public class TransportFragmentsFragment extends BaseFragment implements PasssString, PassFileChildList, TransportCallBack {
 
     @BindView(R.id.fragment_documents_listview)
     MatchListView listView;
@@ -105,31 +105,28 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
     public void initData() {
 
         token = SharedPreferenceUtils.loginValue(getActivity(), "token");
-        adapter = new TransportAdater(list, getActivity(),this);
+        adapter = new TransportAdater(list, getActivity(), this);
 
 
     }
 
     private void getDownloadData() {
 
-        list.clear();
+
         loading.setVisibility(View.VISIBLE);
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
+
                 Cursor cursor = contentResolver.query(DownLoadProvider.CONTENT_URI, TransportBean.TRANSPORTBEANS, null, null, null);
                 if (cursor != null) {
 
                     list = TransportBean.getTransportBeans(cursor);
+                    notifyHandler.sendEmptyMessage(111);
 
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter.update(list);
-                            loading.setVisibility(View.GONE);
-                        }
-                    });
                 }
+
                 cursor.close();
             }
         });
@@ -137,6 +134,17 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
         thread.start();
 
     }
+
+    private Handler notifyHandler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            adapter.update(list);
+            loading.setVisibility(View.GONE);
+            Logger.i("list_size "+list.size());
+        }
+    } ;
 
     private void getUploadData() {
 
@@ -167,13 +175,11 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
     @Override
     public void afterView(View view) {
-//loadingContent.setVisibility(View.GONE);
-
         contentResolver = getActivity().getContentResolver();
         loading.setVisibility(View.GONE);
 
         if (kindFlag == 2) {
-            getUploadData();
+//            getUploadData();
         } else if (kindFlag == 1) {
             getDownloadData();
         }
@@ -194,14 +200,14 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
     @Override
     public void setString(String... args) {
 
-        final UploadBean bean = new UploadBean();
-        bean.setPath(args[0]);
-        bean.setName(args[1]);
-        bean.setType(args[2]);
-        cunrrentBean = bean;
-
-        if (loadingContent != null)
-            addUploadView(bean);
+//        final UploadBean bean = new UploadBean();
+//        bean.setPath(args[0]);
+//        bean.setName(args[1]);
+//        bean.setType(args[2]);
+//        cunrrentBean = bean;
+//
+//        if (loadingContent != null)
+//            addUploadView(bean);
 
     }
 
@@ -362,7 +368,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
     public void passFileChild(ArrayList<FileListChildBean> files, int kind) {
 
         if (files != null) {
-
+            Logger.i("传递过来的下载文件  " + files.size());
             for (int i = 0; i < files.size(); ++i) {
                 FileListChildBean downloadBean = files.get(i);
                 if (loadingContent != null) addDownloadView(downloadBean);
@@ -380,10 +386,10 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
     private void addDownloadView(FileListChildBean downloadBean) {
 
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "wpsSign"+"/"+downloadBean.getFilename();
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "wpsSign" + "/" + downloadBean.getFilename();
 
         File file = new File(path);
-        if(file.exists()){
+        if (file.exists()) {
 
 //            file.delete();
 //            ToastUtils.showShort(getActivity(),downloadBean.getFilename()+"已下载");
@@ -407,22 +413,20 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                loadingContent.removeView(view);
 
 
                 int progr = msg.what;
                 if (progr == 0 && msg.obj != null) {
                     String message = msg.obj.toString();
-                    loadingContent.removeView(view);
-                    if(message.equals("下载成功")){
-                        getDownloadData();
+//
+                    if (message.equals("下载成功")) {
                     }
-                    ToastUtils.showShort(getActivity(),message);
+                    ToastUtils.showShort(getActivity(), message);
                 } else {
                     progress.setProgress(progr);
+
                     if (progr == 100) {
                         loadingContent.removeView(view);
-
                         tvSize.setText("下载完毕");
                     }
                 }
@@ -484,6 +488,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                                 public void onLoading(long currentLength, long totalLength) {
 
                                     int precent = (int) (currentLength * 100 / totalLength);
+
                                     handler.sendEmptyMessage(precent);
                                 }
                             });
@@ -500,7 +505,12 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                             msg.obj = "下载成功";
                             msg.what = 0;
                             handler.sendMessage(msg);
-
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getDownloadData();
+                                }
+                            });
 
                         } catch (Exception e) {
                             Message msg = new Message();
@@ -536,12 +546,12 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
     @Override
     public void setTransports(TransportBean bean, int kind) {
-        switch (kind){
+        switch (kind) {
 
             case 0:
                 try {
                     selectList.remove(bean);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
@@ -552,7 +562,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
         }
         if (bottomWindow == null) {
             showBottomWindow();
-        }else if(!bottomWindow.isShowing()){
+        } else if (!bottomWindow.isShowing()) {
             showBottomWindow();
         } else if (selectList.size() == 0 && bottomWindow != null && bottomWindow.isShowing()) {
             bottomWindow.dismiss();
@@ -596,19 +606,18 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                 public void onClick(View v) {
 
 
-                    if(selectList.size() > 1){
-                        ToastUtils.showShort(getActivity(),"只能选择一个文件查看信息");
-                    }else if(selectList.size() == 0){
-                        ToastUtils.showShort(getActivity(),"请选择文件查看信息");
-                    }else if(selectList.size() == 1){
+                    if (selectList.size() > 1) {
+                        ToastUtils.showShort(getActivity(), "只能选择一个文件查看信息");
+                    } else if (selectList.size() == 0) {
+                        ToastUtils.showShort(getActivity(), "请选择文件查看信息");
+                    } else if (selectList.size() == 1) {
                         Intent intent = new Intent(getActivity(), DocumentDetailActivity.class);
-                        intent.putExtra("flag","upload");
+                        intent.putExtra("flag", "upload");
                         Bundle bundle = new Bundle();
-                        bundle.putParcelable("upload",selectList.get(0));
+                        bundle.putParcelable("upload", selectList.get(0));
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }
-
 
 
                     bottomWindow.dismiss();
@@ -623,10 +632,10 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
         }
     }
 
-    private void deleteDocument(){
+    private void deleteDocument() {
 
-        if(selectList.size() <=0){
-            ToastUtils.showShort(getActivity(),"请选择要删除的文件");
+        if (selectList.size() <= 0) {
+            ToastUtils.showShort(getActivity(), "请选择要删除的文件");
             return;
         }
         loading.setVisibility(View.VISIBLE);
@@ -634,14 +643,15 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
             @Override
             public void run() {
 
-                for (int i = 0; i < selectList.size(); ++i){
+                for (int i = 0; i < selectList.size(); ++i) {
                     TransportBean bean = selectList.get(i);
 
                     try {
                         File file = new File(selectList.get(i).getPath());
-file.delete();
-                    }catch (Exception e){}
-                    contentResolver.delete(DownLoadProvider.CONTENT_URI,TransportBean.NAME+" = ?",new String[]{bean.getName()});
+                        file.delete();
+                    } catch (Exception e) {
+                    }
+                    contentResolver.delete(DownLoadProvider.CONTENT_URI, TransportBean.NAME + " = ?", new String[]{bean.getName()});
                 }
 
                 getActivity().runOnUiThread(new Runnable() {
@@ -657,11 +667,8 @@ file.delete();
         thread.start();
 
 
-
-
-
     }
 
-    }
+}
 
 
