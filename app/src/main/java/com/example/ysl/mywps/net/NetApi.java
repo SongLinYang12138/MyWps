@@ -122,4 +122,12 @@ public interface NetApi {
      * */
     @POST("query")
     Call<String> selfUpload (@Query("token") String token);
+
+    /**
+     * 获取融云token
+     * */
+    @POST("query")
+    Call<String> roimToken(@Query("token") String token);
+
+
 }

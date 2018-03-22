@@ -120,15 +120,17 @@ public class FileUploadChildAdapter extends BaseAdapter {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(i > list.size()) return;
                     if(uploadCallback == null) return;
-                    if(isChecked){
+                   try {
+                       if(isChecked){
 
-                        selected.put(i,list.get(i));
-                        uploadCallback.setUploads(list.get(i),1);
-                    }else {
-                        uploadCallback.setUploads(list.get(i),0);
-                        selected.remove(i);
+                           selected.put(i,list.get(i));
+                           uploadCallback.setUploads(list.get(i),1);
+                       }else {
+                           uploadCallback.setUploads(list.get(i),0);
+                           selected.remove(i);
 
-                    }
+                       }
+                   }catch (Exception e){}
 
                 }
             });

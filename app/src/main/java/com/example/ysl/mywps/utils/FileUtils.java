@@ -40,50 +40,57 @@ public class FileUtils {
 //
 //    }
 
-    public static void writeFile2Disk(Response<ResponseBody> response, File file, HttpFileCallBack httpCallBack){
+    public static void writeFile2Disk(final Response<ResponseBody> response, final File file, final HttpFileCallBack httpCallBack){
 
-        long currentLength = 0;
-        OutputStream os =null;
 
-        InputStream is = response.body().byteStream();
-        long totalLength =response.body().contentLength();
 
-        try {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long currentLength = 0;
+                OutputStream os =null;
 
-            os = new FileOutputStream(file);
+                InputStream is = response.body().byteStream();
+                long totalLength =response.body().contentLength();
 
-            int len ;
-
-            byte [] buff = new byte[1024];
-
-            while((len=is.read(buff))!=-1){
-
-                os.write(buff,0,len);
-                currentLength+=len;
-                httpCallBack.onLoading(currentLength,totalLength);
-            }
-            Logger.e("文件下载完成");
-
-        } catch(FileNotFoundException e) {
-            e.printStackTrace();
-        } catch(IOException e) {
-            e.printStackTrace();
-        } finally {
-            if(os!=null){
                 try {
-                    os.close();
-                } catch(IOException e) {
+
+                    os = new FileOutputStream(file);
+
+                    int len ;
+
+                    byte [] buff = new byte[1024];
+
+                    while((len=is.read(buff))!=-1){
+
+                        os.write(buff,0,len);
+                        currentLength+=len;
+                        httpCallBack.onLoading(currentLength,totalLength);
+                    }
+                    if(os!=null){
+                        try {
+                            os.close();
+                        } catch(IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if(is!=null){
+                        try {
+                            is.close();
+                        } catch(IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Logger.e("文件下载完成");
+
+                } catch(Exception e) {
                     e.printStackTrace();
                 }
             }
-            if(is!=null){
-                try {
-                    is.close();
-                } catch(IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        });
+        thread.setDaemon(true);
+        thread.start();
+
 
     }
 

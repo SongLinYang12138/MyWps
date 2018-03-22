@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.database.Observable;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
@@ -33,10 +32,10 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+
 import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.interfaces.JSCallBack;
 import com.example.ysl.mywps.interfaces.JavascriptBridge;
@@ -54,6 +53,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -72,6 +72,8 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
     WebView webView;
     @BindView(R.id.av_loading)
     AVLoadingIndicatorView loading;
+    @BindView(R.id.webview_progerss)
+    ProgressBar progressbar;
 
     private String path = "";
 
@@ -145,6 +147,7 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
         webView.setWebChromeClient(chromeClient);
         webView.setWebViewClient(client);
 
+        progressbar.setVisibility(View.GONE);
     }
 
     // Android版本变量
@@ -167,7 +170,7 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
                                 Log.i("aaa", "return  " + s);
                             }
                         });
-                    }else {
+                    } else {
 
                     }
                 }
@@ -247,35 +250,6 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
 
             case "callCommit":
 
-                if (CommonUtil.isEmpty(path)) {
-                    ToastUtils.showShort(this, "请选择要上传的文件");
-                    return;
-                }
-                final File file = new File(path);
-                if (!file.exists()) {
-
-                    ToastUtils.showShort(this, "文件不存在");
-                    return;
-                }
-                final long size = file.length() / 1024 / 1024;
-
-
-                WebviewActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        loading.setVisibility(View.VISIBLE);
-
-                        if (size > 2) {
-                            if(CommonUtil.isVideo(file.getName()))
-                                comprossVideo(file.getName());
-
-                        }else {
-
-                            uploadFile(path,file.getName());
-                        }
-                    }
-                });
-
 
                 break;
 
@@ -291,10 +265,10 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
 
         final String outPutPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "wpsSign";
         File file = new File(outPutPath);
-        if(!file.exists())
+        if (!file.exists())
             file.mkdirs();
-        final String myPath =  outPutPath + File.separator+name;
-        Logger.i("outputPath "+outPutPath);
+        final String myPath = outPutPath + File.separator + name;
+        Logger.i("outputPath " + outPutPath);
 
         WebviewActivity.this.runOnUiThread(new Runnable() {
             @Override
@@ -309,14 +283,14 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
                     public void onSuccess() {
 
                         Logger.i("success");
-                        uploadFile(myPath,name);
+                        uploadFile(myPath, name);
                     }
 
                     @Override
                     public void onFail() {
 
                         Logger.i("fail");
-                        uploadFile(path,name);
+                        uploadFile(path, name);
                     }
 
                     @Override
@@ -328,7 +302,21 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
         });
     }
 
-    private void uploadFile(final String filePath, final String name){
+    private Handler progressHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        int progress = msg.what;
+        progressbar.setProgress(progress);
+        if(progress == 100) progressbar.setVisibility(View.GONE);
+        }
+    };
+
+    /**
+     * 上传社情文件
+     */
+    private void uploadFile(final String filePath, final String name) {
+        progressbar.setVisibility(View.VISIBLE);
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -338,35 +326,46 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
                     @Override
                     public void onProgress(long hasWrittenLen, long totalLen, boolean hasFinish) {
 
+                        int percent = (int) (hasWrittenLen * 100 / totalLen);
+                        Log.i("aaa", percent + "");
+
+                        if(percent > 99) try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        progressHandler.sendEmptyMessage(percent);
+
+
                     }
                 });
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         Message msg = new Message();
-                        if(response.isSuccessful()){
+                        if (response.isSuccessful()) {
                             try {
                                 JSONObject object = new JSONObject(response.body());
 
                                 int code = object.getInt("code");
 
                                 String message = object.getString("msg");
-                                if(code == 0) msg.obj = "Y";
-                                else if(CommonUtil.isNotEmpty(message)) msg.obj = message;
+                                if (code == 0) msg.obj = "Y";
+                                else if (CommonUtil.isNotEmpty(message)) msg.obj = message;
                                 else msg.obj = "N";
                                 JSONObject child = new JSONObject(object.getString("data"));
 
-
+                                Logger.i("文件上传成功 " + response.body());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
-                        }else {
+                        } else {
                             msg.obj = "N";
                         }
 
                         handler.sendMessage(msg);
-                        Logger.i("data  "+response.body());
+                        Logger.i("data  " + response.body());
                     }
 
                     @Override
@@ -374,7 +373,7 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
                         Message msg = new Message();
                         msg.obj = "N";
                         handler.sendMessage(msg);
-                        Logger.i("data  "+t.getMessage());
+                        Logger.i("data  " + t.getMessage());
                     }
                 });
 
@@ -391,20 +390,18 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            loading.setVisibility(View.GONE);
+//            loading.setVisibility(View.GONE);
 
-            if(msg.obj != null){
+            if (msg.obj != null) {
 
-                if(msg.obj.toString().equals("Y")){
+                if (msg.obj.toString().equals("Y")) {
 
-                    if(msg.obj.equals("Y")){
-                        ToastUtils.showShort(WebviewActivity.this,"上传成功");
-                    }else if(msg.obj.equals("N")){
-                        ToastUtils.showShort(WebviewActivity.this,"上传失败");
-
-                    }else {
-                        ToastUtils.showShort(WebviewActivity.this,msg.obj.toString());
-
+                    if (msg.obj.equals("Y")) {
+                        ToastUtils.showShort(WebviewActivity.this, "上传成功");
+                    } else if (msg.obj.equals("N")) {
+                        ToastUtils.showShort(WebviewActivity.this, "上传失败");
+                    } else {
+                        ToastUtils.showShort(WebviewActivity.this, msg.obj.toString());
                     }
 
                 }
@@ -431,6 +428,36 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
             } else {//4.4以下下系统调用方法
                 path = getRealPathFromURI(data.getData());
             }
+
+
+            if (CommonUtil.isEmpty(path)) {
+                ToastUtils.showShort(this, "请选择要上传的文件");
+                return;
+            }
+            final File file = new File(path);
+            if (!file.exists()) {
+
+                ToastUtils.showShort(this, "文件不存在");
+                return;
+            }
+            final long size = file.length() / 1024 / 1024;
+
+
+            WebviewActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+//                    loading.setVisibility(View.VISIBLE);
+
+                    if (size > 5) {
+                        if (CommonUtil.isVideo(file.getName()))
+                            comprossVideo(file.getName());
+
+                    } else {
+
+                        uploadFile(path, file.getName());
+                    }
+                }
+            });
 
 
         }
@@ -705,7 +732,7 @@ public class WebviewActivity extends BaseActivity implements JSCallBack {
                                     Log.i("aaa", "return  " + s);
                                 }
                             });
-                        }else {
+                        } else {
                             webView.loadUrl("javascript:getToken('" + token + "')");
                         }
                     }

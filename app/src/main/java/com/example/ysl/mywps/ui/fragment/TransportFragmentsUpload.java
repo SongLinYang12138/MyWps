@@ -254,6 +254,7 @@ public class TransportFragmentsUpload extends BaseFragment implements PasssStrin
     @Override
     public void setString(String... args) {
 
+        if(getActivity() == null) return;
         final UploadBean bean = new UploadBean();
         bean.setPath(args[0]);
         bean.setName(args[1]);
@@ -374,8 +375,11 @@ public class TransportFragmentsUpload extends BaseFragment implements PasssStrin
                                     bean1.setName(bean.getName());
                                     bean1.setPath(bean.getPath());
                                     bean1.setSize(length);
-                                    ContentValues values = bean1.toContentValues();
-                                    getActivity().getContentResolver().insert(UploadProvider.CONTENT_URI, values);
+//                                    ContentValues values = bean1.toContentValues();
+//
+//                                    getActivity().getContentResolver().insert(UploadProvider.CONTENT_URI, values);
+
+                                    if(getActivity() == null) return;
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -478,7 +482,7 @@ public class TransportFragmentsUpload extends BaseFragment implements PasssStrin
                 public void onClick(View v) {
                     deleteDocument();
                     bottomWindow.dismiss();
-                    selectList.clear();
+
                 }
             });
             rlMessage.setOnClickListener(new View.OnClickListener() {
@@ -585,7 +589,7 @@ public class TransportFragmentsUpload extends BaseFragment implements PasssStrin
                 } else {
                     ToastUtils.showLong(getActivity(), s);
                 }
-
+                selectList.clear();
 
             }
         };

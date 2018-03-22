@@ -28,7 +28,6 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  */
 
 public class HttpUtl {
-
     private final static String HTTP_URL = "http://oa.wgxmcb.top/index.php/";
     private static final OkHttpClient client = new OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
@@ -49,6 +48,15 @@ public class HttpUtl {
         return retrofit;
     }
 
+    public static Retrofit geRomRetrofit(String url){
+        Retrofit retrofit = new Retrofit.Builder()
+
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .baseUrl(url)
+                .client(client)
+                .build();
+        return retrofit;
+    }
 
     public static Call<String> login(String url, String name, String passowrd, String idetitiy) {
 
@@ -264,6 +272,16 @@ public class HttpUtl {
         NetApi netApi = getRetrofit(httpUrl).create(NetApi.class);
 
         return netApi.selfUpload(token);
+    }
+
+    /***
+     * 获取融云token
+     * */
+    public static Call<String> getRoimToken(String url,String token){
+
+        String httpUrl  = url;
+        NetApi netApi = geRomRetrofit(httpUrl).create(NetApi.class);
+        return netApi.roimToken(token);
     }
 
 }

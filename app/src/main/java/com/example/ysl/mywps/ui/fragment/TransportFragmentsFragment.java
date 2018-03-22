@@ -95,7 +95,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
     private ArrayList<UploadBean> uploadList = new ArrayList<>();
     private ArrayList<UploadBean> loadingBean = new ArrayList<>();
     private UploadBean cunrrentBean;
-    private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(2);
+    private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);
     private ArrayList<View> downLoadView = new ArrayList<>();
     private ArrayList<View> uploadView = new ArrayList<>();
     private ContentResolver contentResolver;
@@ -113,25 +113,23 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
     private void getDownloadData() {
 
 
-        loading.setVisibility(View.VISIBLE);
+        Cursor cursor = contentResolver.query(DownLoadProvider.CONTENT_URI, TransportBean.TRANSPORTBEANS, null, null, null);
+        if (cursor != null) {
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+            list = TransportBean.getTransportBeans(cursor);
+            notifyHandler.sendEmptyMessage(111);
+        }
 
-                Cursor cursor = contentResolver.query(DownLoadProvider.CONTENT_URI, TransportBean.TRANSPORTBEANS, null, null, null);
-                if (cursor != null) {
-
-                    list = TransportBean.getTransportBeans(cursor);
-                    notifyHandler.sendEmptyMessage(111);
-
-                }
-
-                cursor.close();
-            }
-        });
-        thread.setDaemon(true);
-        thread.start();
+        cursor.close();
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//
+//            }
+//        });
+//        thread.setDaemon(true);
+//        thread.start();
 
     }
 
@@ -141,7 +139,6 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             adapter.update(list);
-            loading.setVisibility(View.GONE);
             Logger.i("list_size "+list.size());
         }
     } ;
@@ -384,41 +381,33 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
     }
 
 
-    private void addDownloadView(FileListChildBean downloadBean) {
+    private void addDownloadView(final FileListChildBean downloadBean) {
 
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "wpsSign" + "/" + downloadBean.getFilename();
+//        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "wpsSign" + "/" + downloadBean.getFilename();
 
-        File file = new File(path);
-        if (file.exists()) {
-
-//            file.delete();
-//            ToastUtils.showShort(getActivity(),downloadBean.getFilename()+"已下载");
-//            return;
-        }
+        if(getActivity() == null) return;
         final View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_transport_task_layout, null);
 
-        ImageView ivIcon = (ImageView) view.findViewById(R.id.documents_item_icon2);
-        TextView tvTitle = (TextView) view.findViewById(R.id.documents_item_title2);
-        TextView tvDate = (TextView) view.findViewById(R.id.documents_item_time2);
-        final TextView tvSize = (TextView) view.findViewById(R.id.documents_item_size2);
+        TextView tvTitle =  view.findViewById(R.id.documents_item_title2);
+        TextView tvDate = view.findViewById(R.id.documents_item_time2);
+        final TextView tvSize =  view.findViewById(R.id.documents_item_size2);
 
-        final ProgressBar progress = (ProgressBar) view.findViewById(R.id.transport_prgress_upload2);
+        final ProgressBar progress =  view.findViewById(R.id.transport_prgress_upload2);
 
         tvTitle.setText(downloadBean.getFilename());
         tvDate.setText(downloadBean.getCtime());
         tvSize.setText("等待中");
 
         loadingContent.addView(view);
-        Handler handler = new Handler() {
+
+        final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
 
-
                 int progr = msg.what;
                 if (progr == 0 && msg.obj != null) {
                     String message = msg.obj.toString();
-//
                     if (message.equals("下载成功")) {
                     }
                     ToastUtils.showShort(getActivity(), message);
@@ -489,7 +478,14 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
                                     int precent = (int) (currentLength * 100 / totalLength);
 
+                                    if(precent > 99) try {
+                                        Thread.sleep(2000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
                                     handler.sendEmptyMessage(precent);
+
+
                                 }
                             });
 
@@ -597,7 +593,6 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                 public void onClick(View v) {
                     deleteDocument();
                     bottomWindow.dismiss();
-                    selectList.clear();
                     adapter.notifyDataSetChanged();
                 }
             });
@@ -621,7 +616,7 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
 
 
                     bottomWindow.dismiss();
-                    selectList.clear();
+
                 }
             });
 
@@ -639,25 +634,31 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
             return;
         }
         loading.setVisibility(View.VISIBLE);
+final ArrayList<TransportBean> tmpList = selectList;
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-
-                for (int i = 0; i < selectList.size(); ++i) {
-                    TransportBean bean = selectList.get(i);
+                for (int i = 0; i < tmpList.size(); ++i) {
 
                     try {
-                        File file = new File(selectList.get(i).getPath());
+                        contentResolver.delete(DownLoadProvider.CONTENT_URI, TransportBean.NAME + " = ?", new String[]{tmpList.get(i).getName()});
+
+                        Thread.sleep(1000);
+                        File file = new File(tmpList.get(i).getPath());
                         file.delete();
                     } catch (Exception e) {
                     }
-                    contentResolver.delete(DownLoadProvider.CONTENT_URI, TransportBean.NAME + " = ?", new String[]{bean.getName()});
+
                 }
 
+
+                Logger.i("deleteSize "+tmpList.size());
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         loading.setVisibility(View.GONE);
+                        selectList.clear();
                         getDownloadData();
                     }
                 });

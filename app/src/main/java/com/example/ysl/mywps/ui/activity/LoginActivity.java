@@ -171,6 +171,7 @@ public class LoginActivity extends BaseActivity {
 
                         String token = childObject.getString("token");
                         saveFileTypes(token);
+                        getRomiToken(token);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("token", token);
                         editor.commit();
@@ -252,6 +253,36 @@ public class LoginActivity extends BaseActivity {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void getRomiToken(final String token){
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+
+                Call call = HttpUtl.getRoimToken("http://oa.wgxmcb.top/user/Rongcloud/getToken/",token);
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onResponse(Call call, Response response) {
+
+                        Logger.i("融云token  "+response.body()+"  "+response.message()+response.isSuccessful());
+
+                    }
+
+                    @Override
+                    public void onFailure(Call call, Throwable t) {
+
+                    }
+                });
+
+
+
+            }
+        });
+        thread.setDaemon(true);
+        thread.start();
     }
 
 

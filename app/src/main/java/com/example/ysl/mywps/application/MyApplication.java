@@ -3,8 +3,10 @@ package com.example.ysl.mywps.application;
 
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
+import android.telecom.Call;
 import android.util.Log;
 
+import com.example.ysl.mywps.net.HttpUtl;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -46,12 +48,8 @@ public class MyApplication extends MultiDexApplication {
         int myALias = 3;
         JPushInterface.getAlias(this, myALias);
 
-        try {
 
-            rongYun();
-        }catch (Exception e){
 
-        }
     }
 
 
@@ -60,32 +58,4 @@ public class MyApplication extends MultiDexApplication {
     }
 
 
-    private void rongYun(){
-
-        try {
-            RongIM.init(this);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        RongIM.connect(token, new RongIMClient.ConnectCallback() {
-            @Override
-            public void onTokenIncorrect() {
-
-                Log.i(TAG,"onTokenIncorrect");
-            }
-
-            @Override
-            public void onSuccess(String s) {
-                Log.i(TAG,"链接成功" +s);
-
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-                Log.i(TAG,"链接失败" +errorCode);
-
-            }
-        });
-
-    }
 }

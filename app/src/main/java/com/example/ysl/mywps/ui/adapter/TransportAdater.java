@@ -33,7 +33,7 @@ public class TransportAdater extends BaseAdapter {
     private ArrayList<TransportBean>  list;
     private Context context;
     private DisplayImageOptions options;
-    private Drawable wps, picture, video, music,unknown;
+    private Drawable wps, picture, video, music,unknown,img;
     private TransportCallBack transportCallBack;
     private LinkedHashMap<Integer,TransportBean> selected =  new LinkedHashMap<>();
 
@@ -52,28 +52,29 @@ public class TransportAdater extends BaseAdapter {
             video = context.getResources().getDrawable(R.mipmap.ft_mov_l);
             music = context.getResources().getDrawable(R.mipmap.myapplication);
             unknown = context.getResources().getDrawable(R.mipmap.ic_type_unknown);
+            img =context.getResources().getDrawable(R.mipmap.img_default);
 
         }
 
         options = new DisplayImageOptions.Builder()
 
-                .cacheInMemory(true)//设置下载的图片是否缓存在内存中
+                .cacheInMemory(false)//设置下载的图片是否缓存在内存中
                 .cacheOnDisc(false)//设置下载的图片是否缓存在SD卡中
-                .considerExifParams(true)  //是否考虑JPEG图像EXIF参数（旋转，翻转）
+                .considerExifParams(false)  //是否考虑JPEG图像EXIF参数（旋转，翻转）
                 .bitmapConfig(Bitmap.Config.RGB_565)//设置图片的解码类型//
 //.delayBeforeLoading(int delayInMillis)//int delayInMillis为你设置的下载前的延迟时间
 //设置图片加入缓存前，对bitmap进行设置
 //.preProcessor(BitmapProcessor preProcessor)
-                .resetViewBeforeLoading(true)//设置图片在下载前是否重置，复位
+                .resetViewBeforeLoading(false)//设置图片在下载前是否重置，复位
 //                .displayer(new RoundedBitmapDisplayer(20))//是否设置为圆角，弧度为多少
 //                .displayer(new FadeInBitmapDisplayer(100))//是否图片加载好后渐入的动画时间
                 .build();//
     }
     public void update(ArrayList<TransportBean> list){
-
+        selected.clear();
         this.list = list;
         notifyDataSetChanged();
-        selected.clear();
+
     }
 
     @Override
@@ -112,14 +113,17 @@ public class TransportAdater extends BaseAdapter {
 
                     if(position > list.size()) return;
 
-                    if(isChecked){
-                        selected.put(position,list.get(position));
-                        transportCallBack.setTransports(list.get(position),1);
-                    }else {
-                        transportCallBack.setTransports(list.get(position),0);
-                        selected.remove(position);
+                    try {
 
-                    }
+                        if(isChecked){
+                            selected.put(position,list.get(position));
+                            transportCallBack.setTransports(list.get(position),1);
+                        }else {
+                            transportCallBack.setTransports(list.get(position),0);
+                            selected.remove(position);
+
+                        }
+                    }catch (Exception e){}
                 }
             });
 
@@ -127,7 +131,7 @@ public class TransportAdater extends BaseAdapter {
         }else {
             holder = (ViewHolder) view.getTag();
         }
-        if(selected.get(position) != null) holder.cb.setChecked(true);
+        if(selected.get(position) != null) ;
         else  holder.cb.setChecked(false);
 
         if(list.size() > position){
@@ -135,20 +139,25 @@ public class TransportAdater extends BaseAdapter {
 
             if(bean.getName() != null){
                 if(bean.getName().endsWith("png") || bean.getName().contains("jpg")){
-                    ImageLoader.getInstance().displayImage("file:///"+bean.getPath(), holder.ivIcon, options);
+                    holder.tvTitle.setText(bean.getName());
+holder.ivIcon.setBackground(img);
+//                    ImageLoader.getInstance().displayImage("file:///"+bean.getPath(), holder.ivIcon, options);
                 } else if ( bean.getName().endsWith("docx") || bean.getName().endsWith("doc") || bean.getName().endsWith("txt") || bean.getName().endsWith("pdf")) {
                     holder.ivIcon.setBackground(wps);
+                    holder.tvTitle.setText(bean.getName());
                 } else if (bean.getName().endsWith("mp4") || bean.getName().endsWith("rmvb")) {
                     holder.ivIcon.setBackground(video);
+                    holder.tvTitle.setText(bean.getName());
                 } else if (bean.getName().endsWith("apk")) {
                     holder.ivIcon.setBackground(music);
+                    holder.tvTitle.setText(bean.getName());
                 }else {
+                    holder.tvTitle.setText(bean.getName());
                     holder.ivIcon.setBackground(unknown);
                 }
 
             }
 
-            holder.tvTitle.setText(bean.getName());
 
             holder.tvSize.setText(CommonUtil.subsSize(bean.getSize()));
             holder.tvDate.setText(bean.getDate());

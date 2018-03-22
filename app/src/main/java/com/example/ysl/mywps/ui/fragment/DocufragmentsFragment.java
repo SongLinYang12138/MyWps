@@ -480,6 +480,11 @@ public class DocufragmentsFragment extends BaseFragment implements PassFileChild
     @Override
     public void passFileChild(ArrayList<FileListChildBean> files, int kind) {
 
+        if(selectList.size() > 4){
+
+            ToastUtils.showShort(getActivity(),"当前只能同时下载4个");
+            return;
+        }
 
 
         if (files != null) {
