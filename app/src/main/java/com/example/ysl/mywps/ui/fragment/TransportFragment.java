@@ -1,6 +1,9 @@
 package com.example.ysl.mywps.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -45,9 +48,6 @@ public class TransportFragment extends BaseFragment implements PassFileChildList
     TextView tvUpload;
     @BindView(R.id.material_rl_upload)
     RelativeLayout rlUpload;
-
-
-
 
     private PagerAdapter pagerAdapter;
     private ArrayList<Fragment> fragments = new ArrayList<>();
@@ -105,7 +105,9 @@ public class TransportFragment extends BaseFragment implements PassFileChildList
         pagerAdapter = new PagerAdapter(getFragmentManager(), fragments);
         viewPager.setAdapter(pagerAdapter);
 
-        setBack(0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            setBack(0);
+        }
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -129,6 +131,7 @@ public class TransportFragment extends BaseFragment implements PassFileChildList
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void setBack(int position) {
 
         switch (position) {
@@ -136,14 +139,15 @@ public class TransportFragment extends BaseFragment implements PassFileChildList
 
                 tvDownload.setTextColor(select);
                 rlDownload.setVisibility(View.VISIBLE);
+                rlDownload.setBackground(getResources().getDrawable(R.color.tool_bar));
                 tvUpload.setTextColor(normal);
-                rlUpload.setVisibility(View.GONE);
+                rlUpload.setBackground(getResources().getDrawable(R.color.text_gray));
                 break;
             case 1:
                 tvDownload.setTextColor(normal);
-                rlDownload.setVisibility(View.GONE);
+                rlDownload.setBackground(getResources().getDrawable(R.color.text_gray));
                 tvUpload.setTextColor(select);
-                rlUpload.setVisibility(View.VISIBLE);
+                rlUpload.setBackground(getResources().getDrawable(R.color.tool_bar));
                 break;
 
 
@@ -170,11 +174,10 @@ public class TransportFragment extends BaseFragment implements PassFileChildList
 //            switch (v.getId()) {
 //
 //                case R.id.material_tv_download:
-//
-//
+
 //                    break;
 //                case R.id.material_tv_upload:
-
+//
 //                    break;
 //
 //            }

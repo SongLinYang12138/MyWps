@@ -460,6 +460,16 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                                 loading.setVisibility(View.GONE);
                             }
                         });
+
+
+                        if(!response.isSuccessful()){
+//                            emitter.onNext(response.message());
+                            Message msg = new Message();
+                            msg.obj = response.message();
+                            msg.what = 0;
+                            handler.sendMessage(msg);
+                            return;
+                        }
                         try {
 
                             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "wpsSign";
@@ -607,9 +617,9 @@ public class TransportFragmentsFragment extends BaseFragment implements PasssStr
                         ToastUtils.showShort(getActivity(), "请选择文件查看信息");
                     } else if (selectList.size() == 1) {
                         Intent intent = new Intent(getActivity(), DocumentDetailActivity.class);
-                        intent.putExtra("flag", "upload");
+                        intent.putExtra("flag", "download");
                         Bundle bundle = new Bundle();
-                        bundle.putParcelable("upload", selectList.get(0));
+                        bundle.putParcelable("download", selectList.get(0));
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }

@@ -7,8 +7,6 @@ android {
         applicationId "com.example.ysl.mywps"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -100,5 +98,8 @@ dependencies {
 //    compile 'com.android.support:multidex:'
     compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    compile 'com.umeng.sdk:analytics:latest.integration'
+    compile 'com.umeng.sdk:common:latest.integration'
+    compile 'com.aliyun.ams:alicloud-android-hotfix:3.2.2'
 //    compile(name:'SmallVideoLib', ext:'aar')
 }

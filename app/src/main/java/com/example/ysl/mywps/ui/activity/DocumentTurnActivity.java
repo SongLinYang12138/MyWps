@@ -62,20 +62,25 @@ public class DocumentTurnActivity extends BaseActivity {
         @Override
         public void click(View v) {
 
-            Intent intent = new Intent(DocumentTurnActivity.this,StayToDoActivity.class);
+            Intent intent = null;
             switch (v.getId()){
 
                 case R.id.document_ll_inside:
-                    intent.putExtra(SysytemSetting.WPS_MODE,SysytemSetting.WPS_WRITE);
+                    intent =   new Intent(DocumentTurnActivity.this,StayToDoActivity.class);
+                    intent.putExtra(SysytemSetting.WPS_MODE,SysytemSetting.INSIDE_WPS);
                     break;
                 case R.id.out_document:
-                    intent.putExtra(SysytemSetting.WPS_MODE,SysytemSetting.WPS_READE);
+                    intent =   new Intent(DocumentTurnActivity.this,StayToDoActivity
+                            .class);
+                    intent.putExtra(SysytemSetting.WPS_MODE,SysytemSetting.OUT_WPS);
                     break;
                 case  R.id.query_document:
-                    intent.putExtra(SysytemSetting.WPS_MODE,SysytemSetting.WPS_READE);
+                    intent =   new Intent(DocumentTurnActivity.this,HandleActivity.class);
+                    intent.putExtra(SysytemSetting.WPS_MODE,SysytemSetting.HANDLE_WPS);
                     break;
                 case R.id.issue_document:
-                    intent.putExtra(SysytemSetting.WPS_MODE,SysytemSetting.WPS_READE);
+                    intent =   new Intent(DocumentTurnActivity.this,HandleActivity.class);
+                    intent.putExtra(SysytemSetting.WPS_MODE,SysytemSetting.ISSUE_WPS);
                     break;
 
             }

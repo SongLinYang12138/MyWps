@@ -132,6 +132,10 @@ public class HasDoFragment extends BaseFragment {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
 
+                        if(!response.isSuccessful()){
+                           emitter.onNext(response.message());
+                            return;
+                        }
                         String data = response.body();
                         Logger.i("stay " + data);
                         try {
@@ -182,6 +186,8 @@ public class HasDoFragment extends BaseFragment {
                 if (s.equals("Y")) {
 
                     adapter.updateList(documents);
+
+                }else if(s.equals("N")){
 
                 } else {
                     CommonUtil.showShort(getActivity(), s);

@@ -7,7 +7,6 @@
       <module fileurl="file://$PROJECT_DIR$/MyWps.iml" filepath="$PROJECT_DIR$/MyWps.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/fit7/fit7.iml" filepath="$PROJECT_DIR$/fit7/fit7.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jMessage/jMessage.iml" filepath="$PROJECT_DIR$/jMessage/jMessage.iml" />
       <module fileurl="file://$PROJECT_DIR$/pulltoRefresh/pulltoRefresh.iml" filepath="$PROJECT_DIR$/pulltoRefresh/pulltoRefresh.iml" />
       <module fileurl="file://$PROJECT_DIR$/silicompressor/silicompressor.iml" filepath="$PROJECT_DIR$/silicompressor/silicompressor.iml" />
     </modules>

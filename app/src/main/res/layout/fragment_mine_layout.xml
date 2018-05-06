@@ -306,6 +306,7 @@
         android:background="@color/white_back"
         android:paddingBottom="@dimen/margin_small"
         android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:visibility="gone"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/margin_small">
 
@@ -354,6 +355,7 @@
         android:layout_height="0.5dp"
         android:background="@color/arrow"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:visibility="gone"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         />
 

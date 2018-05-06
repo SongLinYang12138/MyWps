@@ -100,7 +100,10 @@ public class FlowActivity extends BaseActivity {
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-
+                        if(!response.isSuccessful()){
+                            emitter.onNext(response.message());
+                            return;
+                        }
 
                         if (!response.isSuccessful()) {
                             emitter.onNext(response.message());
@@ -134,6 +137,9 @@ public class FlowActivity extends BaseActivity {
 
                                 if (bean.getStatus().contains("阶段"))
                                     bean.setStatus(bean.getStatus().replace("阶段", ""));
+                                if(bean.getStatus().contains("审核通过"))
+                                    bean.setStatus(bean.getStatus().replace("通过", ""));
+
                                 try {
                                     String[] split1 = bean.getCtime().split(" ");
                                     String month = split1[0].substring(5, split1[0].length());

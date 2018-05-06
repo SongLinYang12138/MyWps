@@ -15,7 +15,11 @@
         >
 
     </RelativeLayout>
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="1.5dp"
+    android:background="@color/white_back"
+    ></RelativeLayout>
 
     <LinearLayout
         android:id="@+id/main_ll_id_bottom"
@@ -24,8 +28,8 @@
         android:layout_alignParentBottom="true"
         android:background="@color/stay_back"
         android:orientation="horizontal"
-        android:paddingBottom="@dimen/margin_small"
-        android:paddingTop="@dimen/margin_small">
+        android:paddingBottom="@dimen/main_small"
+        android:paddingTop="@dimen/main_small">
 
         <LinearLayout
             android:id="@+id/main_ll_message"
@@ -38,8 +42,8 @@
 
             <ImageButton
                 android:id="@+id/main_ib_message"
-                android:layout_width="@dimen/icon_large"
-                android:layout_height="@dimen/icon_large"
+                android:layout_width="@dimen/main_icon"
+                android:layout_height="@dimen/main_icon"
                 android:background="@mipmap/icon_message_normal"
                 android:clickable="false"
                 />
@@ -51,7 +55,7 @@
                 android:text="消息"
                 android:textAlignment="center"
                 android:clickable="false"
-                android:textSize="@dimen/text_normal" />
+                android:textSize="@dimen/main_text" />
         </LinearLayout>
 
 
@@ -59,27 +63,28 @@
             android:id="@+id/main_ll_work"
             android:layout_width="1dp"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
 
             <ImageButton
                 android:id="@+id/main_ib_work"
-                android:layout_width="@dimen/icon_large"
-                android:layout_height="@dimen/icon_large"
+                android:layout_width="@dimen/main_icon"
+                android:layout_height="@dimen/main_icon"
                 android:background="@mipmap/icon_work_normal"
-                android:clickable="false"
-                />
+                android:clickable="false" />
 
             <TextView
                 android:id="@+id/main_tv_work"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="false"
                 android:text="工作"
                 android:textAlignment="center"
-                android:textSize="@dimen/text_normal"
-                android:clickable="false"
-                />
+                android:textSize="@dimen/main_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -92,8 +97,8 @@
 
             <ImageButton
                 android:id="@+id/main_ib_contact"
-                android:layout_width="@dimen/icon_large"
-                android:layout_height="@dimen/icon_large"
+                android:layout_width="@dimen/main_icon"
+                android:layout_height="@dimen/main_icon"
                 android:background="@mipmap/icon_contact_normal"
                 android:clickable="false"
                 />
@@ -104,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:text="通讯录"
                 android:textAlignment="center"
-                android:textSize="@dimen/text_normal"
+                android:textSize="@dimen/main_text"
                 android:clickable="false"
                 />
         </LinearLayout>
@@ -118,8 +123,8 @@
 
             <ImageButton
                 android:id="@+id/main_ib_mine"
-                android:layout_width="@dimen/icon_large"
-                android:layout_height="@dimen/icon_large"
+                android:layout_width="@dimen/main_icon"
+                android:layout_height="@dimen/main_icon"
                 android:background="@mipmap/icon_mine_normal"
                 android:clickable="false"
                 />
@@ -130,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:text="我的"
                 android:textAlignment="center"
-                android:textSize="@dimen/text_normal"
+                android:textSize="@dimen/main_text"
                 android:clickable="false"
                 />
         </LinearLayout>

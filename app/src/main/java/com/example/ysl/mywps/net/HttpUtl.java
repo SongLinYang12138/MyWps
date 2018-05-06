@@ -28,7 +28,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  */
 
 public class HttpUtl {
-    private final static String HTTP_URL = "http://oa.wgxmcb.top/index.php/";
+    private final static String HTTP_URL = "http://oa.qupeiyi.cn/index.php/";
     private static final OkHttpClient client = new OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(1,TimeUnit.DAYS)

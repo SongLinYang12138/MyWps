@@ -5,26 +5,37 @@
     <title>Android调用 JS 代码demo</title>
     <!--JS代码-->
     <script>
-      <!--Android需要调用的方法-->
+      <!--Android需要调用的方法 传token-->
 
-       function hadCommit(s){
-                 alert("来自客户端的信息："+s);
-
+       function setToken(token,name){
+                 alert("来自客户端的信息："+token+"  "+name );
        }
-
+       <!--传的文件path 和 name-->
+    function setFile(path,name){
+                 alert("来自客户端的信息："+path +"   "+name);
+       }
+<!--随意拍-->
        function callCamera(){
 
         javaBridge.callCamera();
        }
+       <!--选择文件-->
        function callDocument(){
 
-               javaBridge.callDocument();
+       javaBridge.callDocument();
        }
 
         function callCommit(){
 
-               javaBridge.callCommit();
+        javaBridge.callCommit();
        }
+
+       function  callToken(){
+
+       alert(javaBridge.callToken());
+
+       }
+
     </script>
 </head>
 
@@ -34,7 +45,7 @@
 <button type="button" onclick="callCamera()" style="width:100px;height:50px" >隨意拍</button>
 <button type="button" onclick="callDocument()" style="width:100px;height:50px">选择文件</button>
 <button type="button" onclick="callCommit()" style="width:100px;height:50px">提交</button>
-
+<button type="button" onclick="callToken()" style="width:100px;height:50px">获取token</button>
 
 
 </body>

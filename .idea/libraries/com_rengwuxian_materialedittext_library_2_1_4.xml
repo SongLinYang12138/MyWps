@@ -1,12 +1,10 @@
 <component name="libraryTable">
   <library name="com.rengwuxian.materialedittext:library-2.1.4">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/06845e94e7e022a5a02925c45814ac48aca4088e/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/06845e94e7e022a5a02925c45814ac48aca4088e/output/res" />
+      <root url="file://$USER_HOME$/.android/build-cache/6ee84efc9579ed8ca1e7bf7e3e40c250f71123be/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/6ee84efc9579ed8ca1e7bf7e3e40c250f71123be/output/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.rengwuxian.materialedittext/library/2.1.4/421c5ba24415fde1222bd75540aa012efc22ed5a/library-2.1.4-sources.jar!/" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>

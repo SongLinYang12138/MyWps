@@ -37,13 +37,30 @@ public class JavascriptBridge extends Object {
     /**
      * 选择提交
      * **/
-    @JavascriptInterface
+
     public void callCommit(){
 
         jsCallBack.jsCallBack("callCommit","callDocument");
 
     }
 
+    /**
+     * 获取token 和name
+     * */
+    @JavascriptInterface
 
+    public String callToken(){
+
+       return jsCallBack.jsCallBack("callToken","callToken");
+
+    }
+
+//    /**
+//     * 传递token和name
+//     * */
+//
+//    public String callToken(){
+//
+//    }
 
 }

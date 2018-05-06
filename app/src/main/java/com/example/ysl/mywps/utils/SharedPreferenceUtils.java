@@ -23,7 +23,7 @@ public class SharedPreferenceUtils {
 
     public static void loginSave(Context context,String key,String value){
 
-        SharedPreferences preferences = context.getSharedPreferences("login.xml",Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences(SysytemSetting.USER_FILE,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
         editor.putString(key,value);
@@ -34,7 +34,7 @@ public class SharedPreferenceUtils {
     public static String loginValue(Context context,String key){
         String value = "";
         if(context == null) return "";
-        SharedPreferences preferences = context.getSharedPreferences("login.xml",Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences(SysytemSetting.USER_FILE,Context.MODE_PRIVATE);
 
         value = preferences.getString(key,"");
 

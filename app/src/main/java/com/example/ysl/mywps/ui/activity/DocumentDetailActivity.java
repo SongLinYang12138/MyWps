@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.ysl.mywps.R;
 import com.example.ysl.mywps.bean.FileListChildBean;
+import com.example.ysl.mywps.bean.TransportBean;
 import com.example.ysl.mywps.bean.UploadChildFileBean;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -30,6 +31,9 @@ public class DocumentDetailActivity extends BaseActivity {
     TextView tvTitle;
     @BindView(R.id.document_detail_tv_id)
     TextView tvId;
+
+    @BindView(R.id.document_detail_tv_id_name)
+    TextView tvIdName;
     @BindView(R.id.contact_detail_tv_time)
     TextView tvTime;
     @BindView(R.id.contact_detail_tv_url)
@@ -37,6 +41,7 @@ public class DocumentDetailActivity extends BaseActivity {
 
     private FileListChildBean childBean;
     private UploadChildFileBean uploadChildFileBean;
+    private TransportBean transportBean;
 
     private Drawable wps, picture, video, music,unknown;
     private DisplayImageOptions options;
@@ -59,6 +64,10 @@ public class DocumentDetailActivity extends BaseActivity {
 
         if(flag.equals("file")){
             childBean = getIntent().getExtras().getParcelable("file");
+
+        }else if(flag.equals("download")){
+
+            transportBean = getIntent().getExtras().getParcelable("download");
 
         }else {
             uploadChildFileBean = getIntent().getExtras().getParcelable("upload");
@@ -110,6 +119,27 @@ public class DocumentDetailActivity extends BaseActivity {
             tvId.setText(bean.getId());
             tvTime.setText(bean.getCtime());
             tvUrl.setText(bean.getDownload_url());
+        }else if(transportBean != null){
+TransportBean bean = transportBean;
+
+            if (bean.getName().endsWith("jpg") || bean.getName().endsWith("png") ||  bean.getName().endsWith("PNG")) {
+                ImageLoader.getInstance().displayImage("file://" + bean.getPath(), ivIcon, options);
+            } else if (bean.getName().endsWith("docx") || bean.getName().endsWith("doc") || bean.getName().endsWith("txt") || bean.getName().endsWith("pdf")) {
+                ivIcon.setBackground(wps);
+            } else if (bean.getName().endsWith("mp4")|| bean.getName().endsWith("rmvb") ||bean.getName().endsWith("3gp")) {
+                ivIcon.setBackground(video);
+            } else if (bean.getName().endsWith("apk")) {
+                ivIcon.setBackground(music);
+            }else {
+                ivIcon.setBackground(unknown);
+            }
+
+            tvIdName.setText("大小：");
+            tvTitle.setText(bean.getName());
+            tvId.setText(bean.getSize());
+            tvTime.setText(bean.getDate());
+            tvUrl.setText(bean.getPath());
+
         }else {
 
              UploadChildFileBean bean = uploadChildFileBean;

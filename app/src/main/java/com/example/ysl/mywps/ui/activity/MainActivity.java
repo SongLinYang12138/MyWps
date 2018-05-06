@@ -184,32 +184,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                             if(CommonUtil.isNotEmpty(msg) && msg.contains("登陆信息有误") || code == 1){
                                 jumpToLogin();
-//                               getActivity().runOnUiThread(new Runnable() {
-//                                   @Override
-//                                   public void run() {
-//
-//                                   return;
-//                                   }
-//                               });
-                            }
-//                            JSONArray array = object.getJSONArray("data");
-//                            if (code == 0) {
-//                                Gson gson = new Gson();
-//                                List<FileType> dataList = new ArrayList<FileType>();
-//
-//                                for (int i = 0; i < array.length(); ++i) {
-//
-//                                    JSONObject child = array.getJSONObject(i);
-//                                    FileType bean = gson.fromJson(child.toString(),FileType.class);
-//                                    dataList.add(bean);
-//                                }
-//
-//                                SharedPreferenceUtils.setFileTypeList(MainActivity.this,dataList);
-//                            }else {
-//
-//
-//                            }
 
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -331,6 +307,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onPause();
     }
 
+    private int currentMyIndex = 1;
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void setTextBack(int index) {
 
         switch (index) {
@@ -361,6 +339,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 ibContact.setBackground(getResources().getDrawable(R.mipmap.icon_contact_normal));
                 ibMine.setBackground(getResources().getDrawable(R.mipmap.icon_mine_normal));
 
+                currentMyIndex = 1;
                 break;
             case 2:
                 setTitleText("通讯录");
@@ -374,6 +353,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 ibWork.setBackground(getResources().getDrawable(R.mipmap.icon_contact_normal));
                 ibContact.setBackground(getResources().getDrawable(R.mipmap.icon_contact_select));
                 ibMine.setBackground(getResources().getDrawable(R.mipmap.icon_mine_normal));
+                currentMyIndex = 2;
+
                 break;
             case 3:
                 setTitleText("我的");
@@ -386,6 +367,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 ibWork.setBackground(getResources().getDrawable(R.mipmap.icon_work_normal));
                 ibContact.setBackground(getResources().getDrawable(R.mipmap.icon_contact_normal));
                 ibMine.setBackground(getResources().getDrawable(R.mipmap.icon_mine_selected));
+                currentMyIndex = 3;
                 break;
 
 
@@ -426,7 +408,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void showMessage(int index){
 
         fragmentTransaction = fragmentManager.beginTransaction();
-        if(currentFragment != null) fragmentTransaction.hide(currentFragment);
+        if(currentFragment != null && index != currentMyIndex) fragmentTransaction.hide(currentFragment);
         switch (index){
 
 //            case 0:
@@ -447,7 +429,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     fragmentTransaction.add(R.id.main_rl_container,workFragment);
                 }else {
 
-                    fragmentTransaction.show(workFragment);
+                 if(workFragment.isHidden())   fragmentTransaction.show(workFragment);
                 }
                 currentFragment = workFragment;
                 setTextBack(1);
@@ -459,7 +441,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     contactFragment = new ContactFragment();
                     fragmentTransaction.add(R.id.main_rl_container,contactFragment);
                 }else {
-                    fragmentTransaction.show(contactFragment);
+                    if(contactFragment.isHidden())       fragmentTransaction.show(contactFragment);
                 }
                 currentFragment = contactFragment;
                 setTextBack(2);
@@ -472,7 +454,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     mineFragment = new MineFragment();
                     fragmentTransaction.add(R.id.main_rl_container,mineFragment);
                 }else {
-                    fragmentTransaction.show(mineFragment);
+                    if(mineFragment.isHidden())     fragmentTransaction.show(mineFragment);
                 }
                 currentFragment = mineFragment;
                 setTextBack(3);

@@ -9,7 +9,7 @@
 <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/paddingVertical"
+    android:paddingTop="7dp"
     >
     <TextView
         android:id="@+id/flow_tv_date"
@@ -21,21 +21,29 @@
         />
 </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/line1"
             android:layout_width="0.5dp"
             android:layout_height="19dp"
-            android:background="@color/arrow" />
+            android:layout_centerHorizontal="true"
+            android:background="@color/arrow"
+            />
 
 
         <RelativeLayout
+            android:layout_below="@+id/line1"
+            android:id="@+id/circle"
+            android:layout_centerHorizontal="true"
+
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            >
 
             <ImageView
                 android:id="@+id/flow_item_iv_circle"
@@ -52,21 +60,27 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:layout_below="@+id/circle"
+            android:layout_centerHorizontal="true"
+
             android:layout_width="0.5dp"
-            android:layout_height="110dp"
-            android:layout_marginTop="-1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:background="@color/arrow" />
-    </LinearLayout>
+    </RelativeLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="18dp"
         android:orientation="vertical"
-        android:paddingTop="@dimen/paddingVertical"
         android:paddingBottom="@dimen/paddingVertical"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-       >
+        android:paddingTop="@dimen/paddingVertical">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -76,10 +90,10 @@
             >
 
             <LinearLayout
+                android:id="@+id/flow_item_ll_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:id="@+id/flow_item_ll_icon"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -93,8 +107,8 @@
                     android:id="@+id/flow_tv_leader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="领导-0"
                     android:layout_marginLeft="@dimen/padding_small"
+                    android:text="领导-0"
                     android:textColor="@color/text_gray"
                     android:textSize="@dimen/text_large" />
             </LinearLayout>
@@ -104,16 +118,18 @@
                 android:id="@+id/flow_tv_stage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="6dp"
                 android:background="@drawable/red_rect"
-                android:layout_alignTop="@+id/flow_item_ll_icon"
                 android:paddingBottom="@dimen/button_padding_top"
                 android:paddingLeft="@dimen/button_padding_left"
                 android:paddingRight="@dimen/button_padding_left"
                 android:paddingTop="@dimen/button_padding_top"
                 android:text="拟文"
                 android:textColor="@color/rect_red"
-                android:textSize="@dimen/button_text_small"/>
+                android:textSize="@dimen/button_text_small" />
         </RelativeLayout>
 
         <TextView

@@ -152,7 +152,10 @@ public class ContactActivity extends BaseActivity implements PasssString{
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         try {
-
+                            if(!response.isSuccessful()){
+                                emitter.onNext(response.message());
+                                return;
+                            }
                             Logger.i("contact  " + response.body());
                             JSONObject jsonObject = new JSONObject(response.body());
 
@@ -213,6 +216,11 @@ public class ContactActivity extends BaseActivity implements PasssString{
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        if(!response.isSuccessful()){
+                            emitter.onNext(response.message());
+                            return;
+                        }
+
                         try {
 
                             Logger.i("contact  " + response.body());
@@ -276,6 +284,10 @@ public class ContactActivity extends BaseActivity implements PasssString{
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        if(!response.isSuccessful()){
+                            e.onNext(response.message());
+                            return;
+                        }
                         Logger.i("response " + response.body());
                         String data = response.body().toString();
                         String msg = null;
@@ -356,6 +368,11 @@ public class ContactActivity extends BaseActivity implements PasssString{
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+
+                        if(!response.isSuccessful()){
+                            emitter.onNext(response.message());
+                            return;
+                        }
 
                         String data = response.body();
                         Logger.i("反馈流程  "+data);

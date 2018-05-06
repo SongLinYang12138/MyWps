@@ -98,22 +98,24 @@ private String myAccount = "";
 
         //        拟稿1-》审核2-》审核通过5-》签署3（不同意）-》审核通过4
         //           1 拟文 2 审核  3 签署  4转发  5审核通过  6 反馈阶段
-       if(!info.getStatus().equals("4")){
+
 
            if(info.getStatus().equals("1"))
                holder.tvSend.setText("拟文");
-           if(info.getStatus().equals("2"))
+           else if(info.getStatus().equals("2"))
                holder.tvSend.setText("审核");
-           if(info.getStatus().equals("3"))
+          else if(info.getStatus().equals("3"))
                holder.tvSend.setText("签署");
-           if(info.getStatus().equals("5"))
-               holder.tvSend.setText("审核通过");
-           if(info.getStatus().equals("6"))
+           else if(info.getStatus().equals("4")){
+               holder.tvSend.setText("转发");
+           }else if(info.getStatus().equals("5"))
+               holder.tvSend.setText("审核");
+          else if(info.getStatus().equals("6"))
                holder.tvSend.setText("反馈");
-       }else {
 
-           holder.tvSend.setText("转发");
-       }
+
+
+
 
 
         return view;

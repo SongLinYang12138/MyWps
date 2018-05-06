@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.ysl.mywps"
-    >
+    android:versionCode="3"
+    android:versionName="@string/version_name"
+    tools:ignore="IllegalResourceRef">
 
-
-    <permission android:name="com.example.ysl.mywps.permission.JPUSH_MESSAGE"
+    <permission
+        android:name="com.example.ysl.mywps.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -15,7 +19,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <!-- Optional. Required for location feature -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
@@ -28,42 +32,52 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".application.MyApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5abcde498f4a9d29b700004b" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="comyslexample" />
+
         <activity
             android:name=".ui.activity.MainActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
-            >
+            android:screenOrientation="portrait">
 
         </activity>
         <activity android:name=".ui.activity.BaseActivity" />
         <activity android:name=".ui.activity.DocumentFlowActivity" />
         <activity android:name=".ui.activity.DocumentTurnActivity" />
-        <activity android:name=".ui.activity.StayToDoActivity"
-            android:launchMode="singleTask"
-            ></activity>
-        <activity android:name=".ui.activity.WpsDetailActivity"
-            ></activity>
+        <activity
+            android:name=".ui.activity.StayToDoActivity"
+            android:launchMode="singleTask"></activity>
+        <activity android:name=".ui.activity.WpsDetailActivity"></activity>
         <activity android:name=".ui.activity.SignActivity"></activity>
         <activity android:name=".ui.activity.CommitActivity"></activity>
         <activity android:name=".ui.activity.FlowActivity"></activity>
-        <activity android:name=".ui.activity.ContactActivity"
-            ></activity>
+        <activity android:name=".ui.activity.ContactActivity"></activity>
         <activity android:name=".ui.activity.MaterialActivity"></activity>
         <activity android:name=".ui.activity.SearchActivity"></activity>
-        <activity android:name=".ui.activity.WebviewActivity"></activity>
+
         <activity android:name=".ui.activity.ContactDetailActivity"></activity>
         <activity android:name=".ui.activity.DocumentDetailActivity"></activity>
-        <activity android:name=".ui.activity.LoginActivity"
-            >
+        <activity android:name=".ui.activity.WebviewActivity"
+
+            ></activity>
+        <activity android:name=".ui.activity.ProposalActivity"
+
+            ></activity>
+        <activity android:name=".ui.activity.HandleActivity"></activity>
+        <activity android:name=".ui.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -108,6 +122,7 @@
                     android:scheme="rong" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.ProposalActivity" />
 
 
         <service android:name=".agent.AgentMessageService">
@@ -141,6 +156,7 @@
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />
                 <action android:name="cn.jpush.android.intent.CONNECTION" />
+
                 <category android:name="com.example.ysl.mywps" />
             </intent-filter>
         </receiver>
@@ -154,15 +170,13 @@
         </receiver>
 
         <provider
-            android:authorities="com.example.ysl.mywps.upload"
             android:name="com.example.ysl.mywps.provider.UploadProvider"
-            android:exported="true"
-            />
+            android:authorities="com.example.ysl.mywps.upload"
+            android:exported="true" />
         <provider
-            android:authorities="com.example.ysl.mywps.download.file"
             android:name="com.example.ysl.mywps.provider.DownLoadProvider"
-            android:exported="true"
-            />
+            android:authorities="com.example.ysl.mywps.download.file"
+            android:exported="true" />
 
     </application>
 

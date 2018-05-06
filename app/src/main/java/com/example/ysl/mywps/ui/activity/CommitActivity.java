@@ -162,6 +162,11 @@ public class CommitActivity extends BaseActivity {
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+
+                        if(!response.isSuccessful()){
+                            emitter.onNext(response.message());
+                            return;
+                        }
                         String msg = response.body();
                         Logger.i("commit  " + msg);
                         try {
@@ -233,7 +238,10 @@ public class CommitActivity extends BaseActivity {
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-
+                        if(!response.isSuccessful()){
+                            emitter.onNext(response.message());
+                            return;
+                        }
 
                         try {
                             String msg = response.body();
@@ -313,6 +321,11 @@ public class CommitActivity extends BaseActivity {
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+
+                        if(!response.isSuccessful()){
+                            emitter.onNext(response.message());
+                            return;
+                        }
                         String msg = response.body();
                         Logger.i("commit  " + msg);
                         try {

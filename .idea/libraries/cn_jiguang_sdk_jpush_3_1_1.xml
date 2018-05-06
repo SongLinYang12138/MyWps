@@ -1,13 +1,11 @@
 <component name="libraryTable">
   <library name="cn.jiguang.sdk:jpush-3.1.1">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/e8689ed642d98a26151a8976246ef01133c7245b/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/e8689ed642d98a26151a8976246ef01133c7245b/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/e8689ed642d98a26151a8976246ef01133c7245b/output/jars/libs/jpush-android-3.1.1.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/0f33bcc090684c4ff54738e3855b89e0b7e84070/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/0f33bcc090684c4ff54738e3855b89e0b7e84070/output/jars/libs/jpush-android-3.1.1.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/0f33bcc090684c4ff54738e3855b89e0b7e84070/output/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/cn.jiguang.sdk/jpush/3.1.1/3bbfff462429532ab44dc27cb1db295686141793/jpush-3.1.1-sources.jar!/" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>

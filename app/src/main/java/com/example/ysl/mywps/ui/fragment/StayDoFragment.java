@@ -129,6 +129,11 @@ public class StayDoFragment extends BaseFragment {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
 
+                        if(!response.isSuccessful()){
+                            emitter.onNext(response.message());
+                            return;
+                        }
+
                         String data = response.body();
                         Logger.i("stay " + data);
                         try {
@@ -180,7 +185,9 @@ public class StayDoFragment extends BaseFragment {
 
                     adapter.updateList(documents);
 
-                } else {
+                }else if(s.equals("N")){
+
+                } else  {
                     CommonUtil.showShort(getActivity(), s);
                 }
 //                Logger.i("等待事项  " + s);

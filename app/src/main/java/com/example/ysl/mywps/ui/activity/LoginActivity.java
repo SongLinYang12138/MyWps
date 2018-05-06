@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -15,17 +16,16 @@ import com.example.ysl.mywps.utils.CommonUtil;
 import com.example.ysl.mywps.net.HttpUtl;
 import com.example.ysl.mywps.utils.NoDoubleClickListener;
 import com.example.ysl.mywps.utils.SharedPreferenceUtils;
+import com.example.ysl.mywps.utils.SysytemSetting;
+import com.example.ysl.mywps.utils.ToastUtils;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 import com.wang.avi.AVLoadingIndicatorView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.jpush.android.api.JPushInterface;
@@ -35,6 +35,8 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,6 +64,8 @@ public class LoginActivity extends BaseActivity {
     private MyclickListener clik = new MyclickListener();
     private SharedPreferences preferences;
 
+    private static final String TAG = LoginActivity.class.getName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,22 +92,36 @@ public class LoginActivity extends BaseActivity {
 
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("name", name);
-        editor.putString("password", password);
+        editor.putString(SysytemSetting.USER_NAME, name);
+        editor.putString(SysytemSetting.USER_PASSWORD, password);
         if (!havIdentity)
-            editor.putString("identity", identity);
+            editor.putString(SysytemSetting.USER_IDENTITY, identity);
 
         editor.commit();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+//    ToastUtils.showShort(this,"热启动成功了，我的热启动快成功啊");
+    }
+
     private void getLogin() {
-        preferences = getSharedPreferences("login.xml", Context.MODE_PRIVATE);
-        String name = preferences.getString("name", "");
-        String passowrd = preferences.getString("password", "");
-        identity = preferences.getString("identity", "");
-        String token = preferences.getString("token", "");
+
+
+        preferences = getSharedPreferences(SysytemSetting.USER_FILE, Context.MODE_PRIVATE);
+        String name = preferences.getString(SysytemSetting.USER_NAME, "");
+        String passowrd = preferences.getString(SysytemSetting.USER_PASSWORD, "");
+        identity = preferences.getString(SysytemSetting.USER_IDENTITY, "");
+        String token = preferences.getString(SysytemSetting.USER_TOKEN, "");
+        String imToken = preferences.getString(SysytemSetting.ROIM_TOKEN,"");
+
+        if(CommonUtil.isEmpty(imToken)){
+            return;
+        }
         CommonSetting.HTTP_TOKEN = token;
         if (CommonUtil.isNotEmpty(token)) {
+            rongYun(imToken);
             loginSuccess();
         }
         if (CommonUtil.isEmpty(identity)) {
@@ -133,6 +151,10 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
 
+                        if(!response.isSuccessful()){
+                            emitter.onNext(response.message());
+                            return;
+                        }
                         emitter.onNext(response.body().toString());
 
                     }
@@ -170,16 +192,18 @@ public class LoginActivity extends BaseActivity {
 
 
                         String token = childObject.getString("token");
+                        String realName = childObject.getString("realname");
                         saveFileTypes(token);
                         getRomiToken(token);
                         SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString("token", token);
+                        editor.putString(SysytemSetting.USER_TOKEN, token);
+                        editor.putString(SysytemSetting.REAL_NAME,realName);
                         editor.commit();
                         loginSuccess();
                     }
 
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
 
                     CommonUtil.showLong(getApplicationContext(), s);
@@ -209,6 +233,11 @@ public class LoginActivity extends BaseActivity {
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        if(!response.isSuccessful()){
+
+                            return;
+                        }
+
                         String data = response.body();
                         Logger.i("fileType  " + data);
                         if (CommonUtil.isEmpty(data))
@@ -262,12 +291,43 @@ public class LoginActivity extends BaseActivity {
             public void run() {
 
 
-                Call call = HttpUtl.getRoimToken("http://oa.wgxmcb.top/user/Rongcloud/getToken/",token);
+                Call call = HttpUtl.getRoimToken("http://oa.qupeiyi.cn/user/Rongcloud/getToken/",token);
                 call.enqueue(new Callback() {
                     @Override
                     public void onResponse(Call call, Response response) {
+// {"code":0,"msg":"登录成功","data":{"token":"37fb685f485667f35ac1ac92bab3fbe5783aa3a3","realname":null}}
+                        Logger.i("融云token  "+response.body());
 
-                        Logger.i("融云token  "+response.body()+"  "+response.message()+response.isSuccessful());
+                        if(response.isSuccessful()){
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body().toString());
+                                int code = jsonObject.getInt("code");
+                                String msg = jsonObject.getString("msg");
+
+                                if(code != 0){
+
+                                    ToastUtils.showShort(LoginActivity.this,msg);
+                                }else {
+                                    JSONObject child = jsonObject.getJSONObject("data");
+
+                                    String iMtoken = child.getString("token");
+
+//                                    if(realName == null) realName = "";
+                                    SharedPreferences.Editor editor = preferences.edit();
+                                    editor.putString(SysytemSetting.ROIM_TOKEN,iMtoken);
+
+                                    editor.commit();
+                                    rongYun(iMtoken);
+                                }
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+
 
                     }
 
@@ -285,6 +345,35 @@ public class LoginActivity extends BaseActivity {
         thread.start();
     }
 
+
+    private void rongYun(String imToken){
+
+        try {
+            RongIM.init(this);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        RongIM.connect(imToken, new RongIMClient.ConnectCallback() {
+            @Override
+            public void onTokenIncorrect() {
+
+                Log.i(TAG,"onTokenIncorrect");
+            }
+
+            @Override
+            public void onSuccess(String s) {
+                Log.i(TAG,"链接成功" +s);
+
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Log.i(TAG,"链接失败" +errorCode);
+
+            }
+        });
+
+    }
 
     private class MyclickListener extends NoDoubleClickListener {
 

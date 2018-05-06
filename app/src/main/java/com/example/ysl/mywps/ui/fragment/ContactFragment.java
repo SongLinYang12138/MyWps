@@ -91,6 +91,10 @@ public class ContactFragment extends BaseFragment {
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        if(!response.isSuccessful()){
+                            e.onNext(response.message());
+                            return;
+                        }
                         Logger.i("response " + response.body());
                         String data = response.body().toString();
                         String msg = null;

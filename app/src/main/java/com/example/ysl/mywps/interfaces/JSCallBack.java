@@ -7,6 +7,6 @@ package com.example.ysl.mywps.interfaces;
 
 public interface JSCallBack {
 
-    void jsCallBack(String method, String msg);
+    String jsCallBack(String method, String msg);
 
 }
