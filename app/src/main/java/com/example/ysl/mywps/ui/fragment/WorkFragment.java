@@ -9,9 +9,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.example.ysl.mywps.R;
+import com.example.ysl.mywps.ui.activity.ColleagueAcitivity;
 import com.example.ysl.mywps.ui.activity.DocumentTurnActivity;
 import com.example.ysl.mywps.ui.activity.MaterialActivity;
+import com.example.ysl.mywps.ui.activity.MeettingActivity;
+import com.example.ysl.mywps.ui.activity.MembersActivity;
 import com.example.ysl.mywps.ui.activity.ProposalActivity;
+import com.example.ysl.mywps.ui.activity.QuestionActivity;
+import com.example.ysl.mywps.ui.activity.ReportActivity;
+import com.example.ysl.mywps.ui.activity.ThemeActivity;
 import com.example.ysl.mywps.ui.activity.WebviewActivity;
 import com.example.ysl.mywps.utils.NoDoubleClickListener;
 import com.example.ysl.mywps.utils.SharedPreferenceUtils;
@@ -39,6 +45,18 @@ public class WorkFragment extends BaseFragment {
     LinearLayout llKefu;
     @BindView(R.id.work_ll_proposal)
     LinearLayout workLlProposal;
+    @BindView(R.id.work_ll_theme_activity)
+    LinearLayout llTheme;
+    @BindView(R.id.work_ll_meetting)
+    LinearLayout llMeeting;
+    @BindView(R.id.work_ll_report)
+    LinearLayout llReport;
+    @BindView(R.id.work_ll_colleagues)
+    LinearLayout llColleagues;
+    @BindView(R.id.work_ll_quession)
+    LinearLayout llQuession;
+    @BindView(R.id.work_ll_members)
+    LinearLayout llMembers;
 
     //融云客服信息
     CSCustomServiceInfo.Builder csBuilder = new CSCustomServiceInfo.Builder();
@@ -74,6 +92,13 @@ public class WorkFragment extends BaseFragment {
         rlSocialCondition.setOnClickListener(myclickListener);
         llKefu.setOnClickListener(myclickListener);
         workLlProposal.setOnClickListener(myclickListener);
+        llTheme.setOnClickListener(myclickListener);
+        llMeeting.setOnClickListener(myclickListener);
+        llReport.setOnClickListener(myclickListener);
+        llColleagues.setOnClickListener(myclickListener);
+        llQuession.setOnClickListener(myclickListener);
+        llMembers.setOnClickListener(myclickListener);
+
 
     }
 
@@ -120,15 +145,56 @@ public class WorkFragment extends BaseFragment {
 
                     try {
                         RongIM.getInstance().startCustomerServiceChat(getActivity(), "KEFU152077670318138", "在线客服1", csInfo);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
-                        ToastUtils.showShort(getActivity(),"融云登陆异常，请回到登陆界面重新登陆!");
+                        ToastUtils.showShort(getActivity(), "融云登陆异常，请回到登陆界面重新登陆!");
                     }
                     break;
                 case R.id.work_ll_proposal:
 
                     intent = new Intent(getActivity(), ProposalActivity.class);
 
+                case R.id.work_ll_theme_activity: //主题活动
+
+                    intent = new Intent(getActivity(), ThemeActivity.class);
+
+                    break;
+
+                case R.id.work_ll_meetting: //会议助手
+
+                    intent = new Intent(getActivity(), MeettingActivity.class);
+                    break;
+                case R.id.work_ll_report://通知公告
+
+                    intent = new Intent(getActivity(), ReportActivity.class);
+                    break;
+
+                case R.id.work_ll_colleagues://同事吧
+
+                    intent = new Intent(getActivity(), ColleagueAcitivity.class);
+                    break;
+
+                case R.id.work_ll_quession://问卷调查
+
+                    intent = new Intent(getActivity(), QuestionActivity.class);
+                    break;
+                case R.id.work_ll_members://委员之家
+
+                    intent = new Intent(getActivity(), MembersActivity.class);
+
+                    break;
+//        @BindView(R.id.work_ll_theme_activity)
+//        LinearLayout llTheme;
+//        @BindView(R.id.work_ll_meetting)
+//        LinearLayout llMeeting;
+//        @BindView(R.id.work_ll_report)
+//        LinearLayout llReport;
+//        @BindView(R.id.work_ll_colleagues)
+//        LinearLayout llColleagues;
+//        @BindView(R.id.work_ll_quession)
+//        LinearLayout llQuession;
+//        @BindView(R.id.work_ll_members)
+//        LinearLayout llMembers;
 
             }
 

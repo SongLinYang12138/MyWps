@@ -42,10 +42,21 @@ public class MyApplication extends MultiDexApplication implements Thread.Uncaugh
     private ImageLoaderConfiguration config;
     private static Context context;
     //24874914
-    private String appId = "24874914-1";
+    private String appId = "24879068-1";
     //    f8846531340ff4ef9f2d8f1af309a339
-    private String appSecret = "f8846531340ff4ef9f2d8f1af309a339";
-    private String rsaSecret = "MIIEwAIBADANBgkqhkiG9w0BAQEFAASCBKowggSmAgEAAoIBAQDY4yyMqEDxQZyHVHso3NTi5BpJeuhh77hdUya3AcKevbTZDbjUFaP7FtffX0AhU21ol3e7/93CjuJRuiR08NdnsagPeFwai5vp7FcOUzaBXHKEFWwyMMQgwNH7RtdGVACaiNblOemHfn7Ud8Yd7XuGigs5P5e+q7yIIllAX7l1C2UeZryq5dHKmjh7TXH438AV/GpW7qZ4ztExmF6OF03G9iv6DMbsctilSq6bc1XsTit4bqVttPaTUoehKR2p0HLoGzkGcXvUqeBqZ6WwqaD+RFDOMAba09RQyzyvLfLH4VR/x02j/g2nEC6HcY76TbT8LcUM/Q2WTTgHEwUlYyPrAgMBAAECggEBAKzJVy17wbkyTzSVPkUQoV1c4gBWNZoIc7WN0BMOCPGUKuadAvmbf/dCfJqM9LdYEpq3yQDyV8ZvNKhthivPz5vhsgUZGy9et8jFq5lS++JVNzo5IuhdZ3K8is0H4+s4cv6qM6GM4Jo8UWiNPz2Ke9V0Vnq2SfryMJG346jgWgx+nvxPFbplwyp0IQ+r/my2O42olmx8VK/gGfIdfyICgOjwmjVhxHbz4BGuSLkQQS6ybyrajC9wKf0VpJm5Spcw3RdBeiZMBKq4k+dJJxKryZ2bnxxOv3UWqClSv2/76b8Os/OLjR+hS7hH2v8Sr2Npklzrrjkq0UgAiHqwjgPLlNkCgYEA8FCuMYEG01/7BuTb2Ati6i2bvOcdn+ixLl5+VgoSbspCm69MaSrI80kmtgU4YosOGGbmBPIop+/Vrs8O0RMOaHAmKxEfzkCWtT/468JKEFwg+3EDV/Lb6T3RBpZmdWVlKpkXvjrzJ5LXZT88bN3fTVsGPnSmIcUxZKXKkeSdwTcCgYEA5wsMrVddg0MhU5ZZrt7gug7ldwzi31Ohk50nm+SeToNAg8EwGcZ3lFKDirg0XBAjiyVflQij6zcxY3dXKSu9KS03G7K2on0bb+27GfS2u3m0iaMaupsdi0aff6zdCSKktUIUIEYf/ZJ8WIikTkODxOF1m7Q6h4/3R6mrI1MU3O0CgYEA6kS8i2XM0aJvhHj2F9aBxuhPOgfTyV992kYjwpxu+7IQ3NQ3GQ6sdv6IzkiofugwBXnKImgvWgdjt9YCC68YDJfHnZRD/TzZrjd+4dW1fd1SCcxSBhqqZuXsLw/PMgJ2bOBxVPECuUFc2UacEUT5ut9RZvEwQxuI2yUEJNVJNGECgYEAn2r8YE6782pKgIZpc0POBBNrOW3mzPnDrzrsraBdqwbdaQvPyLksoWcd5IWdeziXjddH0GmZ0R7QMTWTKpFHgDX2pGH3qr5wRBbg1tQHkew0KhQkyUVmaUddnpcEHN2OkJL7mBlK0YhVzDDcTjQ/o4V9xOXizM8FbKkhsMoOxzECgYEAwpNdo6tclsOZEYsIJovt73JiW3bI1tkB0NFHp0sQQcW95JLI73YS1Tifcvw/MXRSC8y6qmIgQwsqFV/EQIEzrlyP+9dRDB7jECGPD3jd+jbDxl5DoJDfEZleyByEXDn9vjyYMb9t56KurlW8plo2ppoYlYJ3kAn2q/2+Q4Gy4+I=";
+    private String appSecret = "f33b8ff4761c1e335521195981485654";
+    private String rsaSecret = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCvgzRPfPSkWxquXwbO2qXPIFBNNT8uaLIw//xM4qnVFeYr3mzDeVaoHqDhGX8mWkp0b1GrTYEX+pZw" +
+            "KxATKNHId6ZJ5ABdPepFImsMYXZ6JFYo1zViyKsbN+1skld9KoN88nHP82x4Bl2Dcv3MQenHNe1EkPiVkbB0OGcwz8MQtKLMaU7aEawP5bCiDurh6SKMcrJRVhjHNb0AluDcG/UZ1TjJ9AuGDRWLF" +
+            "bQMIOa/5msrkr8yFT7KhQI9oCzjDAyjsnru1nE9LF3bPXIRIAhfEaQT9fGwHUb9rxs8vGSnojhXMdyBpTChIWG15d8SDW210r0VbblP0FdkZEJtc673AgMBAAECggEAer0PbPMehn2rp/uOYEQppj" +
+            "Kb1ZKCD6tpybiKsR3l1L1OzKjseLq3LjTVHvXcpG6KGOjsPRajS6iTYffLcwqdwkpiQNQwqQQue5B5OhxCZWJZ2o+9pspcVlmDMOUaR87eSxelHd7GoR0acl2NPTVvDkAZIFUdckODGZOEHm98o4" +
+            "XyAdr2hZAuIHE38V6vC0v+taKqr+rxk03xrIS9AFI5FR/2+kikSzrE3qqB+qW+SEF5QAXxlQXdQK+B3ITo59sbVl1rszjShbeCc3hvzudCRa/vmQPw3AhZZuvAoQMn8Y+14SR6FTbnzjHM8FimxK" +
+            "+rxOmgZ6vAL7m0ZDhnri7dmQKBgQD9jPlusZxQD0CGJb9sTh1m5xuV/q7NmN4Pa94VpHFE/q4CwBd+9qdonaRB80jltLumuBDOAndz7w7txh/zKZqdm4B6uaiglN4D1Tcnvs3eBy/uwQWQ1byVmS" +
+            "HYadNeT0TjivYzKENYvFY9h0QH8jxPPdCvIoYUHSTZpbO64Ey5xQKBgQCxNT5Cz3fV6dNUdveRJ9WepZKhZltAk/G149Mk+W9NvUBEpNK+LGO8l9QTN4FkWjwL/ZYCILMwmTLvshuUSvlPsu+aTyC" +
+            "cn48BcetZRz0M4mgmXOPHEQ4qs80op+9Nq8od23afkfuI6plsA5GEpiJ6dQGbGUt2l+xV24el5TmdiwKBgE9xOj36nFVhUgA2F5Ihr4isZLJMiAyXFwyR6ZWyXmMVwQPPmA0Jz04yBmM7jN2cESed" +
+            "iHZjw3Wps23ApAYWRQGY1VqejT0zJ5Tf21YyrGIislwGUm4c6eedgUNDdRyZjaYVxiolNWS6LfM9TI2I0mipn5cgJA5tSzx+dJ/a429ZAoGAe4g4TO7ABTkpfvon/uKcAio+G5F1D4GSwE9/g4j21" +
+            "GSXhsK3vqbHKFNXHcZVxxU4QsuWZQlSoRBK99lbbHcPcUW1zgZXH5gDYuh9PhFxN6glHokmqED1dUM+Q5c+NREKpuG0wexMQtf399pM+QGvi1pBslNhzdx+fiO5XiZ7kZ0CgYEA5gnn/teR/KgKF" +
+            "TD/UxHKoG/Aml3830TFxSQYasYHA3CBXJPWF9+bAmFENemhghj89rkBAWf0pkG3JwVt19WjDUikO3AWK2jyXZGhxTMBTHR4lmbraJAJt8TizXqqIiBYLUOfJfUaD4h5DmqJYNOWlZCr+uOu+Zk0m" +
+            "clsaTgu5HA=";
 // 错误的code码说明,有问题自己查
 //    /兼容老版本的code说明
 //    int CODE_LOAD_SUCCESS = 1;//加载阶段, 成功

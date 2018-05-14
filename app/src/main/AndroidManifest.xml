@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.ysl.mywps"
     android:versionCode="3"
-    android:versionName="@string/version_name"
-    tools:ignore="IllegalResourceRef">
+    android:versionName="3.1">
 
     <permission
         android:name="com.example.ysl.mywps.permission.JPUSH_MESSAGE"
@@ -70,6 +69,12 @@
 
         <activity android:name=".ui.activity.ContactDetailActivity"></activity>
         <activity android:name=".ui.activity.DocumentDetailActivity"></activity>
+        <activity android:name=".ui.activity.ThemeActivity"></activity>
+        <activity android:name=".ui.activity.MeettingActivity"></activity>
+        <activity android:name=".ui.activity.ReportActivity"></activity>
+        <activity android:name=".ui.activity.ColleagueAcitivity"></activity>
+        <activity android:name=".ui.activity.QuestionActivity"></activity>
+        <activity android:name=".ui.activity.MembersActivity"></activity>
         <activity android:name=".ui.activity.WebviewActivity"
 
             ></activity>

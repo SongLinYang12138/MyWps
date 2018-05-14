@@ -103,7 +103,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//    ToastUtils.showShort(this,"热启动成功了，我的热启动快成功啊");
     }
 
     private void getLogin() {
@@ -206,7 +205,7 @@ public class LoginActivity extends BaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
 
-                    CommonUtil.showLong(getApplicationContext(), s);
+//                    CommonUtil.showLong(getApplicationContext(), s);
                 }
 
                 loading.setVisibility(View.GONE);

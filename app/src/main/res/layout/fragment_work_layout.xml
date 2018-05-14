@@ -188,6 +188,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/work_ll_report"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -250,6 +251,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/work_ll_meetting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -313,6 +315,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/work_ll_theme_activity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -376,6 +379,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/work_ll_colleagues"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -437,6 +441,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/work_ll_quession"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -739,6 +744,7 @@
 
 
                <LinearLayout
+                   android:id="@+id/work_ll_members"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:orientation="vertical"
